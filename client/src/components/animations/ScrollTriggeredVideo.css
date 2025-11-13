@@ -1,0 +1,328 @@
+/* ============================================
+   SCROLL TRIGGERED VIDEO STYLES
+   Video that plays when scrolled into view
+   ============================================ */
+
+.scroll-video-container {
+  width: 100%;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 0;
+}
+
+.scroll-video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  background: #000;
+}
+
+.scroll-triggered-video {
+  width: 100%;
+  height: auto;
+  min-height: 400px;
+  max-height: 70vh;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px;
+}
+
+/* Loading state */
+.video-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  z-index: 20;
+}
+
+.video-loading .loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: video-spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes video-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.video-loading p {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Video Overlay */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    45deg,
+    rgba(30, 58, 138, 0.1) 0%,
+    rgba(12, 74, 110, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  pointer-events: none; /* Allow clicks to pass through to video */
+}
+
+.video-overlay > * {
+  pointer-events: auto; /* Re-enable clicks on overlay children (buttons) */
+}
+
+/* Video Placeholder */
+.video-placeholder {
+  text-align: center;
+  color: white;
+  z-index: 3;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.video-placeholder p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Large Play Button */
+.large-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  padding-left: 8px; /* Offset play icon to center it visually */
+}
+
+.large-play-button:hover {
+  background: rgba(59, 130, 246, 1);
+  box-shadow: 0 15px 50px rgba(59, 130, 246, 0.5);
+}
+
+.large-play-button:active {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+/* Video Controls */
+.video-controls {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  opacity: 1; /* Always visible */
+  transition: all 0.3s ease;
+  z-index: 4;
+}
+
+.video-controls.controls-prominent {
+  transform: translateX(-50%) scale(1.2);
+}
+
+.video-controls.visible {
+  opacity: 1;
+}
+
+.control-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  z-index: 3;
+}
+
+.scroll-arrow {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.scroll-indicator span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Video Loading */
+.video-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  z-index: 5;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: video-spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes video-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.video-loading p {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .scroll-triggered-video {
+    min-height: 300px;
+    max-height: 50vh;
+  }
+
+  .video-placeholder p {
+    font-size: 1rem;
+  }
+
+  .placeholder-icon {
+    font-size: 3rem;
+  }
+
+  .scroll-arrow {
+    font-size: 1.5rem;
+  }
+
+  .large-play-button {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+
+  .control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-triggered-video {
+    min-height: 250px;
+    max-height: 40vh;
+  }
+
+  .video-placeholder p {
+    font-size: 0.9rem;
+  }
+
+  .placeholder-icon {
+    font-size: 2.5rem;
+  }
+
+  .scroll-indicator {
+    display: none; /* Hide scroll indicator on very small screens */
+  }
+
+  .large-play-button {
+    width: 70px;
+    height: 70px;
+    font-size: 1.8rem;
+  }
+
+  .control-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}

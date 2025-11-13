@@ -1,0 +1,14 @@
+{
+  "name": "mahapola-maritime-academy",
+  "version": "1.0.0",
+  "description": "Mahapola Maritime Academy Full Stack Application",
+  "scripts": {
+    "dev": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev:full": "concurrently \"npm run dev:server\" \"npm run dev\"",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

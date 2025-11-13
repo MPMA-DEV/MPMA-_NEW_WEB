@@ -1,0 +1,32 @@
+/* ============================================
+   SCROLLYTELLING SECTION STYLES
+   ============================================ */
+
+.scrollytelling-section {
+  width: 100%;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.scrollytelling-section.full-height {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Section variants */
+.scrollytelling-dark {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: white;
+}
+
+.scrollytelling-light {
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  color: var(--text-primary);
+}
+
+.scrollytelling-blue {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0c4a6e 100%);
+  color: white;
+}

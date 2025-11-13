@@ -1,0 +1,39 @@
+/* ============================================
+   MORPHING SHAPES STYLES
+   ============================================ */
+
+.morphing-shapes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.morphing-svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+}
+
+.morphing-svg.wave {
+  height: 50px;
+}
+
+.morphing-svg.circle {
+  height: 100px;
+}
+
+.morphing-svg.anchor {
+  height: 120px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .morphing-shapes-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,13 @@
+/* ============================================
+   PAGE TRANSITION STYLES
+   ============================================ */
+
+.page-transition {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Smooth scroll behavior */
+.page-transition {
+  scroll-behavior: smooth;
+}
