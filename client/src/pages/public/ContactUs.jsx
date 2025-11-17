@@ -34,7 +34,7 @@ const ContactUs = () => {
                 <FaMapMarkerAlt />
                 <div>
                   <h4>Address</h4>
-                  <p>123 Harbor Road, Colombo, Sri Lanka</p>
+                  <p>5th Floor, 507, De-La Salle Street, Colombo 15, Sri Lanka</p>
                 </div>
               </div>
               <div className="info-item">

@@ -14,7 +14,7 @@ import { SessionProvider } from './context/SessionContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Common Components
-import Header from './components/common/Header';
+import GlassNavbar from './components/common/GlassNavbar';
 import Footer from './components/common/Footer';
 import CustomCursor from './components/common/CustomCursor';
 import LoadingSpinner from './components/common/LoadingSpinner';
@@ -90,6 +90,9 @@ function App() {
                     {/* Custom cursor for desktop */}
                     <CustomCursor />
 
+                    {/* Premium Glass Navigation Bar */}
+                    <GlassNavbar />
+
                     {/* Toast notifications */}
                     <Toaster
                       position="top-right"
@@ -115,9 +118,6 @@ function App() {
                         },
                       }}
                     />
-
-                    {/* Header */}
-                    <Header />
 
                     {/* Main content */}
                     <main className="main-content">
