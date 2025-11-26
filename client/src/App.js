@@ -5,6 +5,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
+import { RegistrationProvider } from './context/RegistrationContext.jsx';
 // Components
 import GlassNavbar from './components/common/GlassNavbar.jsx';
 import GlassFooter from './components/common/GlassFooter.jsx';
@@ -47,50 +48,52 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <div className="App">
-        {/* Navigation Bar */}
-        <GlassNavbar />
+      <RegistrationProvider>
+        <div className="App">
+          {/* Navigation Bar */}
+          <GlassNavbar />
 
-        {/* Main content */}
-        <main className="main-content">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/news-events" element={<NewsEvents />} />
-            <Route path="/submit-success" element={<SubmitSuccess />} />
+          {/* Main content */}
+          <main className="main-content">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/news-events" element={<NewsEvents />} />
+              <Route path="/submit-success" element={<SubmitSuccess />} />
 
-            {/* Course Routes */}
-            <Route path="/courses/equipment-operations" element={<EquipmentOperations />} />
-            <Route path="/courses/fire-safety" element={<FireSafety />} />
-            <Route path="/courses/information-systems" element={<InformationSystems />} />
-            <Route path="/courses/management" element={<Management />} />
-            <Route path="/courses/maritime-seamanship" element={<MaritimeSeamanship />} />
-            <Route path="/courses/technical-1" element={<Technical1 />} />
-            <Route path="/courses/technical-2" element={<Technical2 />} />
-            <Route path="/courses/forklift-tug-operations" element={<ForkliftTugOperations />} />
-            <Route path="/courses/crane-operator-training" element={<CraneOperatorTraining />} />
-            <Route path="/courses/movers-operators" element={<MoversOperators />} />
-            <Route path="/courses/crane-operator-training-2" element={<CraneOperatorTraining2 />} />
+              {/* Course Routes */}
+              <Route path="/courses/equipment-operations" element={<EquipmentOperations />} />
+              <Route path="/courses/fire-safety" element={<FireSafety />} />
+              <Route path="/courses/information-systems" element={<InformationSystems />} />
+              <Route path="/courses/management" element={<Management />} />
+              <Route path="/courses/maritime-seamanship" element={<MaritimeSeamanship />} />
+              <Route path="/courses/technical-1" element={<Technical1 />} />
+              <Route path="/courses/technical-2" element={<Technical2 />} />
+              <Route path="/courses/forklift-tug-operations" element={<ForkliftTugOperations />} />
+              <Route path="/courses/crane-operator-training" element={<CraneOperatorTraining />} />
+              <Route path="/courses/movers-operators" element={<MoversOperators />} />
+              <Route path="/courses/crane-operator-training-2" element={<CraneOperatorTraining2 />} />
 
-            {/* Results Routes */}
-            <Route path="/results/certification-registration" element={<CertificationRegistration />} />
-            <Route path="/results/external-results" element={<ExternalResults />} />
-            <Route path="/results/internal-results" element={<InternalResults />} />
+              {/* Results Routes */}
+              <Route path="/results/certification-registration" element={<CertificationRegistration />} />
+              <Route path="/results/external-results" element={<ExternalResults />} />
+              <Route path="/results/internal-results" element={<InternalResults />} />
 
-            {/* Registration Routes */}
-            <Route path="/registration/personal-information" element={<PersonalInformation />} />
-            <Route path="/registration/course-selection" element={<CourseSelection />} />
-            <Route path="/registration/additional-information" element={<AdditionalInformation />} />
-            <Route path="/registration/documents" element={<Documents />} />
-            <Route path="/registration/confirmation" element={<Confirmation />} />
-          </Routes>
-        </main>
+              {/* Registration Routes */}
+              <Route path="/registration/personal-information" element={<PersonalInformation />} />
+              <Route path="/registration/course-selection" element={<CourseSelection />} />
+              <Route path="/registration/additional-information" element={<AdditionalInformation />} />
+              <Route path="/registration/documents" element={<Documents />} />
+              <Route path="/registration/confirmation" element={<Confirmation />} />
+            </Routes>
+          </main>
 
-        {/* Footer */}
-        <GlassFooter />
-      </div>
+          {/* Footer */}
+          <GlassFooter />
+        </div>
+      </RegistrationProvider>
     </Router>
   );
 }

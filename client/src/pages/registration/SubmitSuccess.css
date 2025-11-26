@@ -1,0 +1,108 @@
+/* Base Theme Colors */
+:root {
+    --theme-blue: #337ab7;
+    --active-blue: #007bff;
+}
+
+/* ---- PAGE CONTAINER ---- */
+.success-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-image: url("https://placehold.co/1920x1080/003366/ffffff?text=Marine+Port+Background");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* Dark overlay + blur */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 1;
+}
+
+/* ---- MODAL BOX ---- */
+.success-modal {
+    position: relative;
+    z-index: 10;
+    background-color: var(--theme-blue);
+    color: white;
+    padding: 50px 70px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    max-width: 500px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ---- ICON ---- */
+.check-icon-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    color: var(--theme-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.check-icon {
+    font-size: 3rem !important;
+    color: var(--theme-blue);
+}
+
+/* ---- TEXT ---- */
+.success-message {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.submission-text {
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* ---- BUTTON ---- */
+.home-button {
+    margin-top: 30px;
+    padding: 10px 30px;
+    background-color: var(--active-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.home-button:hover {
+    background-color: #0069d9;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+    .success-page-css {
+        padding: 20px;
+    }
+
+    .success-modal {
+        padding: 30px 40px;
+    }
+
+    .submission-text {
+        font-size: 2.3rem;
+    }
+}
