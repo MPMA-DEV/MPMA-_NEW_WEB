@@ -6,7 +6,7 @@ import {
   FaCheckCircle, FaGraduationCap, FaGlobe, FaChalkboardTeacher,
   FaCompass, FaWrench, FaLifeRing, FaLanguage, FaBullhorn,
   FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaEnvelope, FaQuoteLeft,
-  FaBriefcase, FaTrophy
+  FaBriefcase, FaTrophy, FaAward, FaBullseye
 } from 'react-icons/fa';
 import ScrollytellingSection from '../../components/animations/ScrollytellingSection';
 import ScrollTriggeredVideo from '../../components/animations/ScrollTriggeredVideo';
@@ -75,9 +75,9 @@ const Home = () => {
           <div className="features-grid">
             <motion.div
               className="feature-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="feature-icon">
@@ -89,9 +89,9 @@ const Home = () => {
 
             <motion.div
               className="feature-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="feature-icon">
@@ -103,9 +103,9 @@ const Home = () => {
 
             <motion.div
               className="feature-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="feature-icon">
@@ -117,9 +117,9 @@ const Home = () => {
 
             <motion.div
               className="feature-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="feature-icon">
@@ -131,9 +131,9 @@ const Home = () => {
 
             <motion.div
               className="feature-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.5, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="feature-icon">
@@ -145,9 +145,9 @@ const Home = () => {
 
             <motion.div
               className="feature-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="feature-icon">
@@ -177,9 +177,9 @@ const Home = () => {
           <div className="programs-grid">
             <motion.div
               className="program-card"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.3 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.6 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
@@ -193,9 +193,9 @@ const Home = () => {
 
             <motion.div
               className="program-card"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.3 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring", bounce: 0.6 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
@@ -209,9 +209,9 @@ const Home = () => {
 
             <motion.div
               className="program-card"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.3 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.3, type: "spring", bounce: 0.6 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
@@ -225,9 +225,9 @@ const Home = () => {
 
             <motion.div
               className="program-card"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.3 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.4, type: "spring", bounce: 0.6 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
@@ -241,9 +241,9 @@ const Home = () => {
 
             <motion.div
               className="program-card"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.3 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              transition={{ duration: 0.6, delay: 0.5, type: "spring", bounce: 0.6 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
@@ -257,9 +257,9 @@ const Home = () => {
 
             <motion.div
               className="program-card"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.3 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.6, type: "spring", bounce: 0.6 }}
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
@@ -274,137 +274,105 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section with Scrollytelling */}
-      <ScrollytellingSection direction="up" delay={0.2}>
-        <section className="stats-section">
-          <div className="container">
-            <motion.div
-              className="section-header"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <h2>Our Achievements</h2>
-              <p>Excellence in maritime education and training</p>
-            </motion.div>
-
-            <div className="stats-grid">
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <div className="stat-icon-wrapper">
-                  <FaUserGraduate className="stat-icon" />
-                </div>
-                <motion.h3
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
-                  viewport={{ once: true }}
-                >
-                  5000+
-                </motion.h3>
-                <p>Students Trained</p>
-              </motion.div>
-
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <div className="stat-icon-wrapper">
-                  <FaCertificate className="stat-icon" />
-                </div>
-                <motion.h3
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4, type: "spring" }}
-                  viewport={{ once: true }}
-                >
-                  25+
-                </motion.h3>
-                <p>Courses Offered</p>
-              </motion.div>
-
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <div className="stat-icon-wrapper">
-                  <FaShip className="stat-icon" />
-                </div>
-                <motion.h3
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5, type: "spring" }}
-                  viewport={{ once: true }}
-                >
-                  50+
-                </motion.h3>
-                <p>Expert Instructors</p>
-              </motion.div>
-
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <div className="stat-icon-wrapper">
-                  <FaAnchor className="stat-icon" />
-                </div>
-                <motion.h3
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6, type: "spring" }}
-                  viewport={{ once: true }}
-                >
-                  95%
-                </motion.h3>
-                <p>Success Rate</p>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-      </ScrollytellingSection>
-
-      {/* Video Section - Plays on Scroll */}
-      <section className="video-section">
+      {/* Our Achievements Section */}
+      <section className="achievements-section">
         <div className="container">
           <motion.div
-            className="video-content"
-            initial={{ opacity: 0, y: 50 }}
+            className="section-header"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2>Experience Maritime Excellence</h2>
-            <p>Watch our immersive video showcasing the world of maritime training and education</p>
+            <h2>Our Achievements</h2>
+            <p>Building excellence in maritime education</p>
           </motion.div>
 
-          <motion.div
-            className="video-container"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <ScrollTriggeredVideo />
-          </motion.div>
+          <div className="achievements-grid">
+            <motion.div
+              className="achievement-card"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="achievement-icon">
+                <FaUserGraduate />
+              </div>
+              <h3>5000+</h3>
+              <p>Graduates Worldwide</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring", bounce: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="achievement-icon">
+                <FaCertificate />
+              </div>
+              <h3>30+</h3>
+              <p>International Certifications</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, type: "spring", bounce: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="achievement-icon">
+                <FaTrophy />
+              </div>
+              <h3>25 Years</h3>
+              <p>Excellence in Training</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4, type: "spring", bounce: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="achievement-icon">
+                <FaGlobe />
+              </div>
+              <h3>50+</h3>
+              <p>Global Partnerships</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.5, type: "spring", bounce: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="achievement-icon">
+                <FaChalkboardTeacher />
+              </div>
+              <h3>100+</h3>
+              <p>Expert Instructors</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.6, type: "spring", bounce: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="achievement-icon">
+                <FaAward />
+              </div>
+              <h3>Top Rated</h3>
+              <p>Maritime Institute</p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -425,9 +393,9 @@ const Home = () => {
           <div className="testimonials-grid">
             <motion.div
               className="testimonial-card"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.4 }}
               viewport={{ once: true }}
             >
               <FaQuoteLeft className="quote-icon" />
@@ -449,9 +417,9 @@ const Home = () => {
 
             <motion.div
               className="testimonial-card"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring", bounce: 0.4 }}
               viewport={{ once: true }}
             >
               <FaQuoteLeft className="quote-icon" />
@@ -473,9 +441,9 @@ const Home = () => {
 
             <motion.div
               className="testimonial-card"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, type: "spring", bounce: 0.4 }}
               viewport={{ once: true }}
             >
               <FaQuoteLeft className="quote-icon" />
@@ -498,6 +466,128 @@ const Home = () => {
         </div>
       </section>
 
+      {/* About Our Academy Section */}
+      <section className="about-academy-section">
+        <div className="container">
+          <motion.div
+            className="section-header"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2>About Our Academy</h2>
+            <p>Building maritime professionals for over two decades</p>
+          </motion.div>
+
+          <div className="about-circles-row">
+            <motion.div
+              className="about-circle-item"
+              initial={{ opacity: 0, scale: 0.3 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="circle-wrapper">
+                <div className="about-circle blue-circle">
+                  <FaShip className="circle-icon" />
+                </div>
+              </div>
+              <h3>TRAINING</h3>
+            </motion.div>
+
+            <motion.div
+              className="about-circle-item"
+              initial={{ opacity: 0, scale: 0.3 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <div className="circle-wrapper">
+                <div className="about-circle orange-circle">
+                  <FaCertificate className="circle-icon" />
+                </div>
+              </div>
+              <h3>CERTIFICATION</h3>
+            </motion.div>
+
+            <motion.div
+              className="about-circle-item"
+              initial={{ opacity: 0, scale: 0.3 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <div className="circle-wrapper">
+                <div className="about-circle purple-circle">
+                  <FaGlobe className="circle-icon" />
+                </div>
+              </div>
+              <h3>GLOBAL</h3>
+            </motion.div>
+
+            <motion.div
+              className="about-circle-item"
+              initial={{ opacity: 0, scale: 0.3 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <div className="circle-wrapper">
+                <div className="about-circle green-circle">
+                  <FaGraduationCap className="circle-icon" />
+                </div>
+              </div>
+              <h3>EXCELLENCE</h3>
+            </motion.div>
+
+            <motion.div
+              className="about-circle-item"
+              initial={{ opacity: 0, scale: 0.3 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="circle-wrapper">
+                <div className="about-circle teal-circle">
+                  <FaAnchor className="circle-icon" />
+                </div>
+              </div>
+              <h3>MARITIME</h3>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="about-description"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h3>The Core Values of Our Academy</h3>
+            <p>
+              Mahapola Ports & Maritime Academy stands as Sri Lanka's premier maritime education institution,
+              dedicated to shaping the next generation of seafaring professionals. With world-class training facilities,
+              internationally recognized certifications, and a commitment to excellence, we prepare our students
+              for successful careers in the global maritime industry.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="about-cta"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            viewport={{ once: true }}
+          >
+            <Link to="/about" className="btn btn-about">
+              Learn More About Us
+              <FaChevronRight className="btn-arrow" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Announcements / News Section */}
       <section className="announcements-section">
         <div className="container">
@@ -515,9 +605,9 @@ const Home = () => {
           <div className="announcements-grid">
             <motion.div
               className="announcement-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0, scale: 0.4 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="announcement-icon">
@@ -533,9 +623,9 @@ const Home = () => {
 
             <motion.div
               className="announcement-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0.4 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="announcement-icon">
@@ -551,9 +641,9 @@ const Home = () => {
 
             <motion.div
               className="announcement-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              initial={{ opacity: 0, scale: 0.4 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, type: "spring", bounce: 0.5 }}
               viewport={{ once: true }}
             >
               <div className="announcement-icon">
@@ -569,59 +659,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* About Section */}
-      <ScrollytellingSection direction="left" delay={0.3}>
-        <section className="about-section">
-          <div className="container">
-            <div className="about-content">
-              <motion.div
-                className="about-text"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <h2>About Our Academy</h2>
-                <p>
-                  Mahapola Ports & Maritime Academy is Sri Lanka's premier maritime education
-                  and training institution, committed to excellence in seafaring education and
-                  professional development.
-                </p>
-                <p>
-                  With state-of-the-art facilities and experienced instructors, we provide
-                  comprehensive training programs that meet international maritime standards
-                  and prepare our students for successful careers in the maritime industry.
-                </p>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  viewport={{ once: true }}
-                >
-                  <Link to="/about" className="btn btn-primary">
-                    Learn More About Us
-                    <FaChevronRight className="btn-arrow" />
-                  </Link>
-                </motion.div>
-              </motion.div>
-
-              <motion.div
-                className="about-image"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className="image-placeholder">
-                  <FaShip className="placeholder-icon" />
-                  <p>Maritime Training Center</p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-      </ScrollytellingSection>
 
       {/* Call to Action Section */}
       <section className="cta-section">
@@ -699,4 +736,5 @@ const Home = () => {
   );
 };
 
+// comment for a initial commit
 export default Home;
