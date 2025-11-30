@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 // Components
 import GlassNavbar from './components/common/GlassNavbar.jsx';
-import GlassFooter from './components/common/GlassFooter.jsx';
+import OceanWaveFooter from './components/common/OceanWaveFooter.jsx';
 
 // Pages
 import Home from './pages/public/Home.jsx';
@@ -89,7 +89,7 @@ function App() {
         </main>
 
         {/* Footer */}
-        <GlassFooter />
+        <OceanWaveFooter />
       </div>
     </Router>
   );

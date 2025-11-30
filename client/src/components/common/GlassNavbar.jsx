@@ -37,6 +37,7 @@ const GlassNavbar = () => {
     { name: 'Internal Results', path: '/results/internal-results' },
   ];
 
+
   // Registration pages - Application Process
   const registrationPages = [
     { name: 'Personal Information', path: '/registration/personal-information' },
@@ -90,36 +91,36 @@ const GlassNavbar = () => {
 
         {/* Desktop Menu */}
         <div className="navbar-menu">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
           >
             Home
           </Link>
 
-          <Link 
-            to="/about" 
+          <Link
+            to="/about"
             className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}
           >
             About Us
           </Link>
-          
+
           {/* Course Streams Dropdown */}
-          <div 
+          <div
             className="nav-item dropdown"
             onClick={(e) => handleDropdownClick(e, 'courses')}
           >
             <span className="dropdown-trigger">
-              Course Streams 
+              Course Streams
               <FaChevronDown className={`dropdown-icon ${openDropdown === 'courses' ? 'open' : ''}`} />
             </span>
             {openDropdown === 'courses' && (
               <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
                 <div className="dropdown-header">All Course Streams</div>
                 {courseStreams.map((course) => (
-                  <Link 
-                    key={course.path} 
-                    to={course.path} 
+                  <Link
+                    key={course.path}
+                    to={course.path}
                     className="dropdown-item"
                   >
                     {course.name}
@@ -130,21 +131,21 @@ const GlassNavbar = () => {
           </div>
 
           {/* Results Dropdown */}
-          <div 
+          <div
             className="nav-item dropdown"
             onClick={(e) => handleDropdownClick(e, 'results')}
           >
             <span className="dropdown-trigger">
-              Results 
+              Results
               <FaChevronDown className={`dropdown-icon ${openDropdown === 'results' ? 'open' : ''}`} />
             </span>
             {openDropdown === 'results' && (
               <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
                 <div className="dropdown-header">Results & Verification</div>
                 {resultsPages.map((result) => (
-                  <Link 
-                    key={result.path} 
-                    to={result.path} 
+                  <Link
+                    key={result.path}
+                    to={result.path}
                     className="dropdown-item"
                   >
                     {result.name}
@@ -154,36 +155,36 @@ const GlassNavbar = () => {
             )}
           </div>
 
-          <Link 
-            to="/news-events" 
+          <Link
+            to="/news-events"
             className={`nav-item ${location.pathname === '/news-events' ? 'active' : ''}`}
           >
             News & Events
           </Link>
 
-          <Link 
-            to="/contact" 
+          <Link
+            to="/contact"
             className={`nav-item ${location.pathname === '/contact' ? 'active' : ''}`}
           >
             Contact Us
           </Link>
 
           {/* Registration Dropdown */}
-          <div 
+          <div
             className="nav-item dropdown apply-dropdown"
             onClick={(e) => handleDropdownClick(e, 'registration')}
           >
             <span className="dropdown-trigger apply-btn">
-              Apply Now 
+              Apply Now
               <FaChevronDown className={`dropdown-icon ${openDropdown === 'registration' ? 'open' : ''}`} />
             </span>
             {openDropdown === 'registration' && (
               <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
                 <div className="dropdown-header">Application Process</div>
                 {registrationPages.map((reg) => (
-                  <Link 
-                    key={reg.path} 
-                    to={reg.path} 
+                  <Link
+                    key={reg.path}
+                    to={reg.path}
                     className="dropdown-item"
                   >
                     {reg.name}
@@ -209,7 +210,7 @@ const GlassNavbar = () => {
         <div className="mobile-menu">
           <Link to="/" className="mobile-nav-item">Home</Link>
           <Link to="/about" className="mobile-nav-item">About Us</Link>
-          
+
           <div className="mobile-nav-section">
             <div className="mobile-section-title">Course Streams</div>
             {courseStreams.map((course) => (
