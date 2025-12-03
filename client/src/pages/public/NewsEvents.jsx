@@ -28,11 +28,36 @@ const NewsEvents = () => {
 
   return (
     <div className="news-page">
-      <section className="page-hero">
-        <div className="container">
-          <h1>News & Events</h1>
-          <p>Stay updated with the latest from Mahapola Maritime Academy</p>
+      {/* Modern Energetic Hero Section */}
+      <section className="news-hero-modern">
+        {/* Animated Background Elements */}
+        <div className="hero-bg-pattern"></div>
+        
+        {/* Floating Maritime Shapes */}
+        <div className="floating-shapes">
+          <div className="shape shape-wave-1"></div>
+          <div className="shape shape-wave-2"></div>
+          <div className="shape shape-circle-1"></div>
+          <div className="shape shape-circle-2"></div>
+          <div className="shape shape-arc-1"></div>
+          <div className="shape shape-arc-2"></div>
         </div>
+
+        {/* Animated Dots Background */}
+        <div className="dots-background"></div>
+
+        {/* Hero Content */}
+        <div className="hero-content-wrapper">
+          <div className="hero-content">
+            <h1 className="hero-title">News & Events</h1>
+            <p className="hero-subtitle">
+              Stay updated with the latest announcements, achievements, and happenings.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Wave Decoration */}
+        <div className="hero-bottom-wave"></div>
       </section>
 
       <section className="news-section">

@@ -6,42 +6,248 @@
   width: 100%;
 }
 
-/* Hero Section */
-.news-hero {
-  background: linear-gradient(135deg, var(--color-primary-800) 0%, var(--color-primary-900) 100%);
-  padding: 6rem 0 4rem;
+/* ============================================
+   MODERN ENERGETIC HERO SECTION
+   ============================================ */
+
+.news-hero-modern {
   position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 25%, #7dd3fc 50%, #38bdf8 100%);
+  padding: 8rem 2rem 10rem;
 }
 
-.news-hero::before {
-  content: '';
+/* Animated Gradient Background Pattern */
+.hero-bg-pattern {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,176C672,181,768,139,864,128C960,117,1056,139,1152,144C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'/%3E%3C/svg%3E") no-repeat bottom;
-  background-size: cover;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(186, 230, 253, 0.2) 0%, transparent 70%);
+  animation: bgPulse 8s ease-in-out infinite;
 }
 
-.news-hero-content {
-  text-align: center;
-  color: white;
+@keyframes bgPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Animated Dots Background */
+.dots-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.4) 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
+  animation: dotsMove 20s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes dotsMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 30px 30px; }
+}
+
+/* Floating Maritime Shapes */
+.floating-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.15;
+}
+
+/* Wave Shapes */
+.shape-wave-1 {
+  top: 15%;
+  left: -5%;
+  width: 350px;
+  height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,0 Q300,60 600,30 T1200,30' stroke='%23ffffff' stroke-width='8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat;
+  background-size: contain;
+  animation: floatWave1 15s ease-in-out infinite;
+}
+
+.shape-wave-2 {
+  bottom: 20%;
+  right: -5%;
+  width: 400px;
+  height: 90px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 Q300,0 600,30 T1200,0' stroke='%23ffffff' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat;
+  background-size: contain;
+  animation: floatWave2 18s ease-in-out infinite;
+}
+
+/* Circular Motion Lines */
+.shape-circle-1 {
+  top: 25%;
+  right: 15%;
+  width: 150px;
+  height: 150px;
+  border: 6px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  animation: rotateCircle1 20s linear infinite;
+}
+
+.shape-circle-2 {
+  bottom: 30%;
+  left: 10%;
+  width: 120px;
+  height: 120px;
+  border: 5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  animation: rotateCircle2 25s linear infinite reverse;
+}
+
+/* Arc Shapes */
+.shape-arc-1 {
+  top: 45%;
+  left: 5%;
+  width: 200px;
+  height: 200px;
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  animation: floatArc1 12s ease-in-out infinite;
+}
+
+.shape-arc-2 {
+  top: 35%;
+  right: 8%;
+  width: 180px;
+  height: 180px;
+  border: 7px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  animation: floatArc2 14s ease-in-out infinite;
+}
+
+/* Shape Animations */
+@keyframes floatWave1 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-30px) translateX(20px); }
+}
+
+@keyframes floatWave2 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(30px) translateX(-20px); }
+}
+
+@keyframes rotateCircle1 {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes rotateCircle2 {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(0.9); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes floatArc1 {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+  50% { transform: translateY(-40px) rotate(10deg); opacity: 0.5; }
+}
+
+@keyframes floatArc2 {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.35; }
+  50% { transform: translateY(40px) rotate(-10deg); opacity: 0.55; }
+}
+
+/* Hero Content Wrapper */
+.hero-content-wrapper {
   position: relative;
-  z-index: 2;
+  z-index: 10;
+  max-width: 900px;
+  text-align: center;
 }
 
-.news-hero-content h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-  color: white;
+.hero-content {
+  animation: fadeInUp 1s ease-out;
 }
 
-.news-hero-content p {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.9);
+/* Hero Title */
+.hero-title {
+  font-size: 5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.5);
+  animation: fadeInUp 1s ease-out 0.2s backwards;
 }
+
+/* Hero Subtitle */
+.hero-subtitle {
+  font-size: 1.4rem;
+  color: #075985;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto;
+  text-shadow: 1px 1px 10px rgba(255, 255, 255, 0.3);
+  animation: fadeInUp 1s ease-out 0.4s backwards;
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bottom Wave Decoration */
+.hero-bottom-wave {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath fill='%23ffffff' d='M0,64 C240,100 480,40 720,64 C960,88 1200,28 1440,64 L1440,120 L0,120 Z'/%3E%3C/svg%3E") no-repeat bottom;
+  background-size: cover;
+  animation: waveMove 8s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+
+/* ============================================
+   REST OF THE PAGE STYLES
+   ============================================ */
 
 /* Filters Section */
 .news-filters {
@@ -374,6 +580,39 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Hero Responsive */
+  .news-hero-modern {
+    min-height: 400px;
+    padding: 6rem 1.5rem 8rem;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
+
+  /* Simplify shapes on mobile */
+  .shape-wave-1,
+  .shape-wave-2 {
+    width: 200px;
+  }
+
+  .shape-circle-1,
+  .shape-circle-2 {
+    width: 80px;
+    height: 80px;
+  }
+
+  .shape-arc-1,
+  .shape-arc-2 {
+    width: 120px;
+    height: 120px;
+  }
+
   .news-hero-content h1 {
     font-size: 2.5rem;
   }
@@ -410,4 +649,19 @@
   .pagination-numbers {
     flex-wrap: wrap;
     justify-content: center;
-  }}
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .news-hero-modern {
+    padding: 5rem 1rem 6rem;
+  }
+}
