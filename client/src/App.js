@@ -15,6 +15,7 @@ import AboutUs from './pages/public/AboutUs.jsx';
 import ContactUs from './pages/public/ContactUs.jsx';
 import NewsEvents from './pages/public/NewsEvents.jsx';
 import SubmitSuccess from './pages/public/SubmitSuccess.jsx';
+import MissionDemo from './pages/public/MissionDemo.jsx';
 
 // Course Pages
 import EquipmentOperations from './pages/courses/EquipmentOperations.jsx';
@@ -60,6 +61,7 @@ function App() {
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/news-events" element={<NewsEvents />} />
             <Route path="/submit-success" element={<SubmitSuccess />} />
+            <Route path="/mission-demo" element={<MissionDemo />} />
 
             {/* Course Routes */}
             <Route path="/courses/equipment-operations" element={<EquipmentOperations />} />

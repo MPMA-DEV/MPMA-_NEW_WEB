@@ -12,49 +12,511 @@ import './AboutUs.css';
 const AboutUs = () => {
   return (
     <div className="about-page">
-      <section className="page-hero">
-        <div className="container">
-          <h1>About Mahapola Maritime Academy</h1>
-          <p>Premier Maritime Education Since 1985</p>
+      {/* About Hero Section */}
+      <section className="about-hero-section">
+        <div className="about-hero-bg">
+          <div className="wave-pattern"></div>
+          <div className="dots-pattern"></div>
+        </div>
+        <div className="about-hero-content">
+          <motion.div
+            className="about-hero-text"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              About Us
+            </motion.h1>
+            <motion.p
+              className="about-hero-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              Discover our history, values, and commitment to shaping the future of maritime excellence.
+            </motion.p>
+          </motion.div>
+          <motion.div
+            className="hero-decorative-elements"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+          >
+            <div className="anchor-shape"></div>
+            <div className="compass-shape"></div>
+            <div className="wave-shape"></div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="mission-section">
+      {/* Mission, Vision, Values Section */}
+      <section className="mvv-section">
         <div className="container">
-          <div className="mission-grid">
-            <div className="mission-card">
-              <FaBullseye className="mission-icon" />
-              <h3>Our Mission</h3>
-              <p>To provide world-class maritime education and training</p>
-            </div>
-            <div className="mission-card">
-              <FaEye className="mission-icon" />
-              <h3>Our Vision</h3>
-              <p>To be the leading maritime academy in South Asia</p>
-            </div>
-            <div className="mission-card">
-              <FaTrophy className="mission-icon" />
-              <h3>Our Values</h3>
-              <p>Excellence, Integrity, and Innovation</p>
-            </div>
-            <div className="mission-card">
-              <FaHandshake className="mission-icon" />
-              <h3>Our Commitment</h3>
-              <p>Dedicated to student success and industry needs</p>
-            </div>
+          <div className="mvv-grid">
+            {/* Mission */}
+            <motion.div
+              className="mvv-column mission-column"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.1, type: "spring", bounce: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -15, scale: 1.05 }}
+            >
+              <motion.div 
+                className="mvv-top"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <motion.div 
+                  className="mvv-icon"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4, type: "spring", bounce: 0.5 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                >
+                  <FaBullseye />
+                </motion.div>
+              </motion.div>
+              <motion.div 
+                className="mvv-content"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <motion.h3 
+                  className="mvv-title"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  MISSION
+                </motion.h3>
+                <motion.p 
+                  className="mvv-text"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.7 }}
+                  viewport={{ once: true }}
+                >
+                  To provide world-class maritime education and training through state-of-the-art 
+                  facilities, internationally certified programs, and expert faculty.
+                </motion.p>
+                <motion.div 
+                  className="mvv-underline mission-underline"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "60px" }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                  viewport={{ once: true }}
+                ></motion.div>
+              </motion.div>
+            </motion.div>
+
+            {/* Vision */}
+            <motion.div
+              className="mvv-column vision-column"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2, type: "spring", bounce: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -15, scale: 1.05 }}
+            >
+              <motion.div 
+                className="mvv-top"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <motion.div 
+                  className="mvv-icon"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5, type: "spring", bounce: 0.5 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                >
+                  <FaEye />
+                </motion.div>
+              </motion.div>
+              <motion.div 
+                className="mvv-content"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <motion.h3 
+                  className="mvv-title"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.7 }}
+                  viewport={{ once: true }}
+                >
+                  VISION
+                </motion.h3>
+                <motion.p 
+                  className="mvv-text"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  To be the leading maritime training academy in South Asia, recognized globally 
+                  for excellence in maritime education and professional development.
+                </motion.p>
+                <motion.div 
+                  className="mvv-underline vision-underline"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "60px" }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  viewport={{ once: true }}
+                ></motion.div>
+              </motion.div>
+            </motion.div>
+
+            {/* Values */}
+            <motion.div
+              className="mvv-column values-column"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.3, type: "spring", bounce: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -15, scale: 1.05 }}
+            >
+              <motion.div 
+                className="mvv-top"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <motion.div 
+                  className="mvv-icon"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6, type: "spring", bounce: 0.5 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                >
+                  <FaAward />
+                </motion.div>
+              </motion.div>
+              <motion.div 
+                className="mvv-content"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                viewport={{ once: true }}
+              >
+                <motion.h3 
+                  className="mvv-title"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  VALUES
+                </motion.h3>
+                <motion.p 
+                  className="mvv-text"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.9 }}
+                  viewport={{ once: true }}
+                >
+                  Excellence, Integrity, Innovation, and Commitment to student success and 
+                  industry leadership in maritime training and education.
+                </motion.p>
+                <motion.div 
+                  className="mvv-underline values-underline"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "60px" }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
+                  viewport={{ once: true }}
+                ></motion.div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="about-content">
-        <div className="container">
-          <h2>Our Story</h2>
-          <p>
-            Founded in 1985, Mahapola Ports & Maritime Academy has been at the forefront of
-            maritime education in Sri Lanka. With state-of-the-art facilities and experienced
-            instructors, we have trained thousands of maritime professionals who serve in ports
-            and vessels worldwide.
-          </p>
+      {/* Four Decades Timeline Section */}
+      <section className="timeline-section">
+        <div className="timeline-full-container">
+          <motion.div 
+            className="timeline-header"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <motion.h2 
+              className="timeline-main-title"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Four Decades of Maritime Excellence
+            </motion.h2>
+            <motion.p 
+              className="timeline-subtitle"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              Building on a legacy of professional training and industry leadership
+            </motion.p>
+          </motion.div>
+
+          <div className="timeline-wrapper">
+            <motion.div 
+              className="timeline-vertical-line"
+              initial={{ height: 0 }}
+              whileInView={{ height: "100%" }}
+              transition={{ duration: 1.5, delay: 0.3, ease: "easeInOut" }}
+              viewport={{ once: true }}
+            ></motion.div>
+
+            {/* 1985 - Left */}
+            <motion.div 
+              className="timeline-item-wrapper timeline-item-left"
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="timeline-year-left"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.6, type: "spring", bounce: 0.5 }}
+                viewport={{ once: true }}
+              >
+                1985
+              </motion.div>
+              <motion.div 
+                className="timeline-circle"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.7, type: "spring", stiffness: 200 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.3, transition: { duration: 0.2 } }}
+              ></motion.div>
+              <motion.div 
+                className="timeline-card"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <h3>Foundation & First Batch</h3>
+                <p>Established as Sri Lanka's premier maritime training institution with the first batch of 50 cadets.</p>
+              </motion.div>
+            </motion.div>
+
+            {/* 1995 - Right */}
+            <motion.div 
+              className="timeline-item-wrapper timeline-item-right"
+              initial={{ opacity: 0, x: 80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.9, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="timeline-card"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 1.2 }}
+                viewport={{ once: true }}
+              >
+                <h3>International Recognition</h3>
+                <p>Received STCW accreditation and began offering internationally recognized maritime certifications.</p>
+              </motion.div>
+              <motion.div 
+                className="timeline-circle"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 1.1, type: "spring", stiffness: 200 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.3, transition: { duration: 0.2 } }}
+              ></motion.div>
+              <motion.div 
+                className="timeline-year-right"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.0, type: "spring", bounce: 0.5 }}
+                viewport={{ once: true }}
+              >
+                1995
+              </motion.div>
+            </motion.div>
+
+            {/* 2005 - Left */}
+            <motion.div 
+              className="timeline-item-wrapper timeline-item-left"
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.7, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="timeline-year-left"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.8, type: "spring", bounce: 0.5 }}
+                viewport={{ once: true }}
+              >
+                2005
+              </motion.div>
+              <motion.div 
+                className="timeline-circle"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.9, type: "spring", stiffness: 200 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.3, transition: { duration: 0.2 } }}
+              ></motion.div>
+              <motion.div 
+                className="timeline-card"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 1.0 }}
+                viewport={{ once: true }}
+              >
+                <h3>State-of-the-Art Simulators</h3>
+                <p>Invested in advanced navigation and engine room simulators, enhancing practical training capabilities.</p>
+              </motion.div>
+            </motion.div>
+
+            {/* 2015 - Right */}
+            <motion.div 
+              className="timeline-item-wrapper timeline-item-right"
+              initial={{ opacity: 0, x: 80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.8, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="timeline-card"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 1.1 }}
+                viewport={{ once: true }}
+              >
+                <h3>Global Expansion</h3>
+                <p>Established international partnerships, expanded training facilities, and increased graduate output worldwide.</p>
+              </motion.div>
+              <motion.div 
+                className="timeline-circle"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 1.0, type: "spring", stiffness: 200 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.3, transition: { duration: 0.2 } }}
+              ></motion.div>
+              <motion.div 
+                className="timeline-year-right"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.9, type: "spring", bounce: 0.5 }}
+                viewport={{ once: true }}
+              >
+                2015
+              </motion.div>
+            </motion.div>
+
+            {/* 2020 - Left */}
+            <motion.div 
+              className="timeline-item-wrapper timeline-item-left"
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.9, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="timeline-year-left"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.0, type: "spring", bounce: 0.5 }}
+                viewport={{ once: true }}
+              >
+                2020
+              </motion.div>
+              <motion.div 
+                className="timeline-circle"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 1.1, type: "spring", stiffness: 200 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.3, transition: { duration: 0.2 } }}
+              ></motion.div>
+              <motion.div 
+                className="timeline-card"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 1.2 }}
+                viewport={{ once: true }}
+              >
+                <h3>Digital Transformation</h3>
+                <p>Implemented advanced e-learning platforms and virtual training modules to adapt to global challenges.</p>
+              </motion.div>
+            </motion.div>
+
+            {/* 2025 - Right */}
+            <motion.div 
+              className="timeline-item-wrapper timeline-item-right"
+              initial={{ opacity: 0, x: 80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 1.0, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="timeline-card"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 1.3 }}
+                viewport={{ once: true }}
+              >
+                <h3>Excellence & Innovation</h3>
+                <p>Celebrating 40 years of maritime excellence with cutting-edge AI-integrated training and sustainable shipping initiatives.</p>
+              </motion.div>
+              <motion.div 
+                className="timeline-circle"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 1.2, type: "spring", stiffness: 200 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.3, transition: { duration: 0.2 } }}
+              ></motion.div>
+              <motion.div 
+                className="timeline-year-right"
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.1, type: "spring", bounce: 0.5 }}
+                viewport={{ once: true }}
+              >
+                2025
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -274,107 +736,6 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Our Achievements Section */}
-      <section className="achievements-section">
-        <div className="container">
-          <motion.div
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2>Our Achievements</h2>
-            <p>Building excellence in maritime education</p>
-          </motion.div>
-
-          <div className="achievements-grid">
-            <motion.div
-              className="achievement-card"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="achievement-icon">
-                <FaUserGraduate />
-              </div>
-              <h3>5000+</h3>
-              <p>Graduates Worldwide</p>
-            </motion.div>
-
-            <motion.div
-              className="achievement-card"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2, type: "spring", bounce: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="achievement-icon">
-                <FaCertificate />
-              </div>
-              <h3>30+</h3>
-              <p>International Certifications</p>
-            </motion.div>
-
-            <motion.div
-              className="achievement-card"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, type: "spring", bounce: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="achievement-icon">
-                <FaTrophy />
-              </div>
-              <h3>25 Years</h3>
-              <p>Excellence in Training</p>
-            </motion.div>
-
-            <motion.div
-              className="achievement-card"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4, type: "spring", bounce: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="achievement-icon">
-                <FaGlobe />
-              </div>
-              <h3>50+</h3>
-              <p>Global Partnerships</p>
-            </motion.div>
-
-            <motion.div
-              className="achievement-card"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.5, type: "spring", bounce: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="achievement-icon">
-                <FaChalkboardTeacher />
-              </div>
-              <h3>100+</h3>
-              <p>Expert Instructors</p>
-            </motion.div>
-
-            <motion.div
-              className="achievement-card"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.6, type: "spring", bounce: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="achievement-icon">
-                <FaAward />
-              </div>
-              <h3>Top Rated</h3>
-              <p>Maritime Institute</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Testimonials Section */}
       <section className="testimonials-section">
