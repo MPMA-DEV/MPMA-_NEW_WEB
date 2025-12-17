@@ -193,6 +193,7 @@ const Header = () => {
               {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
           </div>
+        </div>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
