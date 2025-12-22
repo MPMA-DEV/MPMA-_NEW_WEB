@@ -1,0 +1,191 @@
+/* General Layout */
+.application-container {
+    background-color: #d8ecff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    font-family: Arial, sans-serif;
+}
+
+/* Progress Header */
+.progress-header {
+    background-color: #337ab7;
+    color: white;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Step Item */
+.step-item {
+    text-align: center;
+    position: relative;
+    opacity: 0.6;
+    flex: 1;
+}
+
+.step-item.active,
+.step-item.complete {
+    opacity: 1;
+}
+
+.step-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255,255,255,0.5);
+}
+
+/* Step Icon Circle */
+.icon-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 5px auto;
+    color: white;
+}
+
+.step-item.active .icon-container,
+.step-item.complete .icon-container {
+    background-color: white;
+    color: #337ab7;
+    border: 2px solid white;
+}
+
+/* Step Labels */
+.step-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.step-number {
+    font-size: 0.75rem;
+}
+
+.step-title {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* Form Card */
+.form-card {
+    width: 90%;
+    max-width: 750px;
+    margin: 120px auto 40px auto;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background: #d8ecff;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    color: #007bff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 25px;
+}
+
+/* Form Controls */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 1rem;
+    
+}
+
+.required {
+    color: #dc3545;
+}
+
+/* Select + Textarea */
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: white;
+}
+
+/* Dropdown Arrow */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: "⌄";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Textarea */
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-previous {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-submit.disabled {
+    background-color: #a0c4e4;
+    cursor: not-allowed;
+}
+
+.application-footer {
+    background-color: #337ab7;
+    height: 50px;
+    width: 100%;
+    margin-top: auto;
+}
