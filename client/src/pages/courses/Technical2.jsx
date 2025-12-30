@@ -32,7 +32,7 @@ export default function TechnicalII() {
 				<div className="ms-hero-left">
 					<img
 						className="ms-hero-image"
-						src="https://images.stockcake.com/public/8/0/8/8080cbcd-cc14-42e1-a00f-86d35fb1db74_large/cluttered-tech-workshop-stockcake.jpg````"
+						src="https://images.stockcake.com/public/8/0/8/8080cbcd-cc14-42e1-a00f-86d35fb1db74_large/cluttered-tech-workshop-stockcake.jpg"
 						alt="Workshop"
 					/>
 				</div>
