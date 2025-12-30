@@ -149,46 +149,6 @@ const NewsEvents = () => {
 
   return (
     <div className="news-events-page">
-      <div style={{height: '80px'}}></div>
-      <section className="news-hero" style={{backgroundImage: `url('/assets/images/ocean-bg.jpg')`}}>
-        <div className="news-hero-content">
-          <h1>News and Events</h1>
-          <p>Stay updated with the latest happenings at Mahapola Ports Maritime Academy. Explore our news articles, event announcements, and important updates.</p>
-          <div className="search-bar">
-            <span className="search-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="10" cy="10" r="7" stroke="#22292f" strokeWidth="2" />
-                <line x1="16.2" y1="16.2" x2="20" y2="20" stroke="#22292f" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </span>
-            <input
-              className="search-input"
-              type="text"
-              placeholder="Search here....."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="featured-news-section">
-        <div className="container">
-          {featured && (
-            <div className="featured-news-card">
-              <div className="featured-news-img-container">
-                <img src={featured.image} alt={featured.title} className="featured-news-img" />
-              </div>
-              <div className="featured-news-content">
-                <h2>{featured.title}</h2>
-                <p>{featured.excerpt}</p>
-                <span className="featured-news-date">{featured.date}</span>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* Wavy Header Section */}
       <section className="news-wavy-header">
         {/* Background with floating icons */}
@@ -272,23 +232,6 @@ const NewsEvents = () => {
                   <div className="news-meta">
                     <span>{item.date}</span>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="recent-posts-section">
-        <div className="container">
-          <h3 className="section-title">Recent Posts</h3>
-          <div className="recent-posts-list">
-            {recentPosts.map(post => (
-              <div key={post.id} className="recent-post-card">
-                <img src={post.image} alt={post.title} className="recent-post-img" />
-                <div className="recent-post-content">
-                  <h5>{post.title}</h5>
-                  <span className="recent-post-date">{post.date}</span>
                 </div>
               </div>
             ))}
