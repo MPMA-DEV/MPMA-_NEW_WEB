@@ -5,51 +5,171 @@ import {
   FaBullseye, FaEye, FaTrophy, FaHandshake,
   FaCheckCircle, FaShip, FaGlobe, FaChalkboardTeacher,
   FaBriefcase, FaGraduationCap, FaWrench, FaCompass,
-  FaLanguage, FaLifeRing, FaCertificate, FaUserGraduate, FaQuoteLeft, FaAward
+  FaLanguage, FaLifeRing, FaCertificate, FaUserGraduate, FaQuoteLeft, FaAward,
+  FaAnchor, FaWater, FaStar
 } from 'react-icons/fa';
 import './AboutUs.css';
 
 const AboutUs = () => {
+  const hexagons = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 80 + 40,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 20 + 15,
+    delay: Math.random() * 3,
+  }));
+
+  const floatingElements = [
+    { Icon: FaShip, x: '12%', y: '30%', duration: 10 },
+    { Icon: FaAnchor, x: '82%', y: '25%', duration: 12 },
+    { Icon: FaCompass, x: '18%', y: '70%', duration: 11 },
+    { Icon: FaGlobe, x: '85%', y: '65%', duration: 13 },
+  ];
+
   return (
     <div className="about-page">
-      {/* About Hero Section */}
-      <section className="about-hero-section">
-        <div className="about-hero-bg">
-          <div className="wave-pattern"></div>
-          <div className="dots-pattern"></div>
+      {/* Ultra Modern Blue Hero */}
+      <section className="ultra-modern-hero">
+        <div className="modern-hero-bg">
+          {/* Hexagon Pattern */}
+          <div className="hexagon-container">
+            {hexagons.map((hex) => (
+              <motion.div
+                key={hex.id}
+                className="hexagon"
+                style={{
+                  width: hex.size,
+                  height: hex.size,
+                  left: `${hex.x}%`,
+                  top: `${hex.y}%`,
+                }}
+                animate={{
+                  rotate: [0, 360],
+                  scale: [1, 1.2, 1],
+                  opacity: [0.1, 0.3, 0.1],
+                }}
+                transition={{
+                  duration: hex.duration,
+                  delay: hex.delay,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Light Rays */}
+          <div className="light-rays">
+            <div className="ray ray-1"></div>
+            <div className="ray ray-2"></div>
+            <div className="ray ray-3"></div>
+          </div>
+
+          {/* Floating Icons */}
+          <div className="floating-elements">
+            {floatingElements.map((item, index) => (
+              <motion.div
+                key={index}
+                className="float-icon"
+                style={{ left: item.x, top: item.y }}
+                animate={{
+                  y: [0, -30, 0],
+                  opacity: [0.2, 0.4, 0.2],
+                }}
+                transition={{
+                  duration: item.duration,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <item.Icon />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Animated Gradient Orbs */}
+          <div className="gradient-orbs">
+            <div className="orb orb-1"></div>
+            <div className="orb orb-2"></div>
+            <div className="orb orb-3"></div>
+          </div>
         </div>
-        <div className="about-hero-content">
+
+        <div className="modern-hero-content">
           <motion.div
-            className="about-hero-text"
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="hero-inner-content"
           >
+            {/* Animated Icon */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                duration: 0.8, 
+                delay: 0.3,
+                type: "spring",
+                stiffness: 200
+              }}
+              className="modern-icon-wrapper"
+            >
+              <div className="icon-circle">
+                <FaShip className="hero-ship-icon" />
+              </div>
+              <div className="icon-pulse"></div>
+            </motion.div>
+
+            {/* Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="modern-title"
             >
               About Us
             </motion.h1>
+
+            {/* Decorative Line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="title-underline"
+            ></motion.div>
+
+            {/* Description */}
             <motion.p
-              className="about-hero-subtitle"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              className="modern-description"
             >
-              Discover our history, values, and commitment to shaping the future of maritime excellence.
+              Pioneering maritime education excellence for over five decades.<br />
+              Training the next generation of global maritime professionals.
             </motion.p>
-          </motion.div>
-          <motion.div
-            className="hero-decorative-elements"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-          >
-            <div className="anchor-shape"></div>
-            <div className="compass-shape"></div>
-            <div className="wave-shape"></div>
+
+            {/* Feature Pills */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="feature-pills"
+            >
+              <div className="pill">
+                <FaTrophy className="pill-icon" />
+                <span>Excellence</span>
+              </div>
+              <div className="pill">
+                <FaGraduationCap className="pill-icon" />
+                <span>Innovation</span>
+              </div>
+              <div className="pill">
+                <FaGlobe className="pill-icon" />
+                <span>Global</span>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>

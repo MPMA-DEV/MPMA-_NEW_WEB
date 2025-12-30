@@ -62,107 +62,23 @@ const Home = () => {
 
       {/* About Our Academy Section */}
       <section className="about-academy-section">
-        <div className="container">
-          <motion.div
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+        <div className="about-content-wrap">
+          <div className="about-left">
             <h2>About Our Academy</h2>
             <p>Building maritime professionals for over two decades</p>
-          </motion.div>
-
-          <div className="about-circles-row">
-            <motion.div
-              className="about-circle-item"
-              initial={{ opacity: 0, scale: 0.3 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="circle-wrapper">
-                <div className="about-circle blue-circle">
-                  <FaShip className="circle-icon" />
-                </div>
-              </div>
-              <h3>TRAINING</h3>
-            </motion.div>
-
-            <motion.div
-              className="about-circle-item"
-              initial={{ opacity: 0, scale: 0.3 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div className="circle-wrapper">
-                <div className="about-circle orange-circle">
-                  <FaCertificate className="circle-icon" />
-                </div>
-              </div>
-              <h3>CERTIFICATION</h3>
-            </motion.div>
-
-            <motion.div
-              className="about-circle-item"
-              initial={{ opacity: 0, scale: 0.3 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <div className="circle-wrapper">
-                <div className="about-circle purple-circle">
-                  <FaGlobe className="circle-icon" />
-                </div>
-              </div>
-              <h3>GLOBAL</h3>
-            </motion.div>
-
-            <motion.div
-              className="about-circle-item"
-              initial={{ opacity: 0, scale: 0.3 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <div className="circle-wrapper">
-                <div className="about-circle green-circle">
-                  <FaGraduationCap className="circle-icon" />
-                </div>
-              </div>
-              <h3>EXCELLENCE</h3>
-            </motion.div>
-
-            <motion.div
-              className="about-circle-item"
-              initial={{ opacity: 0, scale: 0.3 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', bounce: 0.5, duration: 0.8, delay: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="circle-wrapper">
-                <div className="about-circle teal-circle">
-                  <FaAnchor className="circle-icon" />
-                </div>
-              </div>
-              <h3>MARITIME</h3>
-            </motion.div>
           </div>
-
-          <motion.div
-            className="about-cta"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <Link to="/about" className="btn btn-about">
-              Learn More About Us
-              <FaChevronRight className="btn-arrow" />
-            </Link>
-          </motion.div>
+          <div className="about-center">
+            <div className="keyword-list">
+              <span>TRAINING</span>
+              <span>CERTIFICATION</span>
+              <span>GLOBAL</span>
+              <span>EXCELLENCE</span>
+              <span>MARITIME</span>
+            </div>
+          </div>
+          <div className="about-right">
+            <Link to="/about" className="learn-more-btn">Learn More About Us</Link>
+          </div>
         </div>
       </section>
 
