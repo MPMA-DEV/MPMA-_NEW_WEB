@@ -186,6 +186,9 @@ const NewsEvents = () => {
               </div>
             </div>
           )}
+        </div>
+      </section>
+
       {/* Wavy Header Section */}
       <section className="news-wavy-header">
         {/* Background with floating icons */}
@@ -286,30 +289,8 @@ const NewsEvents = () => {
                 <div className="recent-post-content">
                   <h5>{post.title}</h5>
                   <span className="recent-post-date">{post.date}</span>
-            {news.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="news-card"
-              >
-                <div className="news-card-image">
-                  <div className="news-category-badge">{item.category}</div>
                 </div>
-                <div className="news-card-content">
-                  <h3>{item.title}</h3>
-                  <p>{item.excerpt}</p>
-                  <div className="news-meta">
-                    <span className="news-date">{new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    <a href="#" className="read-more">
-                      <span>Read More</span>
-                      <span>→</span>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
