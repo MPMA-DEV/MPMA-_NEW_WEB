@@ -12,6 +12,9 @@ import ContactUs from './pages/public/ContactUs.jsx';
 import NewsEvents from './pages/public/NewsEvents.jsx';
 import SubmitSuccess from './pages/public/SubmitSuccess.jsx';
 import MissionDemo from './pages/public/MissionDemo.jsx';
+import PrivacyPolicy from './pages/public/PrivacyPolicy.jsx';
+import TermsOfUse from './pages/public/TermsOfUse.jsx';
+import SiteMap from './pages/public/SiteMap.jsx';
 
 // Course Pages
 import EquipmentOperations from './pages/courses/EquipmentOperations.jsx';
@@ -67,6 +70,9 @@ function App() {
             <Route path="/news-events" element={<NewsEvents />} />
             <Route path="/submit-success" element={<SubmitSuccess />} />
             <Route path="/mission-demo" element={<MissionDemo />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-use" element={<TermsOfUse />} />
+            <Route path="/site-map" element={<SiteMap />} />
 
             {/* Course Routes */}
             <Route path="/courses/equipment-operations" element={<EquipmentOperations />} />
