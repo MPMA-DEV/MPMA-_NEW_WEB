@@ -1,12 +1,8 @@
-// ============================================
-// MAIN APP COMPONENT
-// ============================================
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-
-// Components
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import GlassNavbar from './components/common/GlassNavbar.jsx';
+import GlassFooter from './components/common/GlassFooter.jsx';
 import OceanWaveFooter from './components/common/OceanWaveFooter.jsx';
 
 // Pages
@@ -25,35 +21,44 @@ import Management from './pages/courses/Management.jsx';
 import MaritimeSeamanship from './pages/courses/MaritimeSeamanship.jsx';
 import Technical1 from './pages/courses/Technical1.jsx';
 import Technical2 from './pages/courses/Technical2.jsx';
+import GantryCraneCoursePage from './components/courses/GantryCraneCoursePage.jsx';
 import ForkliftTugOperations from './pages/courses/ForkliftTugOperations.jsx';
 import CraneOperatorTraining from './pages/courses/CraneOperatorTraining.jsx';
 import MoversOperators from './pages/courses/MoversOperators.jsx';
 import CraneOperatorTraining2 from './pages/courses/CraneOperatorTraining2.jsx';
-
-// Results Pages
 import CertificationRegistration from './pages/results/CertificationRegistration.jsx';
 import ExternalResults from './pages/results/ExternalResults.jsx';
 import InternalResults from './pages/results/InternalResults.jsx';
-
-// Registration Pages
 import PersonalInformation from './pages/registration/PersonalInformation.jsx';
 import CourseSelection from './pages/registration/CourseSelection.jsx';
 import AdditionalInformation from './pages/registration/AdditionalInformation.jsx';
 import Documents from './pages/registration/Documents.jsx';
 import Confirmation from './pages/registration/Confirmation.jsx';
-
-// Styles
+import AdminLogin from './admin/AdminLogin.jsx';
+import AdminDashboard from './admin/AdminDashboard.jsx';
+import ManageCourses from './admin/ManageCourses.jsx';
+import AddCourse from './admin/AddCourse.jsx';
+import CreatePost from './admin/CreatePost.jsx';
 import './App.css';
+
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem('admin_token');
+  const location = useLocation();
+  if (!token) {
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  }
+  return children;
+}
 
 function App() {
   return (
     <Router>
       <div className="App">
-        {/* Navigation Bar */}
-        <GlassNavbar />
+        {/* Show GlassNavbar only on public pages */}
+        {!(window.location.pathname.startsWith('/admin')) && <GlassNavbar />}
 
         {/* Main content */}
-        <main className="main-content">
+        <main className={window.location.pathname.startsWith('/admin') ? '' : 'main-content'}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
@@ -71,6 +76,7 @@ function App() {
             <Route path="/courses/maritime-seamanship" element={<MaritimeSeamanship />} />
             <Route path="/courses/technical-1" element={<Technical1 />} />
             <Route path="/courses/technical-2" element={<Technical2 />} />
+              <Route path="/courses/gantry-crane-operator-training" element={<GantryCraneCoursePage />} />
             <Route path="/courses/forklift-tug-operations" element={<ForkliftTugOperations />} />
             <Route path="/courses/crane-operator-training" element={<CraneOperatorTraining />} />
             <Route path="/courses/movers-operators" element={<MoversOperators />} />
@@ -87,6 +93,20 @@ function App() {
             <Route path="/registration/additional-information" element={<AdditionalInformation />} />
             <Route path="/registration/documents" element={<Documents />} />
             <Route path="/registration/confirmation" element={<Confirmation />} />
+            {/* Admin Routes (no links in main nav) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={
+              <ProtectedRoute><AdminDashboard /></ProtectedRoute>
+            } />
+            <Route path="/admin/courses" element={
+              <ProtectedRoute><ManageCourses /></ProtectedRoute>
+            } />
+            <Route path="/admin/add-course" element={
+              <ProtectedRoute><AddCourse /></ProtectedRoute>
+            } />
+            <Route path="/admin/create-post" element={
+              <ProtectedRoute><CreatePost /></ProtectedRoute>
+            } />
           </Routes>
         </main>
 

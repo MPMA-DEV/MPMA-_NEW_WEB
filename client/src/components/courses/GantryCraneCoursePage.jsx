@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../components/courses/GantryCraneCoursePage.css';
+import './GantryCraneCoursePage.css';
 import { FaBookOpen, FaDollarSign, FaUserCheck, FaChalkboardTeacher, FaDesktop, FaFileAlt, FaBriefcase } from 'react-icons/fa';
 
 const TABS = [
@@ -9,29 +9,87 @@ const TABS = [
   { label: 'Lecturers', icon: <FaChalkboardTeacher /> },
 ];
 
-export default function CraneOperatorTraining2() {
+
+export default function GantryCraneCoursePage() {
   const [activeTab, setActiveTab] = useState(0);
   const images = [
-    'https://d9z1tpn605xsl.cloudfront.net/uploads/ckeditor/pictures/4702/content_blog-img.jpg',
-    'https://www.wire-rope-direct.com/image/catalog/optimized%20pics/new%202025/crane%20ropes/mobile-crane-rope.jpg',
-    'https://heavyequipmentcollege.edu/wp-content/uploads/2022/06/A-Guide-to-Mobile-Cranes-in-the-Construction-Industry-Heavy-Equipment-Colleges-of-america-scaled-1.jpg',
+    'https://mintra.com/assets/courses/gantry-cranes-training/_lsMfitJpg/Gantry-Cranes-Training.jpg',
+    'https://www.marineinsight.com/wp-content/uploads/2018/11/Port-Gantry-Cranes.png',
+    'https://t4.ftcdn.net/jpg/01/96/13/15/360_F_196131517_QYdnr3aoebusjZu3yTBdUk0DcrDBB0LS.jpg',
   ];
 
   const [loading, setLoading] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(false);
+  const [imgVisible, setImgVisible] = useState([false, false, false]);
+  const imgRefs = React.useRef([null, null, null]);
+  React.useEffect(() => {
+    const timer = setTimeout(() => setHeroVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const observer = new window.IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = Number(entry.target.dataset.idx);
+            setTimeout(() => {
+              setImgVisible(v => {
+                const arr = [...v];
+                arr[idx] = true;
+                return arr;
+              });
+            }, idx * 200); // stagger 0.2s
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    imgRefs.current.forEach((ref, idx) => {
+      if (ref) observer.observe(ref);
+    });
+    return () => observer.disconnect();
+  }, []);
   return (
     <div className="gccp-root">
+      {/* Header (dummy) */}
       <header className="gccp-header">
         <h1>Mahapola Ports & Maritime Academy</h1>
       </header>
+
+      {/* Hero Section (animated) */}
       <section className="gccp-hero-alt prime-hero-bg">
         <div className="prime-hero-overlay" />
         <div className="prime-hero-content">
-          <h2 className="prime-hero-title">Course On Mobile-Crane Operator’s Training</h2>
+          <h2
+            className={`prime-hero-title crane-hero-anim ${heroVisible ? 'ch-anim-in' : ''}`}
+          >
+            Course On Gantry-Crane Operator’s Training
+          </h2>
           <div className="prime-hero-actions-vertical">
-            <a href="#course-schedule" className="prime-hero-link">Course Schedule</a>
+            <a
+              href="#course-schedule"
+              className={`prime-hero-link crane-link-anim ${heroVisible ? 'cl-anim-in' : ''}`}
+            >
+              Course Schedule
+            </a>
             <button
-              className="prime-hero-btn"
-              onClick={() => setLoading(true)}
+              className={`prime-hero-btn crane-btn-anim crane-btn-animated ${heroVisible ? 'cb-anim-in' : ''}`}
+              onClick={e => {
+                setLoading(true);
+                // Ripple effect
+                const btn = e.currentTarget;
+                const ripple = document.createElement('span');
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.className = 'crane-btn-ripple';
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+              }}
               disabled={loading}
               tabIndex={0}
             >
@@ -44,24 +102,32 @@ export default function CraneOperatorTraining2() {
       {/* Animated Image Gallery */}
       <section className="gccp-image-gallery">
         <div className="gccp-image-row">
-          <div className="gccp-image-card">
-            <img src={images[0]} alt="Mobile Crane 1" className="gccp-img" loading="lazy" />
-          </div>
-          <div className="gccp-image-card">
-            <img src={images[1]} alt="Mobile Crane 2" className="gccp-img" loading="lazy" />
-          </div>
+          {[0,1].map(idx => (
+            <div
+              key={idx}
+              className={`gccp-image-card crane-img-anim${imgVisible[idx] ? ' ci-anim-in' : ''}`}
+              ref={el => imgRefs.current[idx] = el}
+              data-idx={idx}
+            >
+              <img src={images[idx]} alt={`Gantry Crane ${idx+1}`} className="gccp-img" loading="lazy" />
+            </div>
+          ))}
         </div>
         <div className="gccp-image-row">
-          <div className="gccp-image-card">
-            <img src={images[2]} alt="Mobile Crane 3" className="gccp-img" loading="lazy" />
+          <div
+            className={`gccp-image-card crane-img-anim${imgVisible[2] ? ' ci-anim-in' : ''}`}
+            ref={el => imgRefs.current[2] = el}
+            data-idx={2}
+          >
+            <img src={images[2]} alt="Gantry Crane 3" className="gccp-img" loading="lazy" />
           </div>
         </div>
       </section>
 
       {/* Title + Date Section */}
       <section className="gccp-title-date">
-        <h2 className="gccp-title">COURSE ON MOBILE-CRANE OPERATOR'S TRAINING – COURSE SCHEDULE</h2>
-        <p className="gccp-date">NEXT COMMENCING DATE : 2025-01-15</p>
+        <h2 className="gccp-title">COURSE ON GANTRY-CRANE OPERATOR'S TRAINING – COURSE SCHEDULE</h2>
+        <p className="gccp-date">NEXT COMMENCING DATE : 2017-10-29</p>
       </section>
 
       {/* Tabbed Section */}
