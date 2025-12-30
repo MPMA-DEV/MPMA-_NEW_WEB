@@ -238,7 +238,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-top: 48px !important;
+  margin-top: 0 !important;
   background: linear-gradient(135deg, #0c4a6e 0%, #075985 25%, #0369a1 50%, #0284c7 100%);
 }
 
