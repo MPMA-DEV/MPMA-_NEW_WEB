@@ -9,12 +9,12 @@ const TABS = [
   { label: 'Lecturers', icon: <FaChalkboardTeacher /> },
 ];
 
-export default function CraneOperatorTraining2() {
+export default function ForkLiftTugOperationsPage() {
   const [activeTab, setActiveTab] = useState(0);
   const images = [
-    'https://d9z1tpn605xsl.cloudfront.net/uploads/ckeditor/pictures/4702/content_blog-img.jpg',
-    'https://www.wire-rope-direct.com/image/catalog/optimized%20pics/new%202025/crane%20ropes/mobile-crane-rope.jpg',
-    'https://heavyequipmentcollege.edu/wp-content/uploads/2022/06/A-Guide-to-Mobile-Cranes-in-the-Construction-Industry-Heavy-Equipment-Colleges-of-america-scaled-1.jpg',
+    'https://thumbs.dreamstime.com/b/container-forklift-606345.jpg',
+    'https://thumbs.dreamstime.com/b/forklift-truck-lifting-cargo-container-shipping-yard-dock-against-sunrise-sky-stack-background-82873274.jpg',
+    'https://thumbs.dreamstime.com/b/containers-staking-8402198.jpg',
   ];
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function CraneOperatorTraining2() {
       <section className="gccp-hero-alt prime-hero-bg">
         <div className="prime-hero-overlay" />
         <div className="prime-hero-content">
-          <h2 className="prime-hero-title">Course On Mobile-Crane Operator’s Training</h2>
+          <h2 className="prime-hero-title">Fork-Lift Truck Operator's Course Schedule</h2>
           <div className="prime-hero-actions-vertical">
             <a href="#course-schedule" className="prime-hero-link">Course Schedule</a>
             <button
@@ -45,23 +45,23 @@ export default function CraneOperatorTraining2() {
       <section className="gccp-image-gallery">
         <div className="gccp-image-row">
           <div className="gccp-image-card">
-            <img src={images[0]} alt="Mobile Crane 1" className="gccp-img" loading="lazy" />
+            <img src={images[0]} alt="Forklift 1" className="gccp-img" loading="lazy" />
           </div>
           <div className="gccp-image-card">
-            <img src={images[1]} alt="Mobile Crane 2" className="gccp-img" loading="lazy" />
+            <img src={images[1]} alt="Forklift 2" className="gccp-img" loading="lazy" />
           </div>
         </div>
         <div className="gccp-image-row">
           <div className="gccp-image-card">
-            <img src={images[2]} alt="Mobile Crane 3" className="gccp-img" loading="lazy" />
+            <img src={images[2]} alt="Forklift 3" className="gccp-img" loading="lazy" />
           </div>
         </div>
       </section>
 
       {/* Title + Date Section */}
       <section className="gccp-title-date">
-        <h2 className="gccp-title">COURSE ON MOBILE-CRANE OPERATOR'S TRAINING – COURSE SCHEDULE</h2>
-        <p className="gccp-date">NEXT COMMENCING DATE : 2025-01-15</p>
+        <h2 className="gccp-title">COURSE ON FORK-LIFT TRUCK OPERATOR'S - COURSE SCHEDULE</h2>
+        <p className="gccp-date">NEXT COMMENCING DATE : 2017-10-29</p>
       </section>
 
       {/* Tabbed Section */}

@@ -65,6 +65,7 @@ import AddCourse from './pages/admin/AddCourse';
 import CreatePost from './pages/admin/CreatePost';
 import ManageCourses from './pages/admin/ManageCourses';
 import ManageNews from './pages/admin/ManageNews';
+import AdmissionManagement from './admin/AdmissionManagement';
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -166,6 +167,8 @@ function App() {
                            <Route path="/mahapolaports/admin/create-post" element={<CreatePost />} />
                            <Route path="/mahapolaports/admin/manage-courses" element={<ManageCourses />} />
                            <Route path="/mahapolaports/admin/manage-news" element={<ManageNews />} />
+                           <Route path="/mahapolaports/admin/admissions" element={<AdmissionManagement />} />
+                           <Route path="/admin/admissions" element={<AdmissionManagement />} />
 
                            {/* Redirect unknown routes to home */}
                            <Route path="*" element={<Navigate to="/" replace />} />
