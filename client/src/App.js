@@ -3,11 +3,17 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import GlassNavbar from './components/common/GlassNavbar.jsx';
 import GlassFooter from './components/common/GlassFooter.jsx';
+import OceanWaveFooter from './components/common/OceanWaveFooter.jsx';
+
+// Pages
 import Home from './pages/public/Home.jsx';
 import AboutUs from './pages/public/AboutUs.jsx';
 import ContactUs from './pages/public/ContactUs.jsx';
 import NewsEvents from './pages/public/NewsEvents.jsx';
 import SubmitSuccess from './pages/public/SubmitSuccess.jsx';
+import MissionDemo from './pages/public/MissionDemo.jsx';
+
+// Course Pages
 import EquipmentOperations from './pages/courses/EquipmentOperations.jsx';
 import FireSafety from './pages/courses/FireSafety.jsx';
 import InformationSystems from './pages/courses/InformationSystems.jsx';
@@ -60,6 +66,7 @@ function App() {
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/news-events" element={<NewsEvents />} />
             <Route path="/submit-success" element={<SubmitSuccess />} />
+            <Route path="/mission-demo" element={<MissionDemo />} />
 
             {/* Course Routes */}
             <Route path="/courses/equipment-operations" element={<EquipmentOperations />} />
@@ -104,7 +111,7 @@ function App() {
         </main>
 
         {/* Footer */}
-        <GlassFooter />
+        <OceanWaveFooter />
       </div>
     </Router>
   );

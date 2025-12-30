@@ -75,17 +75,6 @@ const VideoBackgroundHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          {/* Badge */}
-          <motion.div
-            className="hero-badge"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <FaAnchor className="badge-icon" />
-            <span>Sri Lanka Ports Authority</span>
-          </motion.div>
-
           {/* Main Title */}
           <motion.h1
             className="hero-title"
@@ -116,20 +105,6 @@ const VideoBackgroundHero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <motion.div
-        className="scroll-indicator-hero"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2 }}
-      >
-        <div className="scroll-icon">
-          <div className="mouse">
-            <div className="wheel"></div>
-          </div>
-        </div>
-        <span className="scroll-text">Scroll</span>
-      </motion.div>
-
       {/* Mute Button */}
       {isLoaded && (
         <motion.button

@@ -1,0 +1,272 @@
+
+
+.application-container {
+    /* 1. NEW BACKGROUND COLOR: #d8ecff */
+    background-color: #d8ecff; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    
+    /* 3. FIX FOR STICKY HEADER: Add padding to prevent content overlap */
+    padding-top: 80px; 
+}
+
+/* Base theme color */
+:root {
+    --theme-blue: #337ab7; 
+    --active-blue: #007bff; 
+    --light-blue-bg: #e6f0fa; 
+    --error-red: #dc3545;
+}
+
+/* --- Progress Header/Bar Styling (Fixed Position) --- */
+.progress-header {
+    background-color: var(--theme-blue); 
+    color: white;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* 3. STICKY HEADER FIX */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    opacity: 0.6;
+    flex: 1;
+    text-align: center;
+}
+
+.step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: -50%; 
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+}
+
+.step-item.active {
+    opacity: 1;
+}
+
+.step-item.active .icon-container {
+    background-color: white;
+    color: var(--theme-blue);
+    border: 2px solid white;
+}
+
+.step-item.complete {
+    opacity: 1;
+}
+
+.icon-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-top: 80px;
+    position: relative;
+    z-index: 2; 
+}
+
+.step-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.step-number {
+    font-size: 0.75rem;
+}
+
+.step-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+
+/* --- Form Card Styling --- */
+.form-card {
+    background: #d8ecff;
+    margin: 120px auto 40px auto;
+    margin-top: 130px;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    
+    /* 2. INCREASE WIDTH: Set to 750px */
+    max-width: 750px; 
+    width: 90%;
+}
+
+.card-title {
+    color: var(--active-blue);
+    font-size: 1.8rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+/* --- Form Groups and Inputs (Textarea/Select) --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.sub-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
+
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    
+    /* 4. INPUT CONTRAST: Darker border and slight off-white background */
+    border: 1px solid #c0c0c0; 
+    background-color: #fcfcfc; 
+    
+    border-radius: 4px;
+    box-sizing: border-box; 
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+textarea:focus,
+select:focus {
+    border-color: var(--active-blue); 
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+/* Specific styling for the source select dropdown */
+select {
+    appearance: none; 
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%20197.35l-114-114c-4-4-9-6-14-6s-10%202-14%206l-114%20114c-8%208-8%2020%200%2028%204%204%209%206%2014%206h228c5%200%2010-2%2014-6%208-8%208-20%200-28z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    cursor: pointer;
+}
+
+/* --- Validation and Required Indicators --- */
+.validation-error {
+    color: var(--error-red);
+    font-size: 0.85rem;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+.required-error {
+    color: var(--error-red);
+    font-size: 0.85rem;
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+/* --- Terms & Conditions Checkbox --- */
+.terms-checkbox {
+    margin: 30px 0;
+    padding: 15px;
+    background-color: var(--light-blue-bg);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.terms-checkbox label {
+    display: inline;
+    font-size: 0.95rem;
+    color: #333;
+    white-space: nowrap;
+}
+
+.terms-checkbox .validation-error {
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+/* --- Action Buttons --- */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+}
+
+.btn-previous,
+.btn-submit {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-previous {
+    background-color: #f8f9fa; 
+    color: #6c757d;
+    border: 1px solid #ccc;
+}
+
+.btn-previous:hover {
+    background-color: #e2e6ea;
+}
+
+.btn-submit {
+    background-color: var(--active-blue); 
+    color: white;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.btn-submit:disabled {
+    background-color: #a0c4e4; 
+    cursor: not-allowed;
+}
+
+
+/* --- Footer Styling (Blue Theme) --- */
+.application-footer {
+    background-color: var(--theme-blue); 
+    height: 50px;
+    width: 100%;
+    margin-top: auto; 
+}

@@ -1,0 +1,71 @@
+/* ============================================
+   MISSION DEMO PAGE STYLES
+   ============================================ */
+
+.mission-demo-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+}
+
+.demo-header {
+  text-align: center;
+  padding: 4rem 2rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.demo-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(96, 165, 250, 0.3);
+}
+
+.demo-header p {
+  font-size: 1.2rem;
+  color: #cbd5e1;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.demo-footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #94a3b8;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .demo-header {
+    padding: 3rem 1rem 1rem;
+  }
+
+  .demo-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .demo-header p {
+    font-size: 1.1rem;
+  }
+
+  .demo-footer {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-header h1 {
+    font-size: 2rem;
+  }
+
+  .demo-header p {
+    font-size: 1rem;
+  }
+}
