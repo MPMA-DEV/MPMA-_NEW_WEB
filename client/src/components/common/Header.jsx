@@ -125,7 +125,6 @@ const Header = () => {
                 </div>
                 <div className="logo-text">
                   <h1>Mahapola Ports & Maritime Academy</h1>
-                  <p>Sri Lanka Ports Authority</p>
                 </div>
               </motion.div>
             </Link>

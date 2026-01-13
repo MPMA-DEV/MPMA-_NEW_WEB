@@ -92,12 +92,8 @@ const VideoBackgroundHero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <a href="/courses" className="btn-hero btn-hero-primary">
-              <span>Explore Courses</span>
-              <span className="btn-arrow">→</span>
-            </a>
-            <a href="/registration" className="btn-hero btn-hero-secondary">
-              <span>Apply Now</span>
+            <a href="/courses" className="btn-hero btn-hero-secondary">
+              <span>Courses</span>
               <span className="btn-arrow">→</span>
             </a>
           </motion.div>

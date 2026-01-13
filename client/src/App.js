@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import GlassNavbar from './components/common/GlassNavbar.jsx';
 import GlassFooter from './components/common/GlassFooter.jsx';
 import OceanWaveFooter from './components/common/OceanWaveFooter.jsx';
+import ScrollToTop from './components/common/ScrollToTop.jsx';
 
 // Pages
 import Home from './pages/public/Home.jsx';
@@ -56,6 +57,7 @@ function ProtectedRoute({ children }) {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         {/* Show GlassNavbar only on public pages */}
         {!(window.location.pathname.startsWith('/admin')) && <GlassNavbar />}

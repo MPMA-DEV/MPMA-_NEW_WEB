@@ -82,13 +82,9 @@ const GlassNavbar = () => {
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="navbar-brand">
-          <FaAnchor className="brand-icon" />
-          <div className="brand-text">
-            <span className="brand-name">Mahapola Ports & Maritime Academy</span>
-            <span className="brand-subtitle">Sri Lanka Ports Authority</span>
-          </div>
+          <img src="/assets/images/logo.png" alt="Logo" className="navbar-logo" />
         </Link>
-
+        
         {/* Desktop Menu */}
         <div className="navbar-menu">
           <Link
@@ -168,36 +164,11 @@ const GlassNavbar = () => {
           >
             Contact Us
           </Link>
-
-          {/* Registration Dropdown */}
-          <div
-            className="nav-item dropdown apply-dropdown"
-            onClick={(e) => handleDropdownClick(e, 'registration')}
-          >
-            <span className="dropdown-trigger apply-btn">
-              Apply Now
-              <FaChevronDown className={`dropdown-icon ${openDropdown === 'registration' ? 'open' : ''}`} />
-            </span>
-            {openDropdown === 'registration' && (
-              <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
-                <div className="dropdown-header">Application Process</div>
-                {registrationPages.map((reg) => (
-                  <Link
-                    key={reg.path}
-                    to={reg.path}
-                    className="dropdown-item"
-                  >
-                    {reg.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
-          className="mobile-menu-btn" 
+        <button
+          className="mobile-menu-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -231,15 +202,6 @@ const GlassNavbar = () => {
 
           <Link to="/news-events" className="mobile-nav-item">News & Events</Link>
           <Link to="/contact" className="mobile-nav-item">Contact Us</Link>
-
-          <div className="mobile-nav-section">
-            <div className="mobile-section-title">Apply Now</div>
-            {registrationPages.map((reg) => (
-              <Link key={reg.path} to={reg.path} className="mobile-nav-item sub">
-                {reg.name}
-              </Link>
-            ))}
-          </div>
         </div>
       )}
     </nav>

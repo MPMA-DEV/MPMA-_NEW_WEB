@@ -1,11 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaFileContract, FaExclamationTriangle, FaBalanceScale, FaGavel, FaUserShield } from 'react-icons/fa';
+import { FaFileContract, FaExclamationTriangle, FaBalanceScale, FaGavel, FaUserShield, FaShip, FaAnchor, FaCheckCircle, FaScroll } from 'react-icons/fa';
 import './TermsOfUse.css';
 
 const TermsOfUse = () => {
+  const [readProgress, setReadProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight - windowHeight;
+      const scrolled = window.scrollY;
+      const progress = (scrolled / documentHeight) * 100;
+      setReadProgress(progress);
+
+      // Determine active section
+      const sections = document.querySelectorAll('.terms-section');
+      sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top < windowHeight / 2) {
+          setActiveSection(index);
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="terms-page">
+      {/* Reading Progress Bar */}
+      <motion.div
+        className="reading-progress-bar"
+        style={{ width: `${readProgress}%` }}
+        initial={{ width: 0 }}
+      />
+
+      {/* Floating Background Elements */}
+      <div className="floating-shapes">
+        <motion.div
+          className="shape shape-1"
+          animate={{
+            y: [0, -30, 0],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          <FaScroll />
+        </motion.div>
+        <motion.div
+          className="shape shape-2"
+          animate={{
+            y: [0, 40, 0],
+            x: [0, 30, 0],
+            rotate: [0, -180, -360],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          <FaBalanceScale />
+        </motion.div>
+        <motion.div
+          className="shape shape-3"
+          animate={{
+            y: [0, -40, 0],
+            x: [0, -30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <FaGavel />
+        </motion.div>
+      </div>
+
       <section className="terms-hero">
         <div className="container">
           <motion.div
@@ -14,10 +94,55 @@ const TermsOfUse = () => {
             transition={{ duration: 0.8 }}
             className="terms-hero-content"
           >
-            <FaFileContract className="terms-hero-icon" />
-            <h1>Terms of Use</h1>
-            <p>Please read these terms carefully before using our services</p>
-            <p className="last-updated">Last Updated: December 30, 2025</p>
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                delay: 0.3
+              }}
+            >
+              <FaFileContract className="terms-hero-icon" />
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              Terms of Use
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              Please read these terms carefully before using our services
+            </motion.p>
+            <motion.p
+              className="last-updated"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              Last Updated: December 30, 2025
+            </motion.p>
+            <motion.div
+              className="hero-badges"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+            >
+              <div className="badge">
+                <FaBalanceScale />
+                <span>Legally Binding</span>
+              </div>
+              <div className="badge">
+                <FaUserShield />
+                <span>Your Rights Protected</span>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -31,21 +156,36 @@ const TermsOfUse = () => {
             viewport={{ once: true }}
             className="terms-intro"
           >
+            <div className="intro-icon">
+              <FaCheckCircle />
+            </div>
             <p>
               Welcome to Mahapola Ports & Maritime Academy. By accessing or using our website and services, you agree to be bound by these Terms of Use. If you do not agree with any part of these terms, please do not use our services.
             </p>
+            <div className="scroll-hint">
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                Scroll to read more ↓
+              </motion.div>
+            </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
             className="terms-section"
           >
-            <div className="section-icon">
+            <motion.div
+              className="section-icon"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
               <FaUserShield />
-            </div>
+            </motion.div>
             <h2>1. Acceptance of Terms</h2>
             <div className="section-content">
               <p>
@@ -58,8 +198,8 @@ const TermsOfUse = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
             className="terms-section"
