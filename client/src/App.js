@@ -17,19 +17,6 @@ import PrivacyPolicy from './pages/public/PrivacyPolicy.jsx';
 import TermsOfUse from './pages/public/TermsOfUse.jsx';
 import SiteMap from './pages/public/SiteMap.jsx';
 
-// Course Pages
-import EquipmentOperations from './pages/courses/EquipmentOperations.jsx';
-import FireSafety from './pages/courses/FireSafety.jsx';
-import InformationSystems from './pages/courses/InformationSystems.jsx';
-import Management from './pages/courses/Management.jsx';
-import MaritimeSeamanship from './pages/courses/MaritimeSeamanship.jsx';
-import Technical1 from './pages/courses/Technical1.jsx';
-import Technical2 from './pages/courses/Technical2.jsx';
-import GantryCraneCoursePage from './components/courses/GantryCraneCoursePage.jsx';
-import ForkliftTugOperations from './pages/courses/ForkliftTugOperations.jsx';
-import CraneOperatorTraining from './pages/courses/CraneOperatorTraining.jsx';
-import MoversOperators from './pages/courses/MoversOperators.jsx';
-import CraneOperatorTraining2 from './pages/courses/CraneOperatorTraining2.jsx';
 import CertificationRegistration from './pages/results/CertificationRegistration.jsx';
 import ExternalResults from './pages/results/ExternalResults.jsx';
 import InternalResults from './pages/results/InternalResults.jsx';
@@ -76,19 +63,6 @@ function App() {
             <Route path="/terms-of-use" element={<TermsOfUse />} />
             <Route path="/site-map" element={<SiteMap />} />
 
-            {/* Course Routes */}
-            <Route path="/courses/equipment-operations" element={<EquipmentOperations />} />
-            <Route path="/courses/fire-safety" element={<FireSafety />} />
-            <Route path="/courses/information-systems" element={<InformationSystems />} />
-            <Route path="/courses/management" element={<Management />} />
-            <Route path="/courses/maritime-seamanship" element={<MaritimeSeamanship />} />
-            <Route path="/courses/technical-1" element={<Technical1 />} />
-            <Route path="/courses/technical-2" element={<Technical2 />} />
-              <Route path="/courses/gantry-crane-operator-training" element={<GantryCraneCoursePage />} />
-            <Route path="/courses/forklift-tug-operations" element={<ForkliftTugOperations />} />
-            <Route path="/courses/crane-operator-training" element={<CraneOperatorTraining />} />
-            <Route path="/courses/movers-operators" element={<MoversOperators />} />
-            <Route path="/courses/crane-operator-training-2" element={<CraneOperatorTraining2 />} />
 
             {/* Results Routes */}
             <Route path="/results/certification-registration" element={<CertificationRegistration />} />
