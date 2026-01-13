@@ -14,21 +14,6 @@ const GlassNavbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
 
-  // Course streams data - expandable list for additional courses
-  const courseStreams = [
-    { name: 'Equipment Operations & Logistics', path: '/courses/equipment-operations' },
-    { name: 'Fire Safety & Occupational Health', path: '/courses/fire-safety' },
-    { name: 'Information Systems', path: '/courses/information-systems' },
-    { name: 'Management', path: '/courses/management' },
-    { name: 'Maritime & Seamanship', path: '/courses/maritime-seamanship' },
-    { name: 'Technical 1', path: '/courses/technical-1' },
-    { name: 'Technical 2', path: '/courses/technical-2' },
-    { name: 'Forklift Tug Operations', path: '/courses/forklift-tug-operations' },
-    { name: 'Crane Operator Training', path: '/courses/crane-operator-training' },
-    { name: 'Movers Operators Training', path: '/courses/movers-operators' },
-    { name: 'Crane Operator Training 2', path: '/courses/crane-operator-training-2' },
-    // Space for additional courses - easily expandable
-  ];
 
   // Results pages
   const resultsPages = [
@@ -101,30 +86,12 @@ const GlassNavbar = () => {
             About Us
           </Link>
 
-          {/* Course Streams Dropdown */}
-          <div
-            className="nav-item dropdown"
-            onClick={(e) => handleDropdownClick(e, 'courses')}
+          <Link
+            to="/courses"
+            className={`nav-item ${location.pathname === '/courses' ? 'active' : ''}`}
           >
-            <span className="dropdown-trigger">
-              Course Streams
-              <FaChevronDown className={`dropdown-icon ${openDropdown === 'courses' ? 'open' : ''}`} />
-            </span>
-            {openDropdown === 'courses' && (
-              <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
-                <div className="dropdown-header">All Course Streams</div>
-                {courseStreams.map((course) => (
-                  <Link
-                    key={course.path}
-                    to={course.path}
-                    className="dropdown-item"
-                  >
-                    {course.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+            Courses
+          </Link>
 
           {/* Results Dropdown */}
           <div
@@ -182,14 +149,7 @@ const GlassNavbar = () => {
           <Link to="/" className="mobile-nav-item">Home</Link>
           <Link to="/about" className="mobile-nav-item">About Us</Link>
 
-          <div className="mobile-nav-section">
-            <div className="mobile-section-title">Course Streams</div>
-            {courseStreams.map((course) => (
-              <Link key={course.path} to={course.path} className="mobile-nav-item sub">
-                {course.name}
-              </Link>
-            ))}
-          </div>
+          <Link to="/courses" className="mobile-nav-item">Courses</Link>
 
           <div className="mobile-nav-section">
             <div className="mobile-section-title">Results</div>
