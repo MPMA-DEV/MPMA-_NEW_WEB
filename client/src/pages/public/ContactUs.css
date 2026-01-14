@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 25%, #a855f7 50%, #c084fc 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #1e40af 50%, #2563eb 100%);
 }
 
 /* Hero Background Effects */
@@ -278,7 +278,7 @@
   font-weight: 800;
   color: #0f172a;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -320,7 +320,7 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
   transform: scaleY(0);
   transition: transform 0.4s ease;
 }
@@ -332,9 +332,9 @@
 .info-card:hover {
   transform: translateX(8px);
   box-shadow: 
-    0 12px 40px rgba(99, 102, 241, 0.15),
+    0 12px 40px rgba(30, 58, 138, 0.15),
     0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: #c7d2fe;
+  border-color: #bfdbfe;
 }
 
 .info-card-shine {
@@ -385,7 +385,7 @@
 }
 
 .email-icon {
-  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
 }
 
 .info-card-content h4 {
@@ -427,7 +427,7 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+  background: linear-gradient(90deg, #1e3a8a, #2563eb, #ec4899);
 }
 
 .form-title {
@@ -481,9 +481,9 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: #1e3a8a;
   background: white;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
   transform: translateY(-2px);
 }
 
@@ -494,7 +494,7 @@
 
 .submit-button {
   padding: 1.25rem 2.5rem;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
   color: white;
   border: none;
   border-radius: 12px;
@@ -506,7 +506,7 @@
   justify-content: center;
   gap: 0.75rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -530,7 +530,7 @@
 }
 
 .submit-button:hover {
-  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 12px 30px rgba(30, 58, 138, 0.4);
   transform: translateY(-2px);
 }
 
