@@ -13,7 +13,7 @@ const CourseDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5005/api/courses/${courseId}`)
+      .get(`http://10.70.4.34:5003/api/courses/${courseId}`)
       .then((res) => {
         const courseData = res.data.data || res.data;
         setCourse(courseData);

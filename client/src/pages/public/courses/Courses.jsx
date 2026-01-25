@@ -16,7 +16,7 @@ const Courses = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5005/api/courses")
+      .get("http://10.70.4.34:5003/api/courses")
       .then((res) => {
         const coursesData = res.data.data || res.data;
         setCourses(coursesData);
