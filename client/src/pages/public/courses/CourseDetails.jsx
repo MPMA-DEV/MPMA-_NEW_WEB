@@ -3,6 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CourseDetails.css";
 
+const streamClassMap = {
+  Maritime: "stream-maritime",
+  Management: "stream-management",
+  "Management & IS": "stream-management-is",
+  Equipment: "stream-equipment",
+  Electrical: "stream-electrical",
+};
+
 const CourseDetails = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -13,7 +21,7 @@ const CourseDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://10.70.4.34:5003/api/courses/${courseId}`)
+      .get(`http://10.70.4.34:5005/api/courses/${courseId}`)
       .then((res) => {
         const courseData = res.data.data || res.data;
         setCourse(courseData);
@@ -58,8 +66,10 @@ const CourseDetails = () => {
       </div>
     );
 
+  const streamClass = streamClassMap[course.stream] || "stream-default";
+
   return (
-    <div className="course-details">
+    <div className={`course-details ${streamClass}`}>
       <div className="details-card">
         <h1 className="course-title">
           {course.course_name || course.courseName}

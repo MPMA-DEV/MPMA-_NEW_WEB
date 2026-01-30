@@ -98,6 +98,122 @@
   padding-top: 4rem;
 }
 
+/* ============================================
+   STREAM-SPECIFIC COLORS
+   ============================================ */
+
+/* Maritime */
+.stream-maritime .course-title,
+.stream-maritime .info-item b {
+  color: #723403;
+}
+
+.stream-maritime .cta-btn {
+  background: #723403;
+}
+
+.stream-maritime .cta-btn:hover {
+  background: #5a2a02;
+}
+
+.stream-maritime .details-card {
+  border-top: 4px solid #723403;
+}
+
+/* Management */
+.stream-management .course-title,
+.stream-management .info-item b {
+  color: #01a572;
+}
+
+.stream-management .cta-btn {
+  background: #01a572;
+}
+
+.stream-management .cta-btn:hover {
+  background: #018359;
+}
+
+.stream-management .details-card {
+  border-top: 4px solid #01a572;
+}
+
+/* Management & IS */
+.stream-management-is .course-title,
+.stream-management-is .info-item b {
+  color: #fd4523;
+}
+
+.stream-management-is .cta-btn {
+  background: #fd4523;
+}
+
+.stream-management-is .cta-btn:hover {
+  background: #e63d1f;
+}
+
+.stream-management-is .details-card {
+  border-top: 4px solid #fd4523;
+}
+
+/* Equipment */
+.stream-equipment .course-title,
+.stream-equipment .info-item b {
+  color: #0164dd;
+}
+
+.stream-equipment .cta-btn {
+  background: #0164dd;
+}
+
+.stream-equipment .cta-btn:hover {
+  background: #0152b8;
+}
+
+.stream-equipment .details-card {
+  border-top: 4px solid #0164dd;
+}
+
+/* Electrical */
+.stream-electrical .course-title,
+.stream-electrical .info-item b {
+  color: #5faac6;
+}
+
+.stream-electrical .cta-btn {
+  background: #5faac6;
+}
+
+.stream-electrical .cta-btn:hover {
+  background: #4a92a8;
+}
+
+.stream-electrical .details-card {
+  border-top: 4px solid #a7cfe0;
+}
+
+/* Default (fallback) */
+.stream-default .course-title,
+.stream-default .info-item b {
+  color: #0f3d91;
+}
+
+.stream-default .cta-btn {
+  background: #0f3d91;
+}
+
+.stream-default .cta-btn:hover {
+  background: #0c3175;
+}
+
+.stream-default .details-card {
+  border-top: 4px solid #0f3d91;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
 /* Responsive */
 @media (max-width: 768px) {
   .course-details {

@@ -1,155 +1,174 @@
-/* ============================================
-   COURSES PAGE STYLES
-   ============================================ */
+/* =========================
+   PAGE BASE
+   ========================= */
 
 .courses-page {
-  padding: 90px 20px 140px; /* bottom padding prevents footer overlap */
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 40px 60px;
+  background: #f7f9fc;
+  min-height: 100vh;
 }
 
-.courses-header {
+.status {
   text-align: center;
-  margin-bottom: 40px;
+  font-size: 18px;
+  color: #555;
 }
 
-.courses-title {
-  font-size: 2.4rem;
-  color: #1e3a8a;
-  margin-top: 10px;
+/* =========================
+   INTRO SECTION
+   ========================= */
+
+.courses-intro {
+  text-align: center;
+  margin-bottom: 60px;
 }
 
-.courses-subtitle {
-  color: #64748b;
-  font-size: 1.1rem;
+.intro-title {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #0f3d91;
 }
 
-/* GRID */
+.intro-subtitle {
+  font-size: 18px;
+  color: #555;
+}
+
+/* =========================
+   STREAM SECTION
+   ========================= */
+
+.stream-section {
+  margin-bottom: 70px;
+}
+
+.stream-title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  padding-left: 14px;
+  border-left: 6px solid;
+}
+
+/* =========================
+   COURSE GRID
+   ========================= */
+
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
 }
 
-/* LINK */
-.course-link {
-  text-decoration: none;
-}
-
-/* TILE */
-.course-tile {
-  background: #fff;
+.course-card {
+  background: #ffffff;
+  padding: 22px;
   border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  min-height: 260px;
-  max-height: 360px; /* prevents the tile from stretching too much */
-
-  /* IMPORTANT */
-  overflow: hidden; /* hides any overflow */
-  position: relative; /* keeps content inside */
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-/* HEADER */
-.course-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.course-card:hover {
+  transform: translateY(-6px);
 }
 
-.course-icon {
-  background: #1e3a8a;
-  color: white;
-  padding: 12px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.course-badge {
-  background: #22c55e;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-}
-
-/* COURSE NAME */
 .course-name {
-  font-size: 1.3rem;
-  color: #1e3a8a;
-  margin-top: 8px;
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #222;
 }
 
-/* DETAILS */
-.course-details {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
+.course-info {
+  margin: 6px 0;
+  color: #555;
+  font-size: 14px;
 }
 
-.detail-item {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start; /* allow multi-line */
+/* =========================
+   STREAM COLORS
+   ========================= */
+
+/* Maritime */
+.stream-maritime .stream-title {
+  border-left-color: #723403;
+  color: #723403;
+}
+.stream-maritime .course-card {
+  background: rgba(114, 52, 3, 0.04);
+  border-left: 3px solid rgba(114, 52, 3, 0.3);
+}
+.stream-maritime .course-card:hover {
+  background: rgba(114, 52, 3, 0.08);
+  box-shadow: 0 16px 35px rgba(114, 52, 3, 0.25);
 }
 
-.detail-icon {
-  color: #1e3a8a;
-  font-size: 16px;
-  margin-top: 2px;
+/* Management */
+.stream-management .stream-title {
+  border-left-color: #01a572;
+  color: #01a572;
+}
+.stream-management .course-card {
+  background: rgba(1, 165, 114, 0.04);
+  border-left: 3px solid rgba(1, 165, 114, 0.3);
+}
+.stream-management .course-card:hover {
+  background: rgba(1, 165, 114, 0.08);
+  box-shadow: 0 16px 35px rgba(1, 165, 114, 0.25);
 }
 
-.detail-label {
-  display: inline-block;
-  font-size: 0.8rem;
-  color: #94a3b8;
-  width: 80px;
-  flex-shrink: 0;
+/* Management & IS */
+.stream-management-is .stream-title {
+  border-left-color: #fd4523;
+  color: #fd4523;
+}
+.stream-management-is .course-card {
+  background: rgba(253, 69, 35, 0.04);
+  border-left: 3px solid rgba(253, 69, 35, 0.3);
+}
+.stream-management-is .course-card:hover {
+  background: rgba(253, 69, 35, 0.08);
+  box-shadow: 0 16px 35px rgba(253, 69, 35, 0.25);
 }
 
-.detail-value {
-  display: inline-block;
-  font-weight: 600;
-  color: #1e3a8a;
-
-  /* IMPORTANT: fixes overflow */
-  word-break: break-word;
-  white-space: normal;
+/* Equipment */
+.stream-equipment .stream-title {
+  border-left-color: #0164dd;
+  color: #0164dd;
+}
+.stream-equipment .course-card {
+  background: rgba(1, 100, 221, 0.04);
+  border-left: 3px solid rgba(1, 100, 221, 0.3);
+}
+.stream-equipment .course-card:hover {
+  background: rgba(1, 100, 221, 0.08);
+  box-shadow: 0 16px 35px rgba(1, 100, 221, 0.25);
 }
 
-/* CTA */
-.course-cta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 12px;
-  border-top: 1px solid #e5e7eb;
-  color: #1e3a8a;
-  font-weight: 600;
+/* Electrical */
+.stream-electrical .stream-title {
+  border-left-color: #a7cfe0;
+  color: #5faac6;
+}
+.stream-electrical .course-card {
+  background: rgba(167, 207, 224, 0.08);
+  border-left: 3px solid rgba(167, 207, 224, 0.5);
+}
+.stream-electrical .course-card:hover {
+  background: rgba(167, 207, 224, 0.15);
+  box-shadow: 0 16px 35px rgba(167, 207, 224, 0.35);
 }
 
-.cta-icon {
-  font-size: 1.1rem;
+/* Fallback */
+.stream-default .stream-title {
+  border-left-color: #0f3d91;
+  color: #0f3d91;
 }
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .courses-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.stream-default .course-card {
+  background: rgba(15, 61, 145, 0.04);
+  border-left: 3px solid rgba(15, 61, 145, 0.3);
 }
-
-@media (max-width: 768px) {
-  .courses-grid {
-    grid-template-columns: 1fr;
-  }
+.stream-default .course-card:hover {
+  background: rgba(15, 61, 145, 0.08);
 }
