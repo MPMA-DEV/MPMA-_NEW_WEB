@@ -22,6 +22,41 @@ const Home = () => {
       {/* Video Background Hero Section with Content */}
       <VideoBackgroundHero />
 
+      {/* Enroll Today Section */}
+      <section className="enroll-section">
+        {/* Floating Maritime Icons */}
+        <div className="enroll-section-floaters">
+          <div className="enroll-floater"><FaShip /></div>
+          <div className="enroll-floater"><FaAnchor /></div>
+          <div className="enroll-floater"><FaCompass /></div>
+          <div className="enroll-floater"><FaLifeRing /></div>
+          <div className="enroll-floater"><FaWrench /></div>
+        </div>
+
+        {/* Decorative Elements */}
+        <div className="enroll-decoration enroll-decoration-left"></div>
+        <div className="enroll-decoration enroll-decoration-right"></div>
+
+        <div className="container">
+          <motion.div
+            className="enroll-content"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2>Start Your Maritime Journey Today</h2>
+            <p>
+              Join Mahapola Ports & Maritime Academy and gain the skills needed for a successful career in the maritime industry.
+              Our programs are designed to provide hands-on training and internationally recognized certifications.
+            </p>
+            <Link to="/personal-information" className="enroll-btn">
+              <FaChevronRight /> Enroll Today
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* 3D Image Carousel Slider */}
       <section className="carousel-section">
         <div className="container">
@@ -58,7 +93,6 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
-
 
       {/* About Our Academy Section */}
       <section className="about-academy-section">
