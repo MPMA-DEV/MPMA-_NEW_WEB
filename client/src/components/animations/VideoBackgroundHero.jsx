@@ -84,19 +84,6 @@ const VideoBackgroundHero = () => {
           >
             Mahapola Ports & Maritime Academy
           </motion.h1>
-
-          {/* Action Buttons */}
-          <motion.div
-            className="hero-actions"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-          >
-            <a href="/courses" className="btn-hero btn-hero-secondary">
-              <span>Courses</span>
-              <span className="btn-arrow">→</span>
-            </a>
-          </motion.div>
         </motion.div>
       </div>
 

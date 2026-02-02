@@ -16,55 +16,55 @@ import 'swiper/css/navigation';
 import './ImageCarousel3D.css';
 
 const ImageCarousel3D = () => {
-  // Gallery images with sample URLs
+  // Gallery images with Imgur URLs
   const images = [
     {
       id: 1,
-      title: 'Maritime Training Excellence',
-      description: 'World-class training facilities',
-      image: 'https://www.rmanews.net/wp-content/uploads/2023/08/c-users-gcpi-robby-desktop-prs-medallion-shipping-1.jpeg',
+      title: 'Maritime Law',
+      description: 'International maritime regulations',
+      image: 'https://i.imgur.com/hMNiPf3.jpeg',
     },
     {
       id: 2,
-      title: 'Port Operations',
-      description: 'Modern port management',
-      image: 'https://www.nmuc.edu.my/wp-content/uploads/2024/07/operations-media-split-1-jpg.webp',
+      title: 'Maritime Training Excellence',
+      description: 'World-class training facilities',
+      image: 'https://i.imgur.com/wOCkko2.jpeg',
     },
     {
       id: 3,
-      title: 'Ship Navigation',
-      description: 'Advanced navigation systems',
-      image: 'https://dvzpv6x5302g1.cloudfront.net/AcuCustom/Sitename/DAM/077/Bridge_simulator_training_for_ship_navigation_Main.jpg',
+      title: 'Port Operations',
+      description: 'Modern port management',
+      image: 'https://i.imgur.com/Ab5Gh7o.jpeg',
     },
     {
       id: 4,
-      title: 'Safety Training',
-      description: 'International safety standards',
-      image: 'https://www.chas.co.uk/wp-content/uploads/2022/04/shutterstock_1809693421.jpg',
+      title: 'Ship Navigation',
+      description: 'Advanced navigation systems',
+      image: 'https://i.imgur.com/JIcJTwT.jpeg',
     },
     {
       id: 5,
-      title: 'Technical Skills',
-      description: 'Hands-on technical training',
-      image: 'https://imageio.forbes.com/specials-images/imageserve/62ea057f9f71bb80937b70bb/The-Most-In-Demand-Technical-Skills---And-How-To-Develop-Them/0x0.jpg?width=960&dpr=1.5',
+      title: 'Safety Training',
+      description: 'International safety standards',
+      image: 'https://i.imgur.com/vkNIi6y.jpeg',
     },
     {
       id: 6,
-      title: 'Marine Engineering',
-      description: 'State-of-the-art engineering',
-      image: 'https://www.chitkara.edu.in/blogs/wp-content/uploads/2022/05/Nautical-Science.jpg',
+      title: 'Technical Skills',
+      description: 'Hands-on technical training',
+      image: 'https://i.imgur.com/iySr14j.jpeg',
     },
     {
       id: 7,
-      title: 'Cargo Handling',
-      description: 'Professional cargo operations',
-      image: 'https://www.gslogisticslib.com/wp-content/uploads/2024/05/SC2-1024x576.png',
+      title: 'Marine Engineering',
+      description: 'State-of-the-art engineering',
+      image: 'https://i.imgur.com/8x4RHkn.jpeg',
     },
     {
       id: 8,
-      title: 'Maritime Law',
-      description: 'International maritime regulations',
-      image: 'https://blog.seaplify.com/wp-content/uploads/2023/12/Maritime-Law-Principles-1600x800.webp',
+      title: 'Cargo Handling',
+      description: 'Professional cargo operations',
+      image: 'https://i.imgur.com/QdEnhhr.jpeg',
     },
   ];
 
