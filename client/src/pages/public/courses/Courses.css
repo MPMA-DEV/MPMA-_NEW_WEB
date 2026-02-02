@@ -1,0 +1,174 @@
+/* =========================
+   PAGE BASE
+   ========================= */
+
+.courses-page {
+  padding: 40px 60px;
+  background: #f7f9fc;
+  min-height: 100vh;
+}
+
+.status {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+}
+
+/* =========================
+   INTRO SECTION
+   ========================= */
+
+.courses-intro {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.intro-title {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #0f3d91;
+}
+
+.intro-subtitle {
+  font-size: 18px;
+  color: #555;
+}
+
+/* =========================
+   STREAM SECTION
+   ========================= */
+
+.stream-section {
+  margin-bottom: 70px;
+}
+
+.stream-title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  padding-left: 14px;
+  border-left: 6px solid;
+}
+
+/* =========================
+   COURSE GRID
+   ========================= */
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.course-card {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+}
+
+.course-name {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.course-info {
+  margin: 6px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+/* =========================
+   STREAM COLORS
+   ========================= */
+
+/* Maritime */
+.stream-maritime .stream-title {
+  border-left-color: #723403;
+  color: #723403;
+}
+.stream-maritime .course-card {
+  background: rgba(114, 52, 3, 0.04);
+  border-left: 3px solid rgba(114, 52, 3, 0.3);
+}
+.stream-maritime .course-card:hover {
+  background: rgba(114, 52, 3, 0.08);
+  box-shadow: 0 16px 35px rgba(114, 52, 3, 0.25);
+}
+
+/* Management */
+.stream-management .stream-title {
+  border-left-color: #01a572;
+  color: #01a572;
+}
+.stream-management .course-card {
+  background: rgba(1, 165, 114, 0.04);
+  border-left: 3px solid rgba(1, 165, 114, 0.3);
+}
+.stream-management .course-card:hover {
+  background: rgba(1, 165, 114, 0.08);
+  box-shadow: 0 16px 35px rgba(1, 165, 114, 0.25);
+}
+
+/* Management & IS */
+.stream-management-is .stream-title {
+  border-left-color: #fd4523;
+  color: #fd4523;
+}
+.stream-management-is .course-card {
+  background: rgba(253, 69, 35, 0.04);
+  border-left: 3px solid rgba(253, 69, 35, 0.3);
+}
+.stream-management-is .course-card:hover {
+  background: rgba(253, 69, 35, 0.08);
+  box-shadow: 0 16px 35px rgba(253, 69, 35, 0.25);
+}
+
+/* Equipment */
+.stream-equipment .stream-title {
+  border-left-color: #0164dd;
+  color: #0164dd;
+}
+.stream-equipment .course-card {
+  background: rgba(1, 100, 221, 0.04);
+  border-left: 3px solid rgba(1, 100, 221, 0.3);
+}
+.stream-equipment .course-card:hover {
+  background: rgba(1, 100, 221, 0.08);
+  box-shadow: 0 16px 35px rgba(1, 100, 221, 0.25);
+}
+
+/* Electrical */
+.stream-electrical .stream-title {
+  border-left-color: #a7cfe0;
+  color: #5faac6;
+}
+.stream-electrical .course-card {
+  background: rgba(167, 207, 224, 0.08);
+  border-left: 3px solid rgba(167, 207, 224, 0.5);
+}
+.stream-electrical .course-card:hover {
+  background: rgba(167, 207, 224, 0.15);
+  box-shadow: 0 16px 35px rgba(167, 207, 224, 0.35);
+}
+
+/* Fallback */
+.stream-default .stream-title {
+  border-left-color: #0f3d91;
+  color: #0f3d91;
+}
+.stream-default .course-card {
+  background: rgba(15, 61, 145, 0.04);
+  border-left: 3px solid rgba(15, 61, 145, 0.3);
+}
+.stream-default .course-card:hover {
+  background: rgba(15, 61, 145, 0.08);
+}

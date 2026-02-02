@@ -1,0 +1,240 @@
+/* ============================================
+   COURSE DETAILS PAGE STYLES - LIGHT THEME
+   ============================================ */
+
+.course-details {
+  min-height: 100vh;
+  padding: 140px 2.5rem 5rem;
+  background: linear-gradient(135deg, #f6f7fb 0%, #ffffff 50%, #f0f4ff 100%);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.course-details .details-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.course-details .course-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #0f3d91;
+}
+
+.course-details .course-subtitle {
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+}
+
+.course-details .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.info-item {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-item b {
+  color: #0f3d91;
+  font-weight: 700;
+}
+
+.info-item span {
+  color: #334155;
+  font-weight: 600;
+}
+
+.course-details .description {
+  margin-top: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.5rem;
+  line-height: 1.8;
+  color: #475569;
+}
+
+.course-details .cta-row {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.course-details .cta-btn {
+  padding: 0.9rem 1.4rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: #0f3d91;
+  color: white;
+  font-weight: 700;
+}
+
+.course-details .cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Loading & Error */
+.course-details .status {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #64748b;
+  padding-top: 4rem;
+}
+
+/* ============================================
+   STREAM-SPECIFIC COLORS
+   ============================================ */
+
+/* Maritime */
+.stream-maritime .course-title,
+.stream-maritime .info-item b {
+  color: #723403;
+}
+
+.stream-maritime .cta-btn {
+  background: #723403;
+}
+
+.stream-maritime .cta-btn:hover {
+  background: #5a2a02;
+}
+
+.stream-maritime .details-card {
+  border-top: 4px solid #723403;
+}
+
+/* Management */
+.stream-management .course-title,
+.stream-management .info-item b {
+  color: #01a572;
+}
+
+.stream-management .cta-btn {
+  background: #01a572;
+}
+
+.stream-management .cta-btn:hover {
+  background: #018359;
+}
+
+.stream-management .details-card {
+  border-top: 4px solid #01a572;
+}
+
+/* Management & IS */
+.stream-management-is .course-title,
+.stream-management-is .info-item b {
+  color: #fd4523;
+}
+
+.stream-management-is .cta-btn {
+  background: #fd4523;
+}
+
+.stream-management-is .cta-btn:hover {
+  background: #e63d1f;
+}
+
+.stream-management-is .details-card {
+  border-top: 4px solid #fd4523;
+}
+
+/* Equipment */
+.stream-equipment .course-title,
+.stream-equipment .info-item b {
+  color: #0164dd;
+}
+
+.stream-equipment .cta-btn {
+  background: #0164dd;
+}
+
+.stream-equipment .cta-btn:hover {
+  background: #0152b8;
+}
+
+.stream-equipment .details-card {
+  border-top: 4px solid #0164dd;
+}
+
+/* Electrical */
+.stream-electrical .course-title,
+.stream-electrical .info-item b {
+  color: #5faac6;
+}
+
+.stream-electrical .cta-btn {
+  background: #5faac6;
+}
+
+.stream-electrical .cta-btn:hover {
+  background: #4a92a8;
+}
+
+.stream-electrical .details-card {
+  border-top: 4px solid #a7cfe0;
+}
+
+/* Default (fallback) */
+.stream-default .course-title,
+.stream-default .info-item b {
+  color: #0f3d91;
+}
+
+.stream-default .cta-btn {
+  background: #0f3d91;
+}
+
+.stream-default .cta-btn:hover {
+  background: #0c3175;
+}
+
+.stream-default .details-card {
+  border-top: 4px solid #0f3d91;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .course-details {
+    padding: 120px 1.5rem 3rem;
+  }
+
+  .course-details .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .course-details .course-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-details {
+    padding: 90px 1rem 2rem;
+  }
+
+  .course-details .course-title {
+    font-size: 1.7rem;
+  }
+}
