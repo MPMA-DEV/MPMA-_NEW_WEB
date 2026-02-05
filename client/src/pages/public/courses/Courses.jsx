@@ -59,117 +59,121 @@ const Courses = () => {
         doc.setTextColor(100, 100, 100);
         doc.setFontSize(10);
         doc.text(`Generated: ${new Date().toLocaleDateString()}`, pageWidth / 2, 50, { align: 'center' });
-      
-      let yPosition = 60;
-      
-      // Group courses by stream for PDF
-      const pdfGroupedCourses = courses.reduce((acc, course) => {
-        const stream = course.stream || "Other";
-        if (!acc[stream]) acc[stream] = [];
-        acc[stream].push(course);
-        return acc;
-      }, {});
+        
+        let yPosition = 60;
+        
+        // Group courses by stream for PDF
+        const pdfGroupedCourses = courses.reduce((acc, course) => {
+          const stream = course.stream || "Other";
+          if (!acc[stream]) acc[stream] = [];
+          acc[stream].push(course);
+          return acc;
+        }, {});
 
-      // Stream colors for headers
-      const streamColors = {
-        'Maritime': [114, 52, 3],
-        'Management': [1, 165, 114],
-        'Management & IS': [253, 69, 35],
-        'Equipment': [1, 100, 221],
-        'Electrical': [95, 170, 198],
-        'Other': [15, 61, 145]
-      };
+        // Stream colors for headers
+        const streamColors = {
+          'Maritime': [114, 52, 3],
+          'Management': [1, 165, 114],
+          'Management & IS': [253, 69, 35],
+          'Equipment': [1, 100, 221],
+          'Electrical': [95, 170, 198],
+          'Other': [15, 61, 145]
+        };
 
-      // Sort streams by defined order
-      const sortedStreams = Object.keys(pdfGroupedCourses).sort((a, b) => {
-        const indexA = streamOrder.indexOf(a);
-        const indexB = streamOrder.indexOf(b);
-        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
-        return indexA - indexB;
-      });
+        // Sort streams by defined order
+        const sortedStreams = Object.keys(pdfGroupedCourses).sort((a, b) => {
+          const indexA = streamOrder.indexOf(a);
+          const indexB = streamOrder.indexOf(b);
+          if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+          if (indexA === -1) return 1;
+          if (indexB === -1) return -1;
+          return indexA - indexB;
+        });
 
-      sortedStreams.forEach((stream) => {
-        // Check if we need a new page
-        if (yPosition > 250) {
-          doc.addPage();
-          yPosition = 20;
-        }
-        
-        // Stream header
-        const color = streamColors[stream] || streamColors['Other'];
-        doc.setFillColor(...color);
-        doc.roundedRect(14, yPosition - 5, pageWidth - 28, 10, 2, 2, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.text(stream, 20, yPosition + 2);
-        
-        yPosition += 15;
-        
-        // Table data for this stream
-        const tableData = pdfGroupedCourses[stream].map((course, index) => [
-          index + 1,
-          course.courseName,
-          course.duration || 'N/A',
-          `Rs. ${course.fees?.toLocaleString() || 'N/A'}`
-        ]);
-        
-        // Create table
-        autoTable(doc, {
-          startY: yPosition,
-          head: [['#', 'Course Name', 'Duration', 'Fees']],
-          body: tableData,
-          theme: 'striped',
-          headStyles: {
-            fillColor: color,
-            textColor: [255, 255, 255],
-            fontStyle: 'bold',
-            fontSize: 10
-          },
-          bodyStyles: {
-            fontSize: 9,
-            textColor: [50, 50, 50]
-          },
-          alternateRowStyles: {
-            fillColor: [245, 245, 245]
-          },
-          columnStyles: {
-            0: { cellWidth: 12, halign: 'center' },
-            1: { cellWidth: 'auto' },
-            2: { cellWidth: 30, halign: 'center' },
-            3: { cellWidth: 35, halign: 'right' }
-          },
-          margin: { left: 14, right: 14 }
+        sortedStreams.forEach((stream) => {
+          // Check if we need a new page
+          if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
+          }
+          
+          // Stream header
+          const color = streamColors[stream] || streamColors['Other'];
+          doc.setFillColor(color[0], color[1], color[2]);
+          doc.rect(14, yPosition - 5, pageWidth - 28, 10, 'F');
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(14);
+          doc.setFont('helvetica', 'bold');
+          doc.text(stream, 20, yPosition + 2);
+          
+          yPosition += 15;
+          
+          // Table data for this stream
+          const tableData = pdfGroupedCourses[stream].map((course, index) => [
+            (index + 1).toString(),
+            course.courseName || 'N/A',
+            course.duration || 'N/A',
+            course.fees ? `Rs. ${Number(course.fees).toLocaleString()}` : 'N/A'
+          ]);
+          
+          // Create table using autoTable
+          autoTable(doc, {
+            startY: yPosition,
+            head: [['#', 'Course Name', 'Duration', 'Fees']],
+            body: tableData,
+            theme: 'striped',
+            headStyles: {
+              fillColor: color,
+              textColor: [255, 255, 255],
+              fontStyle: 'bold',
+              fontSize: 10
+            },
+            bodyStyles: {
+              fontSize: 9,
+              textColor: [50, 50, 50]
+            },
+            alternateRowStyles: {
+              fillColor: [245, 245, 245]
+            },
+            columnStyles: {
+              0: { cellWidth: 12, halign: 'center' },
+              1: { cellWidth: 'auto' },
+              2: { cellWidth: 30, halign: 'center' },
+              3: { cellWidth: 35, halign: 'right' }
+            },
+            margin: { left: 14, right: 14 },
+            didDrawPage: function(data) {
+              // Update yPosition after table is drawn
+            }
+          });
+          
+          // Get the final Y position after the table
+          yPosition = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : yPosition + 50;
         });
         
-        yPosition = doc.previousAutoTable.finalY + 15;
-      });
-      
-      // Footer on last page
-      const pageCount = doc.internal.getNumberOfPages();
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setFontSize(8);
-        doc.setTextColor(150, 150, 150);
-        doc.text(
-          `Page ${i} of ${pageCount}`,
-          pageWidth / 2,
-          doc.internal.pageSize.getHeight() - 10,
-          { align: 'center' }
-        );
+        // Footer on all pages
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(8);
+          doc.setTextColor(150, 150, 150);
+          doc.text(
+            `Page ${i} of ${pageCount}`,
+            pageWidth / 2,
+            doc.internal.pageSize.getHeight() - 10,
+            { align: 'center' }
+          );
+        }
+        
+        // Save the PDF
+        doc.save('MPMA_Course_Catalog.pdf');
+        setIsGeneratingPdf(false);
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('Failed to generate PDF: ' + error.message);
+        setIsGeneratingPdf(false);
       }
-      
-      // Save the PDF
-      doc.save('MPMA_Course_Catalog.pdf');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Failed to generate PDF. Please try again.');
-    } finally {
-      setIsGeneratingPdf(false);
-    }
-    }, 100); // End of setTimeout
+    }, 100);
   };
 
   useEffect(() => {
