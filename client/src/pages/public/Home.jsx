@@ -22,38 +22,46 @@ const Home = () => {
       {/* Video Background Hero Section with Content */}
       <VideoBackgroundHero />
 
+      {/* SVG Clip Path for Wavy Button */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <clipPath id="wavyBtnShape" clipPathUnits="objectBoundingBox">
+            <path d="M0.02,0.3 C0.05,0.1 0.15,0 0.3,0.05 C0.5,0.02 0.7,0 0.85,0.08 C0.95,0.15 1,0.35 0.98,0.5 C1,0.7 0.95,0.85 0.85,0.92 C0.7,1 0.5,0.98 0.3,0.95 C0.15,1 0.05,0.9 0.02,0.7 C0,0.55 0,0.45 0.02,0.3" />
+          </clipPath>
+        </defs>
+      </svg>
+
       {/* Enroll Today Section */}
       <section className="enroll-section">
-        {/* Floating Maritime Icons */}
-        <div className="enroll-section-floaters">
-          <div className="enroll-floater"><FaShip /></div>
-          <div className="enroll-floater"><FaAnchor /></div>
-          <div className="enroll-floater"><FaCompass /></div>
-          <div className="enroll-floater"><FaLifeRing /></div>
-          <div className="enroll-floater"><FaWrench /></div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="enroll-decoration enroll-decoration-left"></div>
-        <div className="enroll-decoration enroll-decoration-right"></div>
-
         <div className="container">
-          <motion.div
-            className="enroll-content"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2>Start Your Maritime Journey Today</h2>
-            <p>
-              Join Mahapola Ports & Maritime Academy and gain the skills needed for a successful career in the maritime industry.
-              Our programs are designed to provide hands-on training and internationally recognized certifications.
-            </p>
-            <Link to="/personal-information" className="enroll-btn">
-              <FaChevronRight /> Enroll Today
-            </Link>
-          </motion.div>
+          <div className="enroll-wrapper">
+            <motion.div
+              className="enroll-content"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h2>Start Your Maritime Journey</h2>
+              <p>
+                Join Mahapola Ports & Maritime Academy and gain internationally recognized certifications with hands-on training.
+              </p>
+              <Link to="/courses" className="enroll-btn">
+                Enroll Now <FaChevronRight />
+              </Link>
+            </motion.div>
+            <motion.div
+              className="enroll-image"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <img src="https://i.imgur.com/PDXtxlh.png" alt="Maritime Career" />
+              <img src="https://i.imgur.com/8ruwNMP.png" alt="Maritime Training" />
+              <img src="https://i.imgur.com/HW0kh7d.png" alt="Maritime Professional" />
+            </motion.div>
+          </div>
         </div>
       </section>
 

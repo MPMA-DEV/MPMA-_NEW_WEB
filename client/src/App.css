@@ -67,7 +67,7 @@
 /* Main content */
 .main-content {
   flex: 1;
-  padding-top: 60px; /* adjust if needed */
+  padding-top: 0; /* Removed to allow video hero to reach top */
   padding-bottom: 120px; /* IMPORTANT: prevents footer overlap */
 }
 

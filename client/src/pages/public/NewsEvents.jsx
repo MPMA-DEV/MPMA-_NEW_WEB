@@ -149,71 +149,33 @@ const NewsEvents = () => {
 
   return (
     <div className="news-events-page">
-      {/* Wavy Header Section */}
-      <section className="news-wavy-header">
-        {/* Background with floating icons */}
-        <div className="wavy-bg-container">
-          {/* Floating Port Icons */}
-          {floatingIcons.map((item, index) => (
-            <motion.div
-              key={index}
-              className="floating-port-icon"
-              style={{ left: item.x, top: item.startY }}
-              animate={{
-                y: [0, -30, 0],
-                rotate: [0, 10, -10, 0],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: item.duration,
-                delay: item.delay,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <item.Icon />
-            </motion.div>
-          ))}
-
-          {/* Animated Wave Layers */}
-          <div className="wave-layer wave-layer-1"></div>
-          <div className="wave-layer wave-layer-2"></div>
-          <div className="wave-layer wave-layer-3"></div>
+      {/* Hero Section */}
+      <div className="news-hero">
+        {/* Bubble Animation */}
+        <div className="bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
         </div>
-
-        {/* Header Content */}
-        <div className="wavy-header-content">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="header-text-content"
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="wavy-header-title"
-            >
-              News & Events
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="wavy-header-subtitle"
-            >
-              Stay updated with the latest happenings at Mahapola Ports & Maritime Academy
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="header-decorative-line"
-            ></motion.div>
-          </motion.div>
+        <div className="news-hero-content">
+          <h1 className="hero-title">News & Events</h1>
+          <p className="hero-subtitle">
+            Stay updated with the latest happenings at Mahapola Ports & Maritime Academy
+          </p>
         </div>
-      </section>
+        <div className="wave-container">
+          <svg className="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
+          </svg>
+        </div>
+      </div>
 
       {/* News Grid Section */}
       <section className="news-section">

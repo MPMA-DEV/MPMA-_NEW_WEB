@@ -6,173 +6,40 @@ import {
   FaCheckCircle, FaShip, FaGlobe, FaChalkboardTeacher,
   FaBriefcase, FaGraduationCap, FaWrench, FaCompass,
   FaLanguage, FaLifeRing, FaCertificate, FaUserGraduate, FaQuoteLeft, FaAward,
-  FaAnchor, FaWater, FaStar
+  FaAnchor, FaWater, FaStar, FaGem
 } from 'react-icons/fa';
 import './AboutUs.css';
 
 const AboutUs = () => {
-  const hexagons = Array.from({ length: 12 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 80 + 40,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 20 + 15,
-    delay: Math.random() * 3,
-  }));
-
-  const floatingElements = [
-    { Icon: FaShip, x: '12%', y: '30%', duration: 10 },
-    { Icon: FaAnchor, x: '82%', y: '25%', duration: 12 },
-    { Icon: FaCompass, x: '18%', y: '70%', duration: 11 },
-    { Icon: FaGlobe, x: '85%', y: '65%', duration: 13 },
-  ];
-
   return (
     <div className="about-page">
-      {/* Ultra Modern Blue Hero */}
-      <section className="ultra-modern-hero">
-        <div className="modern-hero-bg">
-          {/* Hexagon Pattern */}
-          <div className="hexagon-container">
-            {hexagons.map((hex) => (
-              <motion.div
-                key={hex.id}
-                className="hexagon"
-                style={{
-                  width: hex.size,
-                  height: hex.size,
-                  left: `${hex.x}%`,
-                  top: `${hex.y}%`,
-                }}
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.2, 1],
-                  opacity: [0.1, 0.3, 0.1],
-                }}
-                transition={{
-                  duration: hex.duration,
-                  delay: hex.delay,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Light Rays */}
-          <div className="light-rays">
-            <div className="ray ray-1"></div>
-            <div className="ray ray-2"></div>
-            <div className="ray ray-3"></div>
-          </div>
-
-          {/* Floating Icons */}
-          <div className="floating-elements">
-            {floatingElements.map((item, index) => (
-              <motion.div
-                key={index}
-                className="float-icon"
-                style={{ left: item.x, top: item.y }}
-                animate={{
-                  y: [0, -30, 0],
-                  opacity: [0.2, 0.4, 0.2],
-                }}
-                transition={{
-                  duration: item.duration,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <item.Icon />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Animated Gradient Orbs */}
-          <div className="gradient-orbs">
-            <div className="orb orb-1"></div>
-            <div className="orb orb-2"></div>
-            <div className="orb orb-3"></div>
-          </div>
+      {/* Hero Section */}
+      <div className="about-hero">
+        {/* Bubble Animation */}
+        <div className="bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
         </div>
-
-        <div className="modern-hero-content">
-          <motion.div
-            initial={{ opacity: 0, y: 80 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="hero-inner-content"
-          >
-            {/* Animated Icon */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.8, 
-                delay: 0.3,
-                type: "spring",
-                stiffness: 200
-              }}
-              className="modern-icon-wrapper"
-            >
-              <div className="icon-circle">
-                <FaShip className="hero-ship-icon" />
-              </div>
-              <div className="icon-pulse"></div>
-            </motion.div>
-
-            {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="modern-title"
-            >
-              About Us
-            </motion.h1>
-
-            {/* Decorative Line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="title-underline"
-            ></motion.div>
-
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="modern-description"
-            >
-              Pioneering maritime education excellence for over five decades.<br />
-              Training the next generation of global maritime professionals.
-            </motion.p>
-
-            {/* Feature Pills */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="feature-pills"
-            >
-              <div className="pill">
-                <FaTrophy className="pill-icon" />
-                <span>Excellence</span>
-              </div>
-              <div className="pill">
-                <FaGraduationCap className="pill-icon" />
-                <span>Innovation</span>
-              </div>
-              <div className="pill">
-                <FaGlobe className="pill-icon" />
-                <span>Global</span>
-              </div>
-            </motion.div>
-          </motion.div>
+        <div className="about-hero-content">
+          <h1 className="hero-title">About Us</h1>
+          <p className="hero-subtitle">
+            Pioneering maritime education excellence since 1995
+          </p>
         </div>
-      </section>
+        <div className="wave-container">
+          <svg className="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
+          </svg>
+        </div>
+      </div>
 
       {/* Mission, Vision, Values Section */}
       <section className="mvv-section">
@@ -181,190 +48,76 @@ const AboutUs = () => {
             {/* Mission */}
             <motion.div
               className="mvv-column mission-column"
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.1, type: "spring", bounce: 0.4 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -15, scale: 1.05 }}
             >
-              <motion.div 
-                className="mvv-top"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <motion.div 
-                  className="mvv-icon"
-                  initial={{ scale: 0, rotate: -180 }}
-                  whileInView={{ scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4, type: "spring", bounce: 0.5 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                >
-                  <FaBullseye />
-                </motion.div>
-              </motion.div>
-              <motion.div 
-                className="mvv-content"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                viewport={{ once: true }}
-              >
-                <motion.h3 
-                  className="mvv-title"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  MISSION
-                </motion.h3>
-                <motion.p 
-                  className="mvv-text"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                  viewport={{ once: true }}
-                >
+              <div className="mvv-arrow-top">
+                <div className="mvv-number">01</div>
+              </div>
+              <div className="mvv-body">
+                <h3 className="mvv-title">MISSION</h3>
+                <p className="mvv-text">
                   To provide world-class maritime education and training through state-of-the-art 
                   facilities, internationally certified programs, and expert faculty.
-                </motion.p>
-                <motion.div 
-                  className="mvv-underline mission-underline"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "60px" }}
-                  transition={{ duration: 0.6, delay: 0.8 }}
-                  viewport={{ once: true }}
-                ></motion.div>
-              </motion.div>
+                </p>
+              </div>
+              <div className="mvv-icon-wrapper">
+                <div className="mvv-icon-circle">
+                  <FaBullseye />
+                </div>
+              </div>
             </motion.div>
 
             {/* Vision */}
             <motion.div
               className="mvv-column vision-column"
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2, type: "spring", bounce: 0.4 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              whileHover={{ y: -15, scale: 1.05 }}
             >
-              <motion.div 
-                className="mvv-top"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <motion.div 
-                  className="mvv-icon"
-                  initial={{ scale: 0, rotate: -180 }}
-                  whileInView={{ scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5, type: "spring", bounce: 0.5 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                >
-                  <FaEye />
-                </motion.div>
-              </motion.div>
-              <motion.div 
-                className="mvv-content"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <motion.h3 
-                  className="mvv-title"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.7 }}
-                  viewport={{ once: true }}
-                >
-                  VISION
-                </motion.h3>
-                <motion.p 
-                  className="mvv-text"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  viewport={{ once: true }}
-                >
+              <div className="mvv-arrow-top">
+                <div className="mvv-number">02</div>
+              </div>
+              <div className="mvv-body">
+                <h3 className="mvv-title">VISION</h3>
+                <p className="mvv-text">
                   To be the leading maritime training academy in South Asia, recognized globally 
                   for excellence in maritime education and professional development.
-                </motion.p>
-                <motion.div 
-                  className="mvv-underline vision-underline"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "60px" }}
-                  transition={{ duration: 0.6, delay: 0.9 }}
-                  viewport={{ once: true }}
-                ></motion.div>
-              </motion.div>
+                </p>
+              </div>
+              <div className="mvv-icon-wrapper">
+                <div className="mvv-icon-circle">
+                  <FaEye />
+                </div>
+              </div>
             </motion.div>
 
             {/* Values */}
             <motion.div
               className="mvv-column values-column"
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.3, type: "spring", bounce: 0.4 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              whileHover={{ y: -15, scale: 1.05 }}
             >
-              <motion.div 
-                className="mvv-top"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                viewport={{ once: true }}
-              >
-                <motion.div 
-                  className="mvv-icon"
-                  initial={{ scale: 0, rotate: -180 }}
-                  whileInView={{ scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6, type: "spring", bounce: 0.5 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                >
-                  <FaAward />
-                </motion.div>
-              </motion.div>
-              <motion.div 
-                className="mvv-content"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-                viewport={{ once: true }}
-              >
-                <motion.h3 
-                  className="mvv-title"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.8 }}
-                  viewport={{ once: true }}
-                >
-                  VALUES
-                </motion.h3>
-                <motion.p 
-                  className="mvv-text"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.9 }}
-                  viewport={{ once: true }}
-                >
+              <div className="mvv-arrow-top">
+                <div className="mvv-number">03</div>
+              </div>
+              <div className="mvv-body">
+                <h3 className="mvv-title">VALUES</h3>
+                <p className="mvv-text">
                   Excellence, Integrity, Innovation, and Commitment to student success and 
                   industry leadership in maritime training and education.
-                </motion.p>
-                <motion.div 
-                  className="mvv-underline values-underline"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "60px" }}
-                  transition={{ duration: 0.6, delay: 1.0 }}
-                  viewport={{ once: true }}
-                ></motion.div>
-              </motion.div>
+                </p>
+              </div>
+              <div className="mvv-icon-wrapper">
+                <div className="mvv-icon-circle">
+                  <FaGem />
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

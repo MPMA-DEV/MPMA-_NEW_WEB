@@ -13,7 +13,8 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Message sent! We will contact you soon.');
+    const mailtoLink = `mailto:info@mahapola-maritime.lk?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+    window.location.href = mailtoLink;
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
@@ -29,95 +30,33 @@ const ContactUs = () => {
 
   return (
     <div className="contact-page">
-      {/* Modern Contact Hero Header */}
-      <section className="contact-modern-hero">
-        {/* Animated Background */}
-        <div className="contact-hero-bg">
-          {/* Floating Icons */}
-          {floatingIcons.map((item, index) => (
-            <motion.div
-              key={index}
-              className="floating-contact-icon"
-              style={{ left: item.x, top: item.startY }}
-              animate={{
-                y: [0, -25, 0],
-                rotate: [0, 15, -15, 0],
-                opacity: [0.2, 0.5, 0.2],
-              }}
-              transition={{
-                duration: item.duration,
-                delay: item.delay,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <item.Icon />
-            </motion.div>
-          ))}
-
-          {/* Animated Circles */}
-          <div className="hero-circle hero-circle-1"></div>
-          <div className="hero-circle hero-circle-2"></div>
-          <div className="hero-circle hero-circle-3"></div>
-
-          {/* Particle Lines */}
-          <div className="particle-lines">
-            <div className="particle-line line-1"></div>
-            <div className="particle-line line-2"></div>
-            <div className="particle-line line-3"></div>
-          </div>
+      {/* Hero Section */}
+      <div className="contact-hero">
+        {/* Bubble Animation */}
+        <div className="bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
         </div>
-
-        {/* Hero Content */}
         <div className="contact-hero-content">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="hero-text-wrapper"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="hero-icon-badge"
-            >
-              <FaEnvelope />
-            </motion.div>
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="contact-hero-title"
-            >
-              Get In Touch
-            </motion.h1>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="contact-hero-subtitle"
-            >
-              We're here to help and answer any questions you might have
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="hero-connect-line"
-            >
-              <div className="connect-dot"></div>
-              <div className="connect-pulse"></div>
-            </motion.div>
-          </motion.div>
+          <h1 className="hero-title">Get In Touch</h1>
+          <p className="hero-subtitle">
+            We're here to help and answer any questions you might have
+          </p>
         </div>
-
-        {/* Wave Bottom */}
-        <div className="contact-wave-bottom"></div>
-      </section>
+        <div className="wave-container">
+          <svg className="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
+          </svg>
+        </div>
+      </div>
 
       {/* Contact Content Section */}
       <section className="contact-content-section">
