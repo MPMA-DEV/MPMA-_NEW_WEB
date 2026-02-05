@@ -50,20 +50,31 @@ const InternalResults = () => {
 
   return (
     <div className="results-page">
-      <section className="results-hero internal-hero">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="results-hero-content"
-          >
-            <FaChartLine className="results-hero-icon" />
-            <h1>Internal Assessment Results</h1>
-            <p>View your semester-wise internal assessment results</p>
-          </motion.div>
+      <div className="results-hero internal-hero">
+        {/* Bubble Animation */}
+        <div className="bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
         </div>
-      </section>
+        <div className="results-hero-content">
+          <FaChartLine className="results-hero-icon" />
+          <h1 className="hero-title">Internal Assessment Results</h1>
+          <p className="hero-subtitle">View your semester-wise internal assessment results</p>
+        </div>
+        <div className="wave-container">
+          <svg className="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
+          </svg>
+        </div>
+      </div>
 
       <section className="results-content-section">
         <div className="container">

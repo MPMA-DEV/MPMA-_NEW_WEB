@@ -56,12 +56,32 @@ const Courses = () => {
 
   return (
     <div className="courses-page">
-      {/* Intro */}
-      <div className="courses-intro">
-        <h1 className="intro-title">Our Courses</h1>
-        <p className="intro-subtitle">
-          Explore our comprehensive range of maritime training programs
-        </p>
+      {/* Wavy Hero Section */}
+      <div className="courses-hero">
+        {/* Bubble Animation */}
+        <div className="bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+        </div>
+        <div className="courses-hero-content">
+          <h1 className="hero-title">Our Courses</h1>
+          <p className="hero-subtitle">
+            Explore our comprehensive range of maritime training programs
+          </p>
+        </div>
+        <div className="wave-container">
+          <svg className="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
+          </svg>
+        </div>
       </div>
 
       {Object.keys(groupedCourses).map((stream) => {
