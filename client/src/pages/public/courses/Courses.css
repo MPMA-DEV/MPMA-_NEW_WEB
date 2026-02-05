@@ -105,6 +105,282 @@
 }
 
 /* =========================
+   STREAM FILTER BAR
+   ========================= */
+
+.stream-filter-bar {
+  background: #f5efe9;
+  padding: 20px 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.filter-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 5px 0;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.filter-buttons::-webkit-scrollbar {
+  height: 6px;
+}
+
+.filter-buttons::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filter-buttons::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.filter-btn {
+  padding: 12px 24px;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.8);
+  color: #555;
+  backdrop-filter: blur(10px);
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* All Streams Button */
+.filter-btn-all {
+  border-color: #1e3a5f;
+  color: #1e3a5f;
+}
+
+.filter-btn-all:hover,
+.filter-btn-all.active {
+  background: #1e3a5f;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(30, 58, 95, 0.3);
+}
+
+/* Maritime Button */
+.filter-btn-maritime {
+  border-color: #723403;
+  color: #723403;
+}
+
+.filter-btn-maritime:hover,
+.filter-btn-maritime.active {
+  background: #723403;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(114, 52, 3, 0.3);
+}
+
+/* Management Button */
+.filter-btn-management {
+  border-color: #01a572;
+  color: #01a572;
+}
+
+.filter-btn-management:hover,
+.filter-btn-management.active {
+  background: #01a572;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(1, 165, 114, 0.3);
+}
+
+/* Management & IS Button */
+.filter-btn-management-is {
+  border-color: #fd4523;
+  color: #fd4523;
+}
+
+.filter-btn-management-is:hover,
+.filter-btn-management-is.active {
+  background: #fd4523;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(253, 69, 35, 0.3);
+}
+
+/* Equipment Button */
+.filter-btn-equipment {
+  border-color: #0164dd;
+  color: #0164dd;
+}
+
+.filter-btn-equipment:hover,
+.filter-btn-equipment.active {
+  background: #0164dd;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(1, 100, 221, 0.3);
+}
+
+/* Electrical Button */
+.filter-btn-electrical {
+  border-color: #5faac6;
+  color: #5faac6;
+}
+
+.filter-btn-electrical:hover,
+.filter-btn-electrical.active {
+  background: #5faac6;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(95, 170, 198, 0.3);
+}
+
+/* Default Button */
+.filter-btn-default {
+  border-color: #0f3d91;
+  color: #0f3d91;
+}
+
+.filter-btn-default:hover,
+.filter-btn-default.active {
+  background: #0f3d91;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(15, 61, 145, 0.3);
+}
+
+/* =========================
+   DOWNLOAD PDF BUTTON
+   ========================= */
+
+.download-pdf-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+  
+  /* Gradient background */
+  background: linear-gradient(135deg, #e63946 0%, #c1121f 50%, #9b2226 100%);
+  color: #ffffff;
+  
+  /* 3D effect */
+  box-shadow: 
+    0 4px 15px rgba(198, 18, 31, 0.4),
+    0 8px 25px rgba(155, 34, 38, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.download-pdf-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  border-radius: 12px 12px 50% 50%;
+  pointer-events: none;
+}
+
+.download-pdf-btn .btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.download-pdf-btn:hover .btn-shine {
+  left: 100%;
+}
+
+.download-pdf-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 25px rgba(198, 18, 31, 0.5),
+    0 15px 35px rgba(155, 34, 38, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #f25c69 0%, #e63946 50%, #c1121f 100%);
+}
+
+.download-pdf-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 2px 8px rgba(198, 18, 31, 0.4),
+    0 4px 12px rgba(155, 34, 38, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.download-pdf-btn:disabled {
+  background: linear-gradient(135deg, #aaa 0%, #888 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.download-pdf-btn .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+.download-pdf-btn .btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Spinner Animation */
+.download-pdf-btn .spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
    BUBBLE ANIMATION
    ========================= */
 
@@ -430,4 +706,84 @@
     0 0 30px rgba(15, 61, 145, 0.2),
     0 0 45px rgba(15, 61, 145, 0.1),
     0 8px 32px rgba(15, 61, 145, 0.15);
+}
+
+/* =========================
+   RESPONSIVE STYLES
+   ========================= */
+
+@media (max-width: 768px) {
+  .courses-hero {
+    padding: 120px 30px 80px;
+  }
+
+  .stream-filter-bar {
+    padding: 15px 20px;
+  }
+
+  .filter-bar-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .filter-buttons {
+    gap: 8px;
+    width: 100%;
+  }
+
+  .filter-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+
+  .download-pdf-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 24px;
+  }
+
+  .stream-section {
+    padding: 40px 20px;
+  }
+
+  .courses-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .courses-hero {
+    padding: 100px 20px 60px;
+  }
+
+  .stream-filter-bar {
+    padding: 12px 15px;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .download-pdf-btn {
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+
+  .download-pdf-btn .btn-icon {
+    font-size: 16px;
+  }
+
+  .stream-section {
+    padding: 30px 15px;
+  }
+
+  .stream-title {
+    font-size: 22px;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
 }
