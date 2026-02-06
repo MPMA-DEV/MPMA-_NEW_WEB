@@ -7,15 +7,21 @@ import { FaFilePdf } from "react-icons/fa";
 import "./Courses.css";
 
 const streamClassMap = {
-  Maritime: "stream-maritime",
-  Management: "stream-management",
+  "Maritime & Seamanship": "stream-maritime-seamanship",
+  "Occupational Health & Safety": "stream-health-safety",
+  "Port Operation & Logistics": "stream-port-logistics",
+  Technical: "stream-technical",
   "Management & IS": "stream-management-is",
-  Equipment: "stream-equipment",
-  Electrical: "stream-electrical",
 };
 
 // Define stream order for consistent display
-const streamOrder = ["Maritime", "Management", "Management & IS", "Equipment", "Electrical"];
+const streamOrder = [
+  "Maritime & Seamanship",
+  "Occupational Health & Safety",
+  "Port Operation & Logistics",
+  "Technical",
+  "Management & IS",
+];
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -28,40 +34,47 @@ const Courses = () => {
   // PDF Download Function
   const handleDownloadPDF = () => {
     if (courses.length === 0) {
-      alert('No courses available to download.');
+      alert("No courses available to download.");
       return;
     }
-    
+
     setIsGeneratingPdf(true);
-    
+
     // Use setTimeout to ensure React state updates complete
     setTimeout(() => {
       try {
         const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.getWidth();
-        
+
         // Header with gradient-like effect
         doc.setFillColor(30, 58, 95);
-        doc.rect(0, 0, pageWidth, 40, 'F');
-        
+        doc.rect(0, 0, pageWidth, 40, "F");
+
         // Title
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(24);
-        doc.setFont('helvetica', 'bold');
-        doc.text('MPMA Course Catalog', pageWidth / 2, 20, { align: 'center' });
-        
+        doc.setFont("helvetica", "bold");
+        doc.text("MPMA Course Catalog", pageWidth / 2, 20, { align: "center" });
+
         // Subtitle
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'normal');
-        doc.text('Mahapola Ports & Maritime Academy', pageWidth / 2, 30, { align: 'center' });
-        
+        doc.setFont("helvetica", "normal");
+        doc.text("Mahapola Ports & Maritime Academy", pageWidth / 2, 30, {
+          align: "center",
+        });
+
         // Generated date
         doc.setTextColor(100, 100, 100);
         doc.setFontSize(10);
-        doc.text(`Generated: ${new Date().toLocaleDateString()}`, pageWidth / 2, 50, { align: 'center' });
-        
+        doc.text(
+          `Generated: ${new Date().toLocaleDateString()}`,
+          pageWidth / 2,
+          50,
+          { align: "center" },
+        );
+
         let yPosition = 60;
-        
+
         // Group courses by stream for PDF
         const pdfGroupedCourses = courses.reduce((acc, course) => {
           const stream = course.stream || "Other";
@@ -72,12 +85,12 @@ const Courses = () => {
 
         // Stream colors for headers
         const streamColors = {
-          'Maritime': [114, 52, 3],
-          'Management': [1, 165, 114],
-          'Management & IS': [253, 69, 35],
-          'Equipment': [1, 100, 221],
-          'Electrical': [95, 170, 198],
-          'Other': [15, 61, 145]
+          "Maritime & Seamanship": [114, 52, 3],
+          "Occupational Health & Safety": [220, 38, 38],
+          "Port Operation & Logistics": [1, 109, 77],
+          Technical: [155, 125, 254],
+          "Management & IS": [1, 165, 114],
+          Other: [15, 61, 145],
         };
 
         // Sort streams by defined order
@@ -96,76 +109,84 @@ const Courses = () => {
             doc.addPage();
             yPosition = 20;
           }
-          
+
           // Stream header
-          const color = streamColors[stream] || streamColors['Other'];
+          const color = streamColors[stream] || streamColors["Other"];
           doc.setFillColor(color[0], color[1], color[2]);
-          doc.rect(14, yPosition - 5, pageWidth - 28, 10, 'F');
+          doc.rect(14, yPosition - 5, pageWidth - 28, 10, "F");
           doc.setTextColor(255, 255, 255);
           doc.setFontSize(14);
-          doc.setFont('helvetica', 'bold');
+          doc.setFont("helvetica", "bold");
           doc.text(stream, 20, yPosition + 2);
-          
+
           yPosition += 15;
-          
+
           // Table data for this stream
           const tableData = pdfGroupedCourses[stream].map((course, index) => [
             (index + 1).toString(),
-            course.courseName || 'N/A',
-            course.duration || 'N/A',
-            course.fees ? `Rs. ${Number(course.fees).toLocaleString()}` : 'N/A'
+            course.courseName || "N/A",
+            course.duration || "N/A",
+            course.fees ? `Rs. ${Number(course.fees).toLocaleString()}` : "N/A",
           ]);
-          
+
           // Create table using autoTable
           autoTable(doc, {
             startY: yPosition,
-            head: [['#', 'Course Name', 'Duration', 'Fees']],
+            head: [["#", "Course Name", "Duration", "Fees"]],
             body: tableData,
-            theme: 'striped',
+            theme: "striped",
             headStyles: {
               fillColor: color,
               textColor: [255, 255, 255],
-              fontStyle: 'bold',
-              fontSize: 10
+              fontStyle: "bold",
+              fontSize: 10,
             },
             bodyStyles: {
               fontSize: 9,
-              textColor: [50, 50, 50]
+              textColor: [50, 50, 50],
             },
             alternateRowStyles: {
-              fillColor: [245, 245, 245]
+              fillColor: [245, 245, 245],
             },
             columnStyles: {
-              0: { cellWidth: 12, halign: 'center' },
-              1: { cellWidth: 'auto' },
-              2: { cellWidth: 30, halign: 'center' },
-              3: { cellWidth: 35, halign: 'right' }
+              0: { cellWidth: 12, halign: "center" },
+              1: { cellWidth: "auto" },
+              2: { cellWidth: 30, halign: "center" },
+              3: { cellWidth: 35, halign: "right" },
             },
             margin: { left: 14, right: 14 },
-            didDrawPage: function(data) {
+            didDrawPage: function (data) {
               // Update yPosition after table is drawn
-            }
+            },
           });
-          
+
           // Get the final Y position after the table
-          yPosition = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : yPosition + 50;
+          yPosition = doc.lastAutoTable
+            ? doc.lastAutoTable.finalY + 15
+            : yPosition + 50;
         });
-        
-        yPosition = doc.lastAutoTable.finalY + 15;
-      });
-      
-      // Footer on last page
-      const pageCount = doc.internal.getNumberOfPages();
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setFontSize(8);
-        doc.setTextColor(150, 150, 150);
-        doc.text(
-          `Page ${i} of ${pageCount}`,
-          pageWidth / 2,
-          doc.internal.pageSize.getHeight() - 10,
-          { align: 'center' }
-        );
+
+        // Footer on all pages
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(8);
+          doc.setTextColor(150, 150, 150);
+          doc.text(
+            `Page ${i} of ${pageCount}`,
+            pageWidth / 2,
+            doc.internal.pageSize.getHeight() - 10,
+            { align: "center" },
+          );
+        }
+
+        // Save the PDF
+        doc.save("MPMA_Course_Catalog.pdf");
+        setIsGeneratingPdf(false);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+        alert("Failed to generate PDF: " + error.message);
+        setIsGeneratingPdf(false);
       }
     }, 100);
   };
@@ -185,7 +206,9 @@ const Courses = () => {
 
   // Get unique streams from courses
   const availableStreams = useMemo(() => {
-    const streams = [...new Set(courses.map(course => course.stream || "Other"))];
+    const streams = [
+      ...new Set(courses.map((course) => course.stream || "Other")),
+    ];
     // Sort by predefined order, put unknown streams at the end
     return streams.sort((a, b) => {
       const indexA = streamOrder.indexOf(a);
@@ -199,10 +222,13 @@ const Courses = () => {
 
   // Group courses by stream
   const groupedCourses = useMemo(() => {
-    const filtered = selectedStream === "All" 
-      ? courses 
-      : courses.filter(course => (course.stream || "Other") === selectedStream);
-    
+    const filtered =
+      selectedStream === "All"
+        ? courses
+        : courses.filter(
+            (course) => (course.stream || "Other") === selectedStream,
+          );
+
     return filtered.reduce((acc, course) => {
       const stream = course.stream || "Other";
       if (!acc[stream]) acc[stream] = [];
@@ -251,7 +277,11 @@ const Courses = () => {
           </p>
         </div>
         <div className="wave-container">
-          <svg className="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <svg
+            className="wave"
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+          >
             <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
           </svg>
         </div>
@@ -277,9 +307,9 @@ const Courses = () => {
               </button>
             ))}
           </div>
-          
+
           {/* Download PDF Button */}
-          <button 
+          <button
             className="download-pdf-btn"
             onClick={handleDownloadPDF}
             disabled={isGeneratingPdf || courses.length === 0}
@@ -292,7 +322,7 @@ const Courses = () => {
               )}
             </span>
             <span className="btn-text">
-              {isGeneratingPdf ? 'Generating...' : 'Download PDF'}
+              {isGeneratingPdf ? "Generating..." : "Download PDF"}
             </span>
             <span className="btn-shine"></span>
           </button>
@@ -309,34 +339,34 @@ const Courses = () => {
           return indexA - indexB;
         })
         .map((stream) => {
-        const streamClass = streamClassMap[stream] || "stream-default";
+          const streamClass = streamClassMap[stream] || "stream-default";
 
-        return (
-          <section key={stream} className={`stream-section ${streamClass}`}>
-            <h2 className="stream-title">{stream}</h2>
+          return (
+            <section key={stream} className={`stream-section ${streamClass}`}>
+              <h2 className="stream-title">{stream}</h2>
 
-            <div className="courses-grid">
-              {groupedCourses[stream].map((course) => (
-                <div
-                  key={course.courseId}
-                  className="course-card"
-                  onClick={() => navigate(`/courses/${course.courseId}`)}
-                >
-                  <h3 className="course-name">{course.courseName}</h3>
+              <div className="courses-grid">
+                {groupedCourses[stream].map((course) => (
+                  <div
+                    key={course.courseId}
+                    className="course-card"
+                    onClick={() => navigate(`/courses/${course.courseId}`)}
+                  >
+                    <h3 className="course-name">{course.courseName}</h3>
 
-                  <p className="course-info">
-                    <strong>Duration:</strong> {course.duration}
-                  </p>
+                    <p className="course-info">
+                      <strong>Duration:</strong> {course.duration}
+                    </p>
 
-                  <p className="course-info">
-                    <strong>Fees:</strong> Rs. {course.fees}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        );
-      })}
+                    <p className="course-info">
+                      <strong>Fees:</strong> Rs. {course.fees}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
     </div>
   );
 };

@@ -102,94 +102,94 @@
    STREAM-SPECIFIC COLORS
    ============================================ */
 
-/* Maritime */
-.stream-maritime .course-title,
-.stream-maritime .info-item b {
+/* Maritime & Seamanship */
+.stream-maritime-seamanship .course-title,
+.stream-maritime-seamanship .info-item b {
   color: #723403;
 }
 
-.stream-maritime .cta-btn {
+.stream-maritime-seamanship .cta-btn {
   background: #723403;
 }
 
-.stream-maritime .cta-btn:hover {
+.stream-maritime-seamanship .cta-btn:hover {
   background: #5a2a02;
 }
 
-.stream-maritime .details-card {
+.stream-maritime-seamanship .details-card {
   border-top: 4px solid #723403;
 }
 
-/* Management */
-.stream-management .course-title,
-.stream-management .info-item b {
-  color: #01a572;
+/* Occupational Health & Safety */
+.stream-health-safety .course-title,
+.stream-health-safety .info-item b {
+  color: #dc2626;
 }
 
-.stream-management .cta-btn {
-  background: #01a572;
+.stream-health-safety .cta-btn {
+  background: #dc2626;
 }
 
-.stream-management .cta-btn:hover {
-  background: #018359;
+.stream-health-safety .cta-btn:hover {
+  background: #b91c1c;
 }
 
-.stream-management .details-card {
-  border-top: 4px solid #01a572;
+.stream-health-safety .details-card {
+  border-top: 4px solid #dc2626;
+}
+
+/* Port Operation & Logistics */
+.stream-port-logistics .course-title,
+.stream-port-logistics .info-item b {
+  color: #016d4d;
+}
+
+.stream-port-logistics .cta-btn {
+  background: #016d4d;
+}
+
+.stream-port-logistics .cta-btn:hover {
+  background: #015a3d;
+}
+
+.stream-port-logistics .details-card {
+  border-top: 4px solid #016d4d;
+}
+
+/* Technical */
+.stream-technical .course-title,
+.stream-technical .info-item b {
+  color: #9b7dfe;
+}
+
+.stream-technical .cta-btn {
+  background: #9b7dfe;
+}
+
+.stream-technical .cta-btn:hover {
+  background: #7c5ce8;
+}
+
+.stream-technical .details-card {
+  border-top: 4px solid #9b7dfe;
 }
 
 /* Management & IS */
 .stream-management-is .course-title,
 .stream-management-is .info-item b {
-  color: #fd4523;
+  color: #01a572;
 }
 
 .stream-management-is .cta-btn {
-  background: #fd4523;
+  background: #01a572;
 }
 
 .stream-management-is .cta-btn:hover {
-  background: #e63d1f;
+  background: #018359;
 }
 
 .stream-management-is .details-card {
-  border-top: 4px solid #fd4523;
-}
-
-/* Equipment */
-.stream-equipment .course-title,
-.stream-equipment .info-item b {
-  color: #0164dd;
-}
-
-.stream-equipment .cta-btn {
-  background: #0164dd;
-}
-
-.stream-equipment .cta-btn:hover {
-  background: #0152b8;
-}
-
-.stream-equipment .details-card {
-  border-top: 4px solid #0164dd;
-}
-
-/* Electrical */
-.stream-electrical .course-title,
-.stream-electrical .info-item b {
-  color: #5faac6;
-}
-
-.stream-electrical .cta-btn {
-  background: #5faac6;
-}
-
-.stream-electrical .cta-btn:hover {
-  background: #4a92a8;
-}
-
-.stream-electrical .details-card {
-  border-top: 4px solid #a7cfe0;
+  border-top: 4px solid #01a572;
 }
 
 /* Default (fallback) */

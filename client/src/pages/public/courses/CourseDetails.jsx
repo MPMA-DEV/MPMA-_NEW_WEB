@@ -4,11 +4,11 @@ import axios from "axios";
 import "./CourseDetails.css";
 
 const streamClassMap = {
-  Maritime: "stream-maritime",
-  Management: "stream-management",
+  "Maritime & Seamanship": "stream-maritime-seamanship",
+  "Occupational Health & Safety": "stream-health-safety",
+  "Port Operation & Logistics": "stream-port-logistics",
+  Technical: "stream-technical",
   "Management & IS": "stream-management-is",
-  Equipment: "stream-equipment",
-  Electrical: "stream-electrical",
 };
 
 const CourseDetails = () => {

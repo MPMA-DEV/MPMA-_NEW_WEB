@@ -4,7 +4,11 @@
 
 .courses-page {
   padding: 0;
-  background: linear-gradient(135deg, rgba(114, 52, 3, 0.08) 0%, rgba(139, 90, 43, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(114, 52, 3, 0.08) 0%,
+    rgba(139, 90, 43, 0.05) 100%
+  );
   min-height: 100vh;
 }
 
@@ -28,15 +32,23 @@
 }
 
 .courses-hero::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+  background:
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 40%
+    );
   pointer-events: none;
 }
 
@@ -85,13 +97,14 @@
 
 /* Animated wave effect */
 .courses-hero::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 60px;
   left: 0;
   width: 200%;
   height: 60px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M0,30 C360,60 720,0 1080,30 C1260,45 1380,45 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E") repeat-x;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M0,30 C360,60 720,0 1080,30 C1260,45 1380,45 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E")
+    repeat-x;
   animation: wave-move 8s linear infinite;
 }
 
@@ -180,69 +193,69 @@
   box-shadow: 0 4px 20px rgba(30, 58, 95, 0.3);
 }
 
-/* Maritime Button */
-.filter-btn-maritime {
+/* Maritime & Seamanship Button */
+.filter-btn-maritime-seamanship {
   border-color: #723403;
   color: #723403;
 }
 
-.filter-btn-maritime:hover,
-.filter-btn-maritime.active {
+.filter-btn-maritime-seamanship:hover,
+.filter-btn-maritime-seamanship.active {
   background: #723403;
   color: #fff;
   box-shadow: 0 4px 20px rgba(114, 52, 3, 0.3);
 }
 
-/* Management Button */
-.filter-btn-management {
-  border-color: #01a572;
-  color: #01a572;
+/* Occupational Health & Safety Button */
+.filter-btn-health-safety {
+  border-color: #dc2626;
+  color: #dc2626;
 }
 
-.filter-btn-management:hover,
-.filter-btn-management.active {
-  background: #01a572;
+.filter-btn-health-safety:hover,
+.filter-btn-health-safety.active {
+  background: #dc2626;
   color: #fff;
-  box-shadow: 0 4px 20px rgba(1, 165, 114, 0.3);
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+}
+
+/* Port Operation & Logistics Button */
+.filter-btn-port-logistics {
+  border-color: #016d4d;
+  color: #016d4d;
+}
+
+.filter-btn-port-logistics:hover,
+.filter-btn-port-logistics.active {
+  background: #016d4d;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(1, 109, 77, 0.3);
+}
+
+/* Technical Button */
+.filter-btn-technical {
+  border-color: #9b7dfe;
+  color: #9b7dfe;
+}
+
+.filter-btn-technical:hover,
+.filter-btn-technical.active {
+  background: #9b7dfe;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(155, 125, 254, 0.3);
 }
 
 /* Management & IS Button */
 .filter-btn-management-is {
-  border-color: #fd4523;
-  color: #fd4523;
+  border-color: #01a572;
+  color: #01a572;
 }
 
 .filter-btn-management-is:hover,
 .filter-btn-management-is.active {
-  background: #fd4523;
+  background: #01a572;
   color: #fff;
-  box-shadow: 0 4px 20px rgba(253, 69, 35, 0.3);
-}
-
-/* Equipment Button */
-.filter-btn-equipment {
-  border-color: #0164dd;
-  color: #0164dd;
-}
-
-.filter-btn-equipment:hover,
-.filter-btn-equipment.active {
-  background: #0164dd;
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(1, 100, 221, 0.3);
-}
-
-/* Electrical Button */
-.filter-btn-electrical {
-  border-color: #5faac6;
-  color: #5faac6;
-}
-
-.filter-btn-electrical:hover,
-.filter-btn-electrical.active {
-  background: #5faac6;
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(95, 170, 198, 0.3);
+  box-shadow: 0 4px 20px rgba(1, 165, 114, 0.3);
 }
 
 /* Default Button */
@@ -278,30 +291,34 @@
   overflow: hidden;
   white-space: nowrap;
   flex-shrink: 0;
-  
+
   /* Gradient background */
   background: linear-gradient(135deg, #e63946 0%, #c1121f 50%, #9b2226 100%);
   color: #ffffff;
-  
+
   /* 3D effect */
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(198, 18, 31, 0.4),
     0 8px 25px rgba(155, 34, 38, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     inset 0 -2px 0 rgba(0, 0, 0, 0.15);
-  
+
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .download-pdf-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 100%
+  );
   border-radius: 12px 12px 50% 50%;
   pointer-events: none;
 }
@@ -328,7 +345,7 @@
 
 .download-pdf-btn:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(198, 18, 31, 0.5),
     0 15px 35px rgba(155, 34, 38, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -338,7 +355,7 @@
 
 .download-pdf-btn:active {
   transform: translateY(1px) scale(0.98);
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(198, 18, 31, 0.4),
     0 4px 12px rgba(155, 34, 38, 0.3),
     inset 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -398,7 +415,11 @@
 .bubble {
   position: absolute;
   bottom: -100px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
   animation: bubble-rise linear infinite;
   opacity: 0;
@@ -576,119 +597,139 @@
    STREAM COLORS & BACKGROUNDS
    ========================= */
 
-/* Maritime */
-.stream-maritime {
+/* Maritime & Seamanship */
+.stream-maritime-seamanship {
   background: #f5efe9;
 }
-.stream-maritime .stream-title {
+.stream-maritime-seamanship .stream-title {
   border-left-color: #723403;
   color: #723403;
 }
-.stream-maritime .course-card {
+.stream-maritime-seamanship .course-card {
   background: rgba(255, 255, 255, 0.85);
   border-left: 3px solid rgba(114, 52, 3, 0.4);
 }
-.stream-maritime .course-card:hover {
+.stream-maritime-seamanship .course-card:hover {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(114, 52, 3, 0.6);
-  box-shadow: 
+  box-shadow:
     0 0 15px rgba(114, 52, 3, 0.3),
     0 0 30px rgba(114, 52, 3, 0.2),
     0 0 45px rgba(114, 52, 3, 0.1),
     0 8px 32px rgba(114, 52, 3, 0.15);
 }
 
-/* Management */
-.stream-management {
-  background: linear-gradient(135deg, rgba(1, 165, 114, 0.08) 0%, rgba(16, 185, 129, 0.05) 100%);
+/* Occupational Health & Safety */
+.stream-health-safety {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.08) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
 }
-.stream-management .stream-title {
+.stream-health-safety .stream-title {
+  border-left-color: #dc2626;
+  color: #dc2626;
+}
+.stream-health-safety .course-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-left: 3px solid rgba(220, 38, 38, 0.4);
+}
+.stream-health-safety .course-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(220, 38, 38, 0.6);
+  box-shadow:
+    0 0 15px rgba(220, 38, 38, 0.3),
+    0 0 30px rgba(220, 38, 38, 0.2),
+    0 0 45px rgba(220, 38, 38, 0.1),
+    0 8px 32px rgba(220, 38, 38, 0.15);
+}
+
+/* Port Operation & Logistics */
+.stream-port-logistics {
+  background: linear-gradient(
+    135deg,
+    rgba(1, 109, 77, 0.08) 0%,
+    rgba(5, 150, 105, 0.05) 100%
+  );
+}
+.stream-port-logistics .stream-title {
+  border-left-color: #016d4d;
+  color: #016d4d;
+}
+.stream-port-logistics .course-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-left: 3px solid rgba(1, 109, 77, 0.4);
+}
+.stream-port-logistics .course-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(1, 109, 77, 0.6);
+  box-shadow:
+    0 0 15px rgba(1, 109, 77, 0.3),
+    0 0 30px rgba(1, 109, 77, 0.2),
+    0 0 45px rgba(1, 109, 77, 0.1),
+    0 8px 32px rgba(1, 109, 77, 0.15);
+}
+
+/* Technical */
+.stream-technical {
+  background: linear-gradient(
+    135deg,
+    rgba(155, 125, 254, 0.08) 0%,
+    rgba(167, 139, 250, 0.05) 100%
+  );
+}
+.stream-technical .stream-title {
+  border-left-color: #9b7dfe;
+  color: #9b7dfe;
+}
+.stream-technical .course-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-left: 3px solid rgba(155, 125, 254, 0.4);
+}
+.stream-technical .course-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(155, 125, 254, 0.6);
+  box-shadow:
+    0 0 15px rgba(155, 125, 254, 0.3),
+    0 0 30px rgba(155, 125, 254, 0.2),
+    0 0 45px rgba(155, 125, 254, 0.1),
+    0 8px 32px rgba(155, 125, 254, 0.15);
+}
+
+/* Management & IS */
+.stream-management-is {
+  background: linear-gradient(
+    135deg,
+    rgba(1, 165, 114, 0.08) 0%,
+    rgba(16, 185, 129, 0.05) 100%
+  );
+}
+.stream-management-is .stream-title {
   border-left-color: #01a572;
   color: #01a572;
 }
-.stream-management .course-card {
+.stream-management-is .course-card {
   background: rgba(255, 255, 255, 0.85);
   border-left: 3px solid rgba(1, 165, 114, 0.4);
 }
-.stream-management .course-card:hover {
+.stream-management-is .course-card:hover {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(1, 165, 114, 0.6);
-  box-shadow: 
+  box-shadow:
     0 0 15px rgba(1, 165, 114, 0.3),
     0 0 30px rgba(1, 165, 114, 0.2),
     0 0 45px rgba(1, 165, 114, 0.1),
     0 8px 32px rgba(1, 165, 114, 0.15);
 }
 
-/* Management & IS */
-.stream-management-is {
-  background: linear-gradient(135deg, rgba(253, 69, 35, 0.08) 0%, rgba(251, 146, 60, 0.05) 100%);
-}
-.stream-management-is .stream-title {
-  border-left-color: #fd4523;
-  color: #fd4523;
-}
-.stream-management-is .course-card {
-  background: rgba(255, 255, 255, 0.85);
-  border-left: 3px solid rgba(253, 69, 35, 0.4);
-}
-.stream-management-is .course-card:hover {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(253, 69, 35, 0.6);
-  box-shadow: 
-    0 0 15px rgba(253, 69, 35, 0.3),
-    0 0 30px rgba(253, 69, 35, 0.2),
-    0 0 45px rgba(253, 69, 35, 0.1),
-    0 8px 32px rgba(253, 69, 35, 0.15);
-}
-
-/* Equipment */
-.stream-equipment {
-  background: linear-gradient(135deg, rgba(1, 100, 221, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%);
-}
-.stream-equipment .stream-title {
-  border-left-color: #0164dd;
-  color: #0164dd;
-}
-.stream-equipment .course-card {
-  background: rgba(255, 255, 255, 0.85);
-  border-left: 3px solid rgba(1, 100, 221, 0.4);
-}
-.stream-equipment .course-card:hover {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(1, 100, 221, 0.6);
-  box-shadow: 
-    0 0 15px rgba(1, 100, 221, 0.3),
-    0 0 30px rgba(1, 100, 221, 0.2),
-    0 0 45px rgba(1, 100, 221, 0.1),
-    0 8px 32px rgba(1, 100, 221, 0.15);
-}
-
-/* Electrical */
-.stream-electrical {
-  background: linear-gradient(135deg, rgba(95, 170, 198, 0.1) 0%, rgba(167, 207, 224, 0.08) 100%);
-}
-.stream-electrical .stream-title {
-  border-left-color: #5faac6;
-  color: #5faac6;
-}
-.stream-electrical .course-card {
-  background: rgba(255, 255, 255, 0.85);
-  border-left: 3px solid rgba(95, 170, 198, 0.5);
-}
-.stream-electrical .course-card:hover {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(95, 170, 198, 0.7);
-  box-shadow: 
-    0 0 15px rgba(95, 170, 198, 0.35),
-    0 0 30px rgba(95, 170, 198, 0.25),
-    0 0 45px rgba(95, 170, 198, 0.15),
-    0 8px 32px rgba(95, 170, 198, 0.2);
-}
-
 /* Fallback */
 .stream-default {
-  background: linear-gradient(135deg, rgba(15, 61, 145, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 61, 145, 0.08) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
 }
 .stream-default .stream-title {
   border-left-color: #0f3d91;
@@ -701,7 +742,7 @@
 .stream-default .course-card:hover {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(15, 61, 145, 0.6);
-  box-shadow: 
+  box-shadow:
     0 0 15px rgba(15, 61, 145, 0.3),
     0 0 30px rgba(15, 61, 145, 0.2),
     0 0 45px rgba(15, 61, 145, 0.1),
