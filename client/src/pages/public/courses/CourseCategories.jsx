@@ -45,6 +45,29 @@ const CourseCategories = () => {
   const navigate = useNavigate();
   return (
     <div className="categories-main">
+      {/* Floating bubbles */}
+      <div className="cat-bubbles">
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+        <div className="cat-bubble"></div>
+      </div>
+
+      {/* Wavy decorations */}
+      <div className="cat-wave cat-wave-top">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+          <path d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,0 L0,0 Z" />
+        </svg>
+      </div>
+
       {categories.map((cat, idx) => (
         <section
           key={cat.slug}
@@ -67,6 +90,12 @@ const CourseCategories = () => {
           </div>
         </section>
       ))}
+
+      <div className="cat-wave cat-wave-bottom">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+          <path d="M0,40 C360,100 720,0 1080,40 C1260,70 1380,70 1440,40 L1440,100 L0,100 Z" />
+        </svg>
+      </div>
     </div>
   );
 };
