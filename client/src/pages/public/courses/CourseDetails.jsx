@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./CourseDetails.css";
 
 const streamClassMap = {
@@ -14,24 +13,62 @@ const streamClassMap = {
 const CourseDetails = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://10.70.4.34:5005/api/courses/${courseId}`)
+    let didCancel = false;
+    // Show state data instantly if present
+    if (location.state && location.state.course) {
+      setCourse(location.state.course);
+      setLoading(true); // still fetch for up-to-date info
+    } else {
+      setLoading(true);
+      setCourse(null);
+    }
+    setError(null);
+
+    fetch(`/api/courses/${courseId}`)
       .then((res) => {
-        const courseData = res.data.data || res.data;
+        if (!res.ok) throw new Error("API error");
+        return res.json();
+      })
+      .then((data) => {
+        if (didCancel) return;
+        let courseData = data;
+        if (Array.isArray(data)) {
+          courseData = data[0] || null;
+        }
         setCourse(courseData);
         setLoading(false);
+        // Debug output
+        window.__COURSE_DEBUG__ = {
+          courseId,
+          locationState: location.state,
+          apiResponse: data,
+          parsedCourse: courseData
+        };
+        // eslint-disable-next-line no-console
+        console.log('COURSE DEBUG:', window.__COURSE_DEBUG__);
       })
       .catch((err) => {
-        setError(err.response?.data?.error || "Failed to load course");
+        if (didCancel) return;
+        setError("Failed to load course");
         setLoading(false);
+        // Debug output
+        window.__COURSE_DEBUG__ = {
+          courseId,
+          locationState: location.state,
+          apiError: err
+        };
+        // eslint-disable-next-line no-console
+        console.log('COURSE DEBUG:', window.__COURSE_DEBUG__);
       });
-  }, [courseId]);
+    return () => { didCancel = true; };
+  }, [courseId, location.state]);
 
   const getMedium = () => {
     try {
@@ -63,6 +100,9 @@ const CourseDetails = () => {
     return (
       <div className="course-details">
         <p className="status">Course not found</p>
+        <pre style={{background:'#eee',color:'#333',padding:'1em',overflow:'auto'}}>
+          {JSON.stringify(window.__COURSE_DEBUG__, null, 2)}
+        </pre>
       </div>
     );
 
@@ -72,7 +112,7 @@ const CourseDetails = () => {
     <div className={`course-details ${streamClass}`}>
       <div className="details-card">
         <h1 className="course-title">
-          {course.course_name || course.courseName}
+          {course.course_name || course.courseName || course.name || "Untitled Course"}
         </h1>
 
         <p className="course-subtitle">Detailed course info & requirements</p>
@@ -80,7 +120,7 @@ const CourseDetails = () => {
         <div className="info-grid">
           <div className="info-item">
             <b>Course Code</b>
-            <span>{course.course_id || course.courseId}</span>
+            <span>{course.course_id || course.courseId || course.id}</span>
           </div>
 
           <div className="info-item">
@@ -119,6 +159,16 @@ const CourseDetails = () => {
           <button className="cta-btn" onClick={() => navigate(-1)}>
             Back to Courses
           </button>
+          {course.pdfUrl && (
+            <a
+              href={course.pdfUrl}
+              className="cta-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download PDF
+            </a>
+          )}
           <button className="cta-btn">Enroll Now</button>
         </div>
       </div>
