@@ -144,7 +144,7 @@ const Courses = () => {
           margin: { left: 14, right: 14 }
         });
         
-        yPosition = doc.previousAutoTable.finalY + 15;
+        yPosition = doc.lastAutoTable.finalY + 15;
       });
       
       // Footer on last page
