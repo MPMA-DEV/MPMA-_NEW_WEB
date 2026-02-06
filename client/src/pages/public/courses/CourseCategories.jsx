@@ -45,7 +45,35 @@ const CourseCategories = () => {
   const navigate = useNavigate();
   return (
     <div className="categories-main">
-      {/* Floating bubbles */}
+      {/* Hero Section */}
+      <div className="categories-hero">
+        {/* Bubble Animation */}
+        <div className="bubbles">
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+          <div className="bubble"></div>
+        </div>
+        <div className="categories-hero-inner">
+          <h1 className="categories-hero-title">Our Courses</h1>
+          <p className="categories-hero-subtitle">
+            Explore our comprehensive range of maritime and port training programs designed to build world-class professionals
+          </p>
+        </div>
+        <div className="categories-hero-wave">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,90 1440,60 L1440,120 L0,120 Z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Floating bubbles (page background) */}
       <div className="cat-bubbles">
         <div className="cat-bubble"></div>
         <div className="cat-bubble"></div>
