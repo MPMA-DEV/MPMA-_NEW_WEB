@@ -572,13 +572,17 @@
   padding: 22px;
   border-radius: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.4s cubic-bezier(.4,0,.2,1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.6);
+  transform-style: preserve-3d;
 }
 
 .course-card:hover {
-  transform: translateY(-8px);
+  box-shadow:
+    0 0 15px rgba(var(--stream-rgb, 30,58,95), 0.3),
+    0 0 30px rgba(var(--stream-rgb, 30,58,95), 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
 .course-name {

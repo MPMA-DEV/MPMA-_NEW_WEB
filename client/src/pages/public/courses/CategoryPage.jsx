@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { FaFilePdf, FaSpinner, FaInfoCircle } from "react-icons/fa";
@@ -50,6 +50,95 @@ const normalizeStream = (str) => {
     .replace(/^-|-$/g, "");
 };
 
+// Map slug to theme class
+const slugToTheme = {
+  "maritime-seamanship": "theme-maritime",
+  "occupational-health-safety": "theme-health-safety",
+  "port-operation-logistics": "theme-port-logistics",
+  "technical": "theme-technical",
+  "management-is": "theme-management-is",
+};
+
+// Smooth 3D tilt card wrapper
+const TiltCard = ({ children, className, onClick }) => {
+  const cardRef = useRef(null);
+  const rafRef = useRef(null);
+  const currentTilt = useRef({ x: 0, y: 0 });
+  const targetTilt = useRef({ x: 0, y: 0 });
+
+  const lerp = (start, end, factor) => start + (end - start) * factor;
+
+  const animate = useCallback(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    currentTilt.current.x = lerp(currentTilt.current.x, targetTilt.current.x, 0.08);
+    currentTilt.current.y = lerp(currentTilt.current.y, targetTilt.current.y, 0.08);
+
+    const { x, y } = currentTilt.current;
+    card.style.transform = `perspective(800px) rotateX(${x}deg) rotateY(${y}deg) scale3d(1.02, 1.02, 1.02)`;
+
+    if (
+      Math.abs(currentTilt.current.x - targetTilt.current.x) > 0.01 ||
+      Math.abs(currentTilt.current.y - targetTilt.current.y) > 0.01
+    ) {
+      rafRef.current = requestAnimationFrame(animate);
+    }
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    targetTilt.current = {
+      x: (0.5 - y) * 12,
+      y: (x - 0.5) * 12,
+    };
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(animate);
+  }, [animate]);
+
+  const handleMouseLeave = useCallback(() => {
+    targetTilt.current = { x: 0, y: 0 };
+
+    const resetAnim = () => {
+      const card = cardRef.current;
+      if (!card) return;
+      currentTilt.current.x = lerp(currentTilt.current.x, 0, 0.06);
+      currentTilt.current.y = lerp(currentTilt.current.y, 0, 0.06);
+      card.style.transform = `perspective(800px) rotateX(${currentTilt.current.x}deg) rotateY(${currentTilt.current.y}deg) scale3d(1, 1, 1)`;
+      if (Math.abs(currentTilt.current.x) > 0.01 || Math.abs(currentTilt.current.y) > 0.01) {
+        rafRef.current = requestAnimationFrame(resetAnim);
+      } else {
+        card.style.transform = '';
+      }
+    };
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(resetAnim);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className={className}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ willChange: 'transform', transformStyle: 'preserve-3d' }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const CategoryPage = () => {
   const { categorySlug } = useParams();
   const navigate = useNavigate();
@@ -90,8 +179,10 @@ const CategoryPage = () => {
     fetchCourses();
   }, [categorySlug]);
 
+  const themeClass = slugToTheme[categorySlug] || "theme-default";
+
   return (
-    <div className="category-page">
+    <div className={`category-page ${themeClass}`}>
       {/* Hero Section */}
       <div 
         className="category-hero" 
@@ -147,11 +238,12 @@ const CategoryPage = () => {
         {!loading && !error && courses.length > 0 && (
           <div className="courses-list-grid">
             {courses.map((course) => (
-              <div 
+              <TiltCard
                 className="course-card-new" 
                 key={course.courseId}
                 onClick={() => navigate(`/course/${course.courseId}`, { state: { course } })}
               >
+                <div className="card-accent-bar"></div>
                 <h3 className="course-title">{course.courseName}</h3>
                 <p className="course-desc">
                   {course.description 
@@ -177,7 +269,7 @@ const CategoryPage = () => {
                     View Details
                   </button>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </div>
         )}

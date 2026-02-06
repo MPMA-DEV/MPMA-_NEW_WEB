@@ -320,12 +320,166 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: box-shadow 0.4s cubic-bezier(.4,0,.2,1);
   position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transform-style: preserve-3d;
 }
+
+/* Accent bar at top of card — themed per category */
+.card-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1e3a5f, #3a6d99);
+  border-radius: 16px 16px 0 0;
+  transition: height 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+.course-card-new:hover .card-accent-bar {
+  height: 6px;
+}
+
+/* Remove CSS transform on hover — JS tilt handles it */
 .course-card-new:hover {
-  box-shadow: 0 12px 36px rgba(30,58,95,0.18);
-  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(30,58,95,0.22);
+}
+
+/* ===========================
+   CATEGORY THEME — MARITIME
+   =========================== */
+.theme-maritime .course-card-new {
+  border-left: 4px solid rgba(114,52,3,0.3);
+}
+.theme-maritime .course-card-new:hover {
+  box-shadow: 0 20px 50px rgba(114,52,3,0.18), 0 0 30px rgba(114,52,3,0.08);
+  border-left-color: rgba(114,52,3,0.7);
+}
+.theme-maritime .card-accent-bar {
+  background: linear-gradient(90deg, #723403, #a05a14);
+}
+.theme-maritime .course-title {
+  color: #723403;
+}
+.theme-maritime .details-btn {
+  color: #723403;
+  border-color: #723403;
+}
+.theme-maritime .details-btn:hover {
+  background: #723403;
+  color: #fff;
+}
+
+/* ===========================
+   CATEGORY THEME — HEALTH & SAFETY
+   =========================== */
+.theme-health-safety .course-card-new {
+  border-left: 4px solid rgba(220,38,38,0.3);
+}
+.theme-health-safety .course-card-new:hover {
+  box-shadow: 0 20px 50px rgba(220,38,38,0.18), 0 0 30px rgba(220,38,38,0.08);
+  border-left-color: rgba(220,38,38,0.7);
+}
+.theme-health-safety .card-accent-bar {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+}
+.theme-health-safety .course-title {
+  color: #b91c1c;
+}
+.theme-health-safety .details-btn {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+.theme-health-safety .details-btn:hover {
+  background: #dc2626;
+  color: #fff;
+}
+
+/* ===========================
+   CATEGORY THEME — PORT LOGISTICS
+   =========================== */
+.theme-port-logistics .course-card-new {
+  border-left: 4px solid rgba(1,109,77,0.3);
+}
+.theme-port-logistics .course-card-new:hover {
+  box-shadow: 0 20px 50px rgba(1,109,77,0.18), 0 0 30px rgba(1,109,77,0.08);
+  border-left-color: rgba(1,109,77,0.7);
+}
+.theme-port-logistics .card-accent-bar {
+  background: linear-gradient(90deg, #016d4d, #059669);
+}
+.theme-port-logistics .course-title {
+  color: #016d4d;
+}
+.theme-port-logistics .details-btn {
+  color: #016d4d;
+  border-color: #016d4d;
+}
+.theme-port-logistics .details-btn:hover {
+  background: #016d4d;
+  color: #fff;
+}
+
+/* ===========================
+   CATEGORY THEME — TECHNICAL
+   =========================== */
+.theme-technical .course-card-new {
+  border-left: 4px solid rgba(155,125,254,0.3);
+}
+.theme-technical .course-card-new:hover {
+  box-shadow: 0 20px 50px rgba(155,125,254,0.18), 0 0 30px rgba(155,125,254,0.08);
+  border-left-color: rgba(155,125,254,0.7);
+}
+.theme-technical .card-accent-bar {
+  background: linear-gradient(90deg, #7c3aed, #9b7dfe);
+}
+.theme-technical .course-title {
+  color: #6d4ec7;
+}
+.theme-technical .details-btn {
+  color: #7c3aed;
+  border-color: #7c3aed;
+}
+.theme-technical .details-btn:hover {
+  background: #7c3aed;
+  color: #fff;
+}
+
+/* ===========================
+   CATEGORY THEME — MANAGEMENT & IS
+   =========================== */
+.theme-management-is .course-card-new {
+  border-left: 4px solid rgba(1,165,114,0.3);
+}
+.theme-management-is .course-card-new:hover {
+  box-shadow: 0 20px 50px rgba(1,165,114,0.18), 0 0 30px rgba(1,165,114,0.08);
+  border-left-color: rgba(1,165,114,0.7);
+}
+.theme-management-is .card-accent-bar {
+  background: linear-gradient(90deg, #01a572, #10b981);
+}
+.theme-management-is .course-title {
+  color: #01a572;
+}
+.theme-management-is .details-btn {
+  color: #01a572;
+  border-color: #01a572;
+}
+.theme-management-is .details-btn:hover {
+  background: #01a572;
+  color: #fff;
+}
+
+/* Default theme */
+.theme-default .course-card-new {
+  border-left: 4px solid rgba(30,58,95,0.3);
+}
+.theme-default .course-card-new:hover {
+  box-shadow: 0 20px 50px rgba(30,58,95,0.18), 0 0 30px rgba(30,58,95,0.08);
+  border-left-color: rgba(30,58,95,0.7);
 }
 .course-title {
   font-size: 1.3rem;
