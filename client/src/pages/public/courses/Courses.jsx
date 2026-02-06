@@ -350,7 +350,7 @@ const Courses = () => {
                   <div
                     key={course.courseId}
                     className="course-card"
-                    onClick={() => navigate(`/courses/${course.courseId}`)}
+                    onClick={() => navigate(`/course/${course.courseId}`, { state: { course } })}
                   >
                     <h3 className="course-name">{course.courseName}</h3>
 

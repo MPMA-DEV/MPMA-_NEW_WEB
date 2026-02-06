@@ -150,7 +150,7 @@ const CategoryPage = () => {
               <div 
                 className="course-card-new" 
                 key={course.courseId}
-                onClick={() => navigate(`/courses/${course.courseId}`)}
+                onClick={() => navigate(`/course/${course.courseId}`, { state: { course } })}
               >
                 <h3 className="course-title">{course.courseName}</h3>
                 <p className="course-desc">
@@ -171,7 +171,7 @@ const CategoryPage = () => {
                     className="details-btn"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/courses/${course.courseId}`, { state: { course } });
+                      navigate(`/course/${course.courseId}`, { state: { course } });
                     }}
                   >
                     View Details

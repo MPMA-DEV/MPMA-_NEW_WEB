@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import "./CourseDetails.css";
+
+const API_BASE = "http://10.70.4.34:5005";
 
 const streamClassMap = {
   "Maritime & Seamanship": "stream-maritime-seamanship",
@@ -21,53 +24,45 @@ const CourseDetails = () => {
 
   useEffect(() => {
     let didCancel = false;
-    // Show state data instantly if present
-    if (location.state && location.state.course) {
-      setCourse(location.state.course);
-      setLoading(true); // still fetch for up-to-date info
+
+    // Use course from navigation state immediately if available
+    const stateCourse = location.state?.course ?? null;
+
+    if (stateCourse) {
+      setCourse(stateCourse);
     } else {
-      setLoading(true);
       setCourse(null);
     }
+
+    setLoading(true);
     setError(null);
 
-    fetch(`/api/courses/${courseId}`)
+    // Fetch latest data from the API (same base URL Courses.jsx uses)
+    axios
+      .get(`${API_BASE}/api/courses/${courseId}`)
       .then((res) => {
-        if (!res.ok) throw new Error("API error");
-        return res.json();
-      })
-      .then((data) => {
         if (didCancel) return;
-        let courseData = data;
-        if (Array.isArray(data)) {
-          courseData = data[0] || null;
+        let courseData = res.data;
+        if (Array.isArray(courseData)) {
+          courseData = courseData[0] || null;
         }
-        setCourse(courseData);
+        if (courseData) {
+          setCourse(courseData);
+        }
         setLoading(false);
-        // Debug output
-        window.__COURSE_DEBUG__ = {
-          courseId,
-          locationState: location.state,
-          apiResponse: data,
-          parsedCourse: courseData
-        };
-        // eslint-disable-next-line no-console
-        console.log('COURSE DEBUG:', window.__COURSE_DEBUG__);
       })
-      .catch((err) => {
+      .catch(() => {
         if (didCancel) return;
-        setError("Failed to load course");
+        // If API fails but we already have state data, keep showing it
+        if (!stateCourse) {
+          setError("Failed to load course. Please try again later.");
+        }
         setLoading(false);
-        // Debug output
-        window.__COURSE_DEBUG__ = {
-          courseId,
-          locationState: location.state,
-          apiError: err
-        };
-        // eslint-disable-next-line no-console
-        console.log('COURSE DEBUG:', window.__COURSE_DEBUG__);
       });
-    return () => { didCancel = true; };
+
+    return () => {
+      didCancel = true;
+    };
   }, [courseId, location.state]);
 
   const getMedium = () => {
@@ -100,9 +95,9 @@ const CourseDetails = () => {
     return (
       <div className="course-details">
         <p className="status">Course not found</p>
-        <pre style={{background:'#eee',color:'#333',padding:'1em',overflow:'auto'}}>
-          {JSON.stringify(window.__COURSE_DEBUG__, null, 2)}
-        </pre>
+        <button className="cta-btn" onClick={() => navigate("/courses")}>
+          Back to Courses
+        </button>
       </div>
     );
 

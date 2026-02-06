@@ -77,7 +77,7 @@ function App() {
             {/* Courses Routes */}
             <Route path="/courses" element={<CourseCategories />} />
             <Route path="/courses/:categorySlug" element={<CategoryPage />} />
-            <Route path="/courses/:courseId" element={<CourseDetails />} />
+            <Route path="/course/:courseId" element={<CourseDetails />} />
 
             {/* Results Routes */}
             <Route
