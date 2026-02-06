@@ -151,27 +151,21 @@ const Courses = () => {
           yPosition = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : yPosition + 50;
         });
         
-        // Footer on all pages
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-          doc.setPage(i);
-          doc.setFontSize(8);
-          doc.setTextColor(150, 150, 150);
-          doc.text(
-            `Page ${i} of ${pageCount}`,
-            pageWidth / 2,
-            doc.internal.pageSize.getHeight() - 10,
-            { align: 'center' }
-          );
-        }
-        
-        // Save the PDF
-        doc.save('MPMA_Course_Catalog.pdf');
-        setIsGeneratingPdf(false);
-      } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Failed to generate PDF: ' + error.message);
-        setIsGeneratingPdf(false);
+        yPosition = doc.lastAutoTable.finalY + 15;
+      });
+      
+      // Footer on last page
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text(
+          `Page ${i} of ${pageCount}`,
+          pageWidth / 2,
+          doc.internal.pageSize.getHeight() - 10,
+          { align: 'center' }
+        );
       }
     }, 100);
   };
