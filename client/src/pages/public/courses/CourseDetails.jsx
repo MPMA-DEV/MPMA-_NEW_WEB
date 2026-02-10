@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./CourseDetails.css";
+
+const API_BASE = "http://10.70.4.34:5005";
 
 const streamClassMap = {
   "Maritime & Seamanship": "stream-maritime-seamanship",
@@ -14,24 +16,54 @@ const streamClassMap = {
 const CourseDetails = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let didCancel = false;
+
+    // Use course from navigation state immediately if available
+    const stateCourse = location.state?.course ?? null;
+
+    if (stateCourse) {
+      setCourse(stateCourse);
+    } else {
+      setCourse(null);
+    }
+
+    setLoading(true);
+    setError(null);
+
+    // Fetch latest data from the API (same base URL Courses.jsx uses)
     axios
-      .get(`http://10.70.4.34:5005/api/courses/${courseId}`)
+      .get(`${API_BASE}/api/courses/${courseId}`)
       .then((res) => {
-        const courseData = res.data.data || res.data;
-        setCourse(courseData);
+        if (didCancel) return;
+        let courseData = res.data;
+        if (Array.isArray(courseData)) {
+          courseData = courseData[0] || null;
+        }
+        if (courseData) {
+          setCourse(courseData);
+        }
         setLoading(false);
       })
-      .catch((err) => {
-        setError(err.response?.data?.error || "Failed to load course");
+      .catch(() => {
+        if (didCancel) return;
+        // If API fails but we already have state data, keep showing it
+        if (!stateCourse) {
+          setError("Failed to load course. Please try again later.");
+        }
         setLoading(false);
       });
-  }, [courseId]);
+
+    return () => {
+      didCancel = true;
+    };
+  }, [courseId, location.state]);
 
   const getMedium = () => {
     try {
@@ -63,6 +95,9 @@ const CourseDetails = () => {
     return (
       <div className="course-details">
         <p className="status">Course not found</p>
+        <button className="cta-btn" onClick={() => navigate("/courses")}>
+          Back to Courses
+        </button>
       </div>
     );
 
@@ -72,7 +107,7 @@ const CourseDetails = () => {
     <div className={`course-details ${streamClass}`}>
       <div className="details-card">
         <h1 className="course-title">
-          {course.course_name || course.courseName}
+          {course.course_name || course.courseName || course.name || "Untitled Course"}
         </h1>
 
         <p className="course-subtitle">Detailed course info & requirements</p>
@@ -80,7 +115,7 @@ const CourseDetails = () => {
         <div className="info-grid">
           <div className="info-item">
             <b>Course Code</b>
-            <span>{course.course_id || course.courseId}</span>
+            <span>{course.course_id || course.courseId || course.id}</span>
           </div>
 
           <div className="info-item">
@@ -119,6 +154,16 @@ const CourseDetails = () => {
           <button className="cta-btn" onClick={() => navigate(-1)}>
             Back to Courses
           </button>
+          {course.pdfUrl && (
+            <a
+              href={course.pdfUrl}
+              className="cta-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download PDF
+            </a>
+          )}
           <button className="cta-btn">Enroll Now</button>
         </div>
       </div>

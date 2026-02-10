@@ -150,7 +150,7 @@ function App() {
                           {/* Courses */}
                           <Route path="/courses" element={<Courses />} />
                           <Route
-                            path="/courses/:courseId"
+                            path="/course/:courseId"
                             element={<CourseDetails />}
                           />
 

@@ -10,7 +10,6 @@ import GlassNavbar from "./components/common/GlassNavbar.jsx";
 import GlassFooter from "./components/common/GlassFooter.jsx";
 import OceanWaveFooter from "./components/common/OceanWaveFooter.jsx";
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
-
 // Pages
 import Home from "./pages/public/Home.jsx";
 import AboutUs from "./pages/public/AboutUs.jsx";
@@ -22,8 +21,9 @@ import PrivacyPolicy from "./pages/public/PrivacyPolicy.jsx";
 import TermsOfUse from "./pages/public/TermsOfUse.jsx";
 import SiteMap from "./pages/public/SiteMap.jsx";
 import Courses from "./pages/public/courses/Courses.jsx";
+import CourseCategories from "./pages/public/courses/CourseCategories.jsx";
 import CourseDetails from "./pages/public/courses/CourseDetails.jsx";
-
+import CategoryPage from "./pages/public/courses/CategoryPage.jsx";
 import CertificationRegistration from "./pages/results/CertificationRegistration.jsx";
 import ExternalResults from "./pages/results/ExternalResults.jsx";
 import InternalResults from "./pages/results/InternalResults.jsx";
@@ -75,8 +75,9 @@ function App() {
             <Route path="/site-map" element={<SiteMap />} />
 
             {/* Courses Routes */}
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/courses/:courseId" element={<CourseDetails />} />
+            <Route path="/courses" element={<CourseCategories />} />
+            <Route path="/courses/:categorySlug" element={<CategoryPage />} />
+            <Route path="/course/:courseId" element={<CourseDetails />} />
 
             {/* Results Routes */}
             <Route

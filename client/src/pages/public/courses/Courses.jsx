@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jsPDF from "jspdf";
@@ -22,6 +22,77 @@ const streamOrder = [
   "Technical",
   "Management & IS",
 ];
+
+// Smooth 3D tilt card wrapper
+const TiltCard = ({ children, className, onClick }) => {
+  const cardRef = useRef(null);
+  const rafRef = useRef(null);
+  const currentTilt = useRef({ x: 0, y: 0 });
+  const targetTilt = useRef({ x: 0, y: 0 });
+
+  const lerp = (start, end, factor) => start + (end - start) * factor;
+
+  const animate = useCallback(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    currentTilt.current.x = lerp(currentTilt.current.x, targetTilt.current.x, 0.08);
+    currentTilt.current.y = lerp(currentTilt.current.y, targetTilt.current.y, 0.08);
+    const { x, y } = currentTilt.current;
+    card.style.transform = `perspective(800px) rotateX(${x}deg) rotateY(${y}deg) scale3d(1.03, 1.03, 1.03)`;
+    if (
+      Math.abs(currentTilt.current.x - targetTilt.current.x) > 0.01 ||
+      Math.abs(currentTilt.current.y - targetTilt.current.y) > 0.01
+    ) {
+      rafRef.current = requestAnimationFrame(animate);
+    }
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    targetTilt.current = { x: (0.5 - py) * 12, y: (px - 0.5) * 12 };
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(animate);
+  }, [animate]);
+
+  const handleMouseLeave = useCallback(() => {
+    targetTilt.current = { x: 0, y: 0 };
+    const reset = () => {
+      const card = cardRef.current;
+      if (!card) return;
+      currentTilt.current.x = lerp(currentTilt.current.x, 0, 0.06);
+      currentTilt.current.y = lerp(currentTilt.current.y, 0, 0.06);
+      card.style.transform = `perspective(800px) rotateX(${currentTilt.current.x}deg) rotateY(${currentTilt.current.y}deg) scale3d(1, 1, 1)`;
+      if (Math.abs(currentTilt.current.x) > 0.01 || Math.abs(currentTilt.current.y) > 0.01) {
+        rafRef.current = requestAnimationFrame(reset);
+      } else {
+        card.style.transform = '';
+      }
+    };
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(reset);
+  }, []);
+
+  useEffect(() => {
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className={className}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ willChange: 'transform', transformStyle: 'preserve-3d' }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -347,10 +418,10 @@ const Courses = () => {
 
               <div className="courses-grid">
                 {groupedCourses[stream].map((course) => (
-                  <div
+                  <TiltCard
                     key={course.courseId}
                     className="course-card"
-                    onClick={() => navigate(`/courses/${course.courseId}`)}
+                    onClick={() => navigate(`/course/${course.courseId}`, { state: { course } })}
                   >
                     <h3 className="course-name">{course.courseName}</h3>
 
@@ -361,7 +432,7 @@ const Courses = () => {
                     <p className="course-info">
                       <strong>Fees:</strong> Rs. {course.fees}
                     </p>
-                  </div>
+                  </TiltCard>
                 ))}
               </div>
             </section>
