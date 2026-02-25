@@ -32,6 +32,7 @@ import CourseSelection from "./pages/registration/CourseSelection.jsx";
 import AdditionalInformation from "./pages/registration/AdditionalInformation.jsx";
 import Documents from "./pages/registration/Documents.jsx";
 import Confirmation from "./pages/registration/Confirmation.jsx";
+import EnrollmentPage from "./pages/registration/EnrollmentPage.jsx";
 import AdminLogin from "./admin/AdminLogin.jsx";
 import AdminDashboard from "./admin/AdminDashboard.jsx";
 import ManageCourses from "./admin/ManageCourses.jsx";
@@ -78,6 +79,7 @@ function App() {
             <Route path="/courses" element={<CourseCategories />} />
             <Route path="/courses/:categorySlug" element={<CategoryPage />} />
             <Route path="/course/:courseId" element={<CourseDetails />} />
+            <Route path="/registration/enroll" element={<EnrollmentPage />} />
 
             {/* Results Routes */}
             <Route

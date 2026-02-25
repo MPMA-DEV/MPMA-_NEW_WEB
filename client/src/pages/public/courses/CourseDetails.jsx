@@ -164,7 +164,12 @@ const CourseDetails = () => {
               Download PDF
             </a>
           )}
-          <button className="cta-btn">Enroll Now</button>
+          <button
+            className="cta-btn"
+            onClick={() => navigate("/registration/enroll", { state: { course } })}
+          >
+            Enroll Now
+          </button>
         </div>
       </div>
     </div>
