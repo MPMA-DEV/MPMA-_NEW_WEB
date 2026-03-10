@@ -6,8 +6,10 @@ const PHONE_RE = /^\+?\d{7,15}$/;
 const MOBILE_RE = /^\d{10}$/; // exactly 10 digits
 const EMAIL_RE = /\S+@\S+\.\S+/;
 const NIC_RE = /(^\d{9}[VXvx]$)|(^\d{12}$)|(^[A-Za-z0-9\-\/]{4,20}$)/;
-const MAX_FILE_BYTES = 3 * 1024 * 1024; // 3 MB
-const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "application/pdf"];
+// file upload removed; no MAX_FILE_BYTES or ALLOWED_FILE_TYPES
+
+// keep a safe fallback in case earlier builds reference CITIES
+const CITIES = [];
 
 function calculateAge(dob) {
   if (!dob) return null;
@@ -30,6 +32,7 @@ const EnrollmentPage = () => {
 
   const [form, setForm] = useState({
     fullName: "",
+    nameWithInitials: "",
     nic: "",
     dob: "",
     gender: "",
@@ -37,38 +40,12 @@ const EnrollmentPage = () => {
     mobile: "",
     address: "",
     emergencyContact: "",
-    qualification: "",
-    preferredBatch: "",
+    // qualification, city, postalCode removed
     agreeTerms: false,
-    nicFile: null,
-    // Advanced Level (AL)
-    al_stream: "",
-    al_year: "",
-    al_index: "",
-    al_subject1: "",
-    al_subject1_result: "",
-    al_subject2: "",
-    al_subject2_result: "",
-    al_subject3: "",
-    al_subject3_result: "",
-    al_general_english_result: "",
-    al_general_it_result: "",
-    // Ordinary Level (OL)
-    ol_year: "",
-    ol_index: "",
-    ol_math_result: "",
-    ol_science_result: "",
-    ol_english_result: "",
-    ol_language_result: "",
-    ol_history_result: "",
-    ol_religion_result: "",
-    ol_ict_result: "",
-    ol_commerce_result: "",
-    ol_optional1_name: "",
-    ol_optional1_result: "",
-    ol_optional2_name: "",
-    ol_optional2_result: "",
+    // AL/OL fields removed
   });
+
+  // location/city list removed
 
   const [errors, setErrors] = useState({});
 
@@ -121,35 +98,12 @@ const EnrollmentPage = () => {
         if (age === null) return "Enter a valid date";
         if (age < 15) return "Applicant must be at least 15 years old";
         return null;
-      case "qualification":
+      // qualification removed
+      case "nameWithInitials":
+        if (!v) return "Name with initials is required";
+        if (v.length < 2) return "Enter a valid name with initials";
         return null;
-      case "al_stream":
-        if (!v) return "Stream is required for A/L";
-        return null;
-      case "al_year":
-        if (!v) return "A/L year is required";
-        if (!/^\d{4}$/.test(v)) return "Enter a valid 4-digit year";
-        const currY = new Date().getFullYear();
-        if (Number(v) < 1900 || Number(v) > currY) return "Enter a valid year";
-        return null;
-      case "al_index":
-        if (!v) return "A/L index number is required";
-        return null;
-      case "ol_year":
-        if (!v) return "O/L year is required";
-        if (!/^\d{4}$/.test(v)) return "Enter a valid 4-digit year";
-        const currOLY = new Date().getFullYear();
-        if (Number(v) < 1900 || Number(v) > currOLY) return "Enter a valid year";
-        return null;
-      case "ol_index":
-        if (!v) return "O/L index number is required";
-        return null;
-      case "nicFile":
-        if (!v) return null;
-        if (!(v instanceof File)) return "Invalid file";
-        if (!ALLOWED_FILE_TYPES.includes(v.type)) return "Allowed file types: jpg, png, pdf";
-        if (v.size > MAX_FILE_BYTES) return "File too large (max 3 MB)";
-        return null;
+      // AL/OL and nicFile validations removed
       case "agreeTerms":
         if (!v) return "You must agree to the terms";
         return null;
@@ -162,13 +116,13 @@ const EnrollmentPage = () => {
     const n = {};
     const fieldsToCheck = [
       "fullName",
+      "nameWithInitials",
       "nic",
       "email",
       "mobile",
       "address",
       "dob",
       "emergencyContact",
-      "nicFile",
       "agreeTerms",
     ];
 
@@ -176,21 +130,6 @@ const EnrollmentPage = () => {
       const err = validateField(f, form[f]);
       if (err) n[f] = err;
     });
-
-    // Qualification specific checks
-    if (form.qualification === "AL") {
-      // require A/L stream, year, index
-      ["al_stream", "al_year", "al_index"].forEach((f) => {
-        const err = validateField(f, form[f]);
-        if (err) n[f] = err;
-      });
-    } else if (form.qualification === "OL") {
-      ["ol_year", "ol_index"].forEach((f) => {
-        const err = validateField(f, form[f]);
-        if (err) n[f] = err;
-      });
-    }
-
     return n;
   };
 
@@ -213,17 +152,7 @@ const EnrollmentPage = () => {
     });
   };
 
-  const handleFile = (e) => {
-    const file = e.target.files[0] || null;
-    setForm((p) => ({ ...p, nicFile: file }));
-    const fileError = validateField("nicFile", file);
-    setErrors((p) => {
-      const copy = { ...p };
-      if (fileError) copy.nicFile = fileError;
-      else delete copy.nicFile;
-      return copy;
-    });
-  };
+  // handleFile removed (no file input)
 
   const validationErrors = validate();
   const canSubmit = Object.keys(validationErrors).length === 0;
@@ -236,7 +165,7 @@ const EnrollmentPage = () => {
 
     const payload = {
       course: { courseName, courseCode, totalFee },
-      applicant: { ...form, nicFileName: form.nicFile?.name || null },
+      applicant: { ...form },
     };
 
     console.log("Enrollment submitted:", payload);
@@ -263,6 +192,12 @@ const EnrollmentPage = () => {
               <label>Full Name *</label>
               <input name="fullName" value={form.fullName} onChange={handleChange} aria-invalid={!!errors.fullName} />
               {errors.fullName && <div className="error">{errors.fullName}</div>}
+            </div>
+
+            <div className={`form-row ${errors.nameWithInitials ? "has-error" : ""}`}>
+              <label>Name with Initials *</label>
+              <input name="nameWithInitials" value={form.nameWithInitials} onChange={handleChange} aria-invalid={!!errors.nameWithInitials} />
+              {errors.nameWithInitials && <div className="error">{errors.nameWithInitials}</div>}
             </div>
 
             <div className={`form-row ${errors.nic ? "has-error" : ""}`}>
@@ -311,180 +246,9 @@ const EnrollmentPage = () => {
               {errors.emergencyContact && <div className="error">{errors.emergencyContact}</div>}
             </div>
 
-            <div className={`form-row ${errors.qualification ? "has-error" : ""}`}>
-              <label>Educational Qualification</label>
-              <select name="qualification" value={form.qualification} onChange={handleChange}>
-                <option value="">Select Qualification</option>
-                <option value="AL">Advanced Level (A/L)</option>
-                <option value="OL">Ordinary Level (O/L)</option>
-                <option value="OTHER">Other</option>
-              </select>
-            </div>
+            {/* Educational qualification and AL/OL sections removed */}
 
-            {/* Advanced Level details */}
-            {form.qualification === "AL" && (
-              <div className="form-row full-width qual-card">
-                <h3 className="qual-title">Advanced Level Details</h3>
-                <div className="form-grid">
-                  <div className={`form-row ${errors.al_stream ? "has-error" : ""}`}>
-                    <label>Stream</label>
-                    <select name="al_stream" value={form.al_stream} onChange={handleChange}>
-                      <option value="">Select stream</option>
-                      <option value="Physical Science">Physical Science</option>
-                      <option value="Biological Science">Biological Science</option>
-                      <option value="Commerce">Commerce</option>
-                      <option value="Arts">Arts</option>
-                      <option value="Technology">Technology</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className={`form-row ${errors.al_year ? "has-error" : ""}`}>
-                    <label>Year Completed</label>
-                    <input name="al_year" value={form.al_year} onChange={handleChange} placeholder="YYYY" />
-                  </div>
-
-                  <div className={`form-row ${errors.al_index ? "has-error" : ""}`}>
-                    <label>Index Number</label>
-                    <input name="al_index" value={form.al_index} onChange={handleChange} />
-                  </div>
-
-                  <div className="form-row full-width subjects-card">
-                    <label>Subjects & Results</label>
-                    <div className="subject-grid">
-                      <div className="subject-row">
-                        <input name="al_subject1" placeholder="Subject 1" value={form.al_subject1} onChange={handleChange} />
-                        <select name="al_subject1_result" value={form.al_subject1_result} onChange={handleChange}>
-                          <option value="">Result</option>
-                          <option value="A">A</option>
-                          <option value="B">B</option>
-                          <option value="C">C</option>
-                          <option value="S">S</option>
-                          <option value="F">F</option>
-                        </select>
-                      </div>
-
-                      <div className="subject-row">
-                        <input name="al_subject2" placeholder="Subject 2" value={form.al_subject2} onChange={handleChange} />
-                        <select name="al_subject2_result" value={form.al_subject2_result} onChange={handleChange}>
-                          <option value="">Result</option>
-                          <option value="A">A</option>
-                          <option value="B">B</option>
-                          <option value="C">C</option>
-                          <option value="S">S</option>
-                          <option value="F">F</option>
-                        </select>
-                      </div>
-
-                      <div className="subject-row">
-                        <input name="al_subject3" placeholder="Subject 3" value={form.al_subject3} onChange={handleChange} />
-                        <select name="al_subject3_result" value={form.al_subject3_result} onChange={handleChange}>
-                          <option value="">Result</option>
-                          <option value="A">A</option>
-                          <option value="B">B</option>
-                          <option value="C">C</option>
-                          <option value="S">S</option>
-                          <option value="F">F</option>
-                        </select>
-                      </div>
-
-                      <div className="subject-row">
-                        <label className="small-label">General English (optional)</label>
-                        <select name="al_general_english_result" value={form.al_general_english_result} onChange={handleChange}>
-                          <option value="">Result</option>
-                          <option value="A">A</option>
-                          <option value="B">B</option>
-                          <option value="C">C</option>
-                          <option value="S">S</option>
-                          <option value="F">F</option>
-                        </select>
-                      </div>
-
-                      <div className="subject-row">
-                        <label className="small-label">General IT (optional)</label>
-                        <select name="al_general_it_result" value={form.al_general_it_result} onChange={handleChange}>
-                          <option value="">Result</option>
-                          <option value="A">A</option>
-                          <option value="B">B</option>
-                          <option value="C">C</option>
-                          <option value="S">S</option>
-                          <option value="F">F</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Ordinary Level details */}
-            {form.qualification === "OL" && (
-              <div className="form-row full-width qual-card">
-                <h3 className="qual-title">Ordinary Level Details</h3>
-                <div className="form-grid">
-                  <div className={`form-row ${errors.ol_year ? "has-error" : ""}`}>
-                    <label>Year Completed</label>
-                    <input name="ol_year" value={form.ol_year} onChange={handleChange} placeholder="YYYY" />
-                  </div>
-
-                  <div className={`form-row ${errors.ol_index ? "has-error" : ""}`}>
-                    <label>Index Number</label>
-                    <input name="ol_index" value={form.ol_index} onChange={handleChange} />
-                  </div>
-
-                  <div className="form-row full-width subjects-card">
-                    <label>O/L Subjects & Results</label>
-                    <div className="subject-grid">
-                      <div className="subject-row"><span>Mathematics</span>
-                        <select name="ol_math_result" value={form.ol_math_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>Science</span>
-                        <select name="ol_science_result" value={form.ol_science_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>English</span>
-                        <select name="ol_english_result" value={form.ol_english_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>Sinhala / Tamil</span>
-                        <select name="ol_language_result" value={form.ol_language_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>History</span>
-                        <select name="ol_history_result" value={form.ol_history_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>Religion</span>
-                        <select name="ol_religion_result" value={form.ol_religion_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>ICT</span>
-                        <select name="ol_ict_result" value={form.ol_ict_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                      <div className="subject-row"><span>Commerce</span>
-                        <select name="ol_commerce_result" value={form.ol_commerce_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-
-                      <div className="subject-row">
-                        <input name="ol_optional1_name" placeholder="Optional Subject 1" value={form.ol_optional1_name} onChange={handleChange} />
-                        <select name="ol_optional1_result" value={form.ol_optional1_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-
-                      <div className="subject-row">
-                        <input name="ol_optional2_name" placeholder="Optional Subject 2" value={form.ol_optional2_name} onChange={handleChange} />
-                        <select name="ol_optional2_result" value={form.ol_optional2_result} onChange={handleChange}><option value="">Result</option><option>A</option><option>B</option><option>C</option><option>S</option><option>W</option></select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div className={`form-row ${errors.preferredBatch ? "has-error" : ""}`}>
-              <label>Preferred Batch</label>
-              <input name="preferredBatch" value={form.preferredBatch} onChange={handleChange} aria-invalid={!!errors.preferredBatch} />
-            </div>
-
-            <div className={`form-row ${errors.nicFile ? "has-error" : ""}`}>
-              <label>Upload NIC Copy</label>
-              <input type="file" name="nicFile" onChange={handleFile} aria-invalid={!!errors.nicFile} />
-              {errors.nicFile && <div className="error">{errors.nicFile}</div>}
-            </div>
+            {/* Location and NIC file upload removed */}
 
             <div className={`form-row full-width checkbox-row ${errors.agreeTerms ? "has-error" : ""}`}>
               <label className="checkbox-label">
@@ -495,9 +259,13 @@ const EnrollmentPage = () => {
             </div>
           </div>
 
-          <div className="form-actions">
-            <button type="submit" className="btn-submit" disabled={!canSubmit}>Submit Enrollment</button>
-            <button type="button" className="btn-cancel btn-cancel--red" onClick={() => navigate(-1)}>Cancel</button>
+          <div className="form-actions row" style={{alignItems: 'center'}}>
+            <div className="col-auto">
+              <button type="submit" className="btn-submit btn btn-primary" disabled={!canSubmit}>Submit Enrollment</button>
+            </div>
+            <div className="col-auto">
+              <button type="button" className="btn-cancel btn-cancel--red btn btn-danger" onClick={() => navigate(-1)}>Cancel</button>
+            </div>
           </div>
         </form>
       </div>
