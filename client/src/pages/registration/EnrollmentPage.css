@@ -1,0 +1,224 @@
+:root{
+  --navy: #0a1f44;
+  --gold: #d4af37;
+  --card-bg: #ffffff;
+  --page-bg: #f4f6f9;
+  --muted: #6c7a91;
+}
+
+.enroll-page{
+  min-height: calc(100vh - 120px);
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:48px 20px;
+  background: linear-gradient(180deg, var(--page-bg) 0%, #eef3f9 100%);
+}
+
+.enroll-card{
+  width:100%;
+  max-width:980px;
+  background:var(--card-bg);
+  border-radius:14px;
+  padding:28px;
+  box-shadow:0 12px 40px rgba(10,31,68,0.08);
+  position:relative;
+  overflow:hidden;
+}
+
+/* left accent stripe on card */
+.enroll-card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:8px;
+  background:var(--navy);
+  border-top-left-radius:14px;
+  border-bottom-left-radius:14px;
+}
+
+.course-header{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-bottom:20px;
+  padding-left:18px; /* space from accent */
+}
+
+.course-title{
+  margin:0;
+  color:var(--navy);
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:0.2px;
+}
+
+.course-summary-box{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  justify-content:space-between;
+  background:#fbfdff;
+  border:1px solid rgba(10,31,68,0.06);
+  padding:12px 14px;
+  border-radius:10px;
+}
+
+.course-summary-box .course-code .label,
+.course-summary-box .course-fee .label{ display:block; font-size:12px; color:var(--muted); }
+.course-summary-box .value{ display:block; font-weight:700; color:var(--navy); margin-top:4px; }
+
+.course-summary-box .course-fee .value{
+  background: linear-gradient(90deg, rgba(212,175,55,0.14), rgba(212,175,55,0.06));
+  padding:8px 12px;
+  border-radius:8px;
+  color:var(--navy);
+}
+
+.enroll-form{ margin-top:18px; }
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px 20px;
+}
+
+.form-row{ display:flex; flex-direction:column; }
+.form-row.full-width{ grid-column:1 / -1; }
+
+.form-row label{ font-weight:600; margin-bottom:8px; color:var(--navy); font-size:14px; }
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="date"],
+.form-row input[type="file"],
+.form-row textarea,
+.form-row select,
+.form-row input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(10,31,68,0.08);
+  background: #fff;
+  transition: box-shadow 0.18s ease, transform 0.12s ease, border-color 0.12s ease;
+  font-size:14px;
+  color:#1f2b3a;
+  height:44px;
+}
+
+.form-row textarea{ min-height:100px; height:auto; padding-top:10px; }
+
+.form-row input:focus, .form-row textarea:focus, .form-row select:focus{
+  outline:none;
+  border-color:var(--navy);
+  box-shadow:0 6px 20px rgba(10,31,68,0.08);
+}
+
+.form-row input[type="file"]{ padding:8px 10px; height:auto; }
+
+.checkbox-row{ display:flex; align-items:center; gap:12px; }
+.checkbox-label{ display:flex; align-items:center; gap:10px; color:#223; }
+.checkbox-label input{ width:16px; height:16px; }
+
+.form-actions{ display:flex; gap:16px; justify-content:flex-start; align-items:center; margin-top:18px; flex-wrap:wrap; }
+
+.btn-submit{
+  background: linear-gradient(90deg, var(--navy), #063a6d);
+  color:#fff; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;
+  box-shadow:0 10px 30px rgba(10,31,68,0.12);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, opacity 0.12s ease;
+  height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  vertical-align:middle;
+}
+.btn-submit:hover{ transform:translateY(-2px); box-shadow:0 18px 40px rgba(10,31,68,0.18); }
+
+/* Cancel button - gray maritime theme */
+.btn-cancel{
+  /* match submit height/padding while remaining visually secondary */
+  background:var(--cancel-bg, #6c757d);
+  color:#ffffff;
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(50,60,70,0.08);
+  transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  min-width:0;
+  font-size:14px;
+  height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  vertical-align:middle;
+}
+.btn-cancel:hover{
+  transform:translateY(-2px);
+}
+.btn-cancel:active{ transform:translateY(0); box-shadow:0 6px 16px rgba(50,60,70,0.08); }
+.btn-cancel:focus{ outline:none; box-shadow:0 0 0 4px rgba(50,60,70,0.06); }
+
+/* Red variant requested by user (soft red) */
+.btn-cancel--red{ background:#dc3545; box-shadow:0 8px 22px rgba(220,53,69,0.10); }
+.btn-cancel--red:hover{ background:#c82333; box-shadow:0 14px 36px rgba(200,35,51,0.14); }
+.btn-cancel--red:active{ transform:translateY(0); box-shadow:0 6px 18px rgba(200,35,51,0.10); }
+.btn-cancel--red:focus{ box-shadow:0 0 0 6px rgba(220,53,69,0.12); }
+
+/* Keep gray modifier for backward compatibility */
+.btn-cancel--gray{ background:#6c757d; box-shadow:0 8px 22px rgba(108,117,125,0.10); }
+
+.error{ color:#b00020; margin-top:8px; font-size:13px; }
+
+.notice{ color:var(--muted); margin-top:8px; }
+
+@media (max-width:900px){
+  .form-grid{ grid-template-columns:repeat(1,1fr); }
+  .enroll-card{ padding:20px; }
+  .course-summary-box{ flex-direction:column; align-items:flex-start; gap:8px; }
+  .form-actions{ flex-direction:column; gap:12px; }
+  .btn-submit, .btn-cancel{ width:100%; min-width:0; }
+}
+
+/* Field error visual */
+.form-row.has-error input,
+.form-row.has-error textarea,
+.form-row.has-error select{
+  border-color: #b00020;
+  box-shadow: 0 6px 16px rgba(176,0,32,0.06);
+}
+
+/* Disabled submit appearance */
+.btn-submit[disabled]{
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Qualification card styling */
+.qual-card{
+  border:1px solid rgba(10,31,68,0.06);
+  padding:14px;
+  border-radius:10px;
+  background: #fbfdff;
+  margin-top:12px;
+}
+.qual-title{ font-size:16px; color:var(--navy); margin:0 0 10px 0; font-weight:700; padding-left:6px; }
+
+.subjects-card{ padding-top:6px; }
+.subject-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px 12px; }
+.subject-row{ display:flex; gap:10px; align-items:center; }
+.subject-row input{ flex:1; }
+.subject-row select{ width:140px; }
+.subject-row span{ min-width:130px; color:var(--muted); font-weight:600; }
+.small-label{ font-size:12px; color:var(--muted); margin-bottom:6px; display:block; }
+
+@media (max-width:900px){
+  .subject-grid{ grid-template-columns:repeat(1,1fr); }
+  .subject-row span{ min-width:0; }
+  .subject-row select{ width:100%; }
+}
+
+
