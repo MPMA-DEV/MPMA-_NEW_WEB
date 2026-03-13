@@ -424,6 +424,7 @@ const Courses = () => {
                     onClick={() => navigate(`/course/${course.courseId}`, { state: { course } })}
                   >
                     <h3 className="course-name">{course.courseName}</h3>
+                    
 
                     <p className="course-info">
                       <strong>Duration:</strong> {course.duration}

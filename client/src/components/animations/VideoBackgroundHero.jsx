@@ -54,7 +54,7 @@ const VideoBackgroundHero = () => {
           ref={videoRef}
           className="hero-video"
           autoPlay
-          loop
+          //loop
           muted={isMuted}
           playsInline
           preload="auto"
@@ -87,8 +87,8 @@ const VideoBackgroundHero = () => {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      {/* Mute Button */}
+      Scroll Indicator
+      {/* Mute Button
       {isLoaded && (
         <motion.button
           className="mute-toggle-btn"
@@ -101,7 +101,7 @@ const VideoBackgroundHero = () => {
         >
           {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
         </motion.button>
-      )}
+      )} */}
     </section>
   );
 };

@@ -32,14 +32,14 @@ const ImageCarousel3D = () => {
       title: 'Maritime Law',
       description: 'International maritime regulations',
       // image: 'https://i.imgur.com/hMNiPf3.jpeg',
-      src : {hMNiPf3},
+      image : hMNiPf3
     },
     {
       id: 2,
       title: 'Maritime Training Excellence',
       description: 'World-class training facilities',
       //image: 'https://i.imgur.com/wOCkko2.jpeg',
-      src : {wOCkko2}
+      image : wOCkko2
       
       
     },
@@ -48,42 +48,42 @@ const ImageCarousel3D = () => {
       title: 'Port Operations',
       description: 'Modern port management',
       //image: 'https://i.imgur.com/Ab5Gh7o.jpeg',
-      src : {Ab5Gh7o}
+      image : Ab5Gh7o
     },
     {
       id: 4,
       title: 'Ship Navigation',
       description: 'Advanced navigation systems',
       //image: 'https://i.imgur.com/JIcJTwT.jpeg',
-      src : {JIcJTwT}
+      image : JIcJTwT
     },
     {
       id: 5,
       title: 'Safety Training',
       description: 'International safety standards',
       //image: 'https://i.imgur.com/vkNIi6y.jpeg',
-      src : {vkNIi6y}
+      image : vkNIi6y
     },
     {
       id: 6,
       title: 'Technical Skills',
       description: 'Hands-on technical training',
       //image: 'https://i.imgur.com/iySr14j.jpeg',
-      src : {iySr14j}
+      image : iySr14j
     },
     {
       id: 7,
       title: 'Marine Engineering',
       description: 'State-of-the-art engineering',
-      image: 'https://i.imgur.com/8x4RHkn.jpeg',
-    src:{xx4RHkn}
+      //image: 'https://i.imgur.com/8x4RHkn.jpeg',
+    image : xx4RHkn
     },
     {
       id: 8,
       title: 'Cargo Handling',
       description: 'Professional cargo operations',
       //image: 'https://i.imgur.com/QdEnhhr.jpeg',
-      src : {QdEnhhr}
+      image : QdEnhhr
     },
   ];
 

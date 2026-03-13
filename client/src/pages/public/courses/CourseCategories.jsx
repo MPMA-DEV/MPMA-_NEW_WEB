@@ -2,41 +2,53 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Courses.css";
 import "./CoursesNew.css";
+import hlJA98X from '../../../assets/courses/hlJA98X.jpg'
+import haQfnv3 from '../../../assets/courses/haQfnv3.jpg'
+import EvgbJL from '../../../assets/courses/haQfnv3.jpg'
+import xCzzL from '../../../assets/courses/71xCzzL.jpg'
+import XOVXQYT from '../../../assets/courses/X0VXQYT.jpg'
+
 
 const categories = [
   {
     slug: "maritime-seamanship",
     title: "Maritime & Seamanship",
-    image: "https://i.imgur.com/hlJA98X.jpeg",
+    // image: "https://i.imgur.com/hlJA98X.jpeg",
+    image : hlJA98X,
+    
     description:
       "Professional maritime seamanship training covering navigation, vessel handling, safety operations, and international seafaring standards.",
   },
   {
     slug: "occupational-health-safety",
     title: "Occupational Health & Safety",
-    image: "https://i.imgur.com/haQfnv3.jpeg",
+    // image: "https://i.imgur.com/haQfnv3.jpeg",
+    image : haQfnv3,
     description:
       "Comprehensive workplace safety, emergency response, and regulatory compliance programs for maritime and industrial environments.",
   },
   {
     slug: "port-operation-logistics",
     title: "Port Operation & Logistics",
-    image: "https://i.imgur.com/1EvgbJL.jpeg",
+    // image: "https://i.imgur.com/1EvgbJL.jpeg",
+    image : EvgbJL,
     description:
       "Training in port management, cargo logistics, terminal operations, shipping documentation, and supply chain coordination.",
   },
   {
     slug: "technical",
     title: "Technical",
-    image: "https://i.imgur.com/71xCzzL.jpeg",
+    // image: "https://i.imgur.com/71xCzzL.jpeg",
+    image : xCzzL,
     description:
       "Hands-on technical programs covering marine engineering systems, machinery maintenance, electrical systems, and diagnostics.",
   },
   {
     slug: "management-is",
     title: "Management & IS",
-    image: "https://i.imgur.com/X0VXQYT.jpeg",
-    description:
+    // image: "https://i.imgur.com/X0VXQYT.jpeg",
+    image : XOVXQYT,
+        description:
       "Leadership, maritime administration, business management, and information systems training for modern maritime professionals.",
   },
 ];
