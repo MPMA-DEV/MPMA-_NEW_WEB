@@ -15,6 +15,10 @@ import VideoBackgroundHero from '../../components/animations/VideoBackgroundHero
 import ImageCarousel3D from '../../components/animations/ImageCarousel3D';
 import './Home.css';
 
+import PDXtxlh from '../../assets/home/pdxtxlh.png'
+import ruwNMP from '../../assets/home/ruwNMP.png'
+import HW0kh7d from '../../assets/home/hw0kh7d.png'
+
 const Home = () => {
 
   return (
@@ -57,9 +61,12 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <img src="https://i.imgur.com/PDXtxlh.png" alt="Maritime Career" />
+              {/* <img src="https://i.imgur.com/PDXtxlh.png" alt="Maritime Career" />
               <img src="https://i.imgur.com/8ruwNMP.png" alt="Maritime Training" />
-              <img src="https://i.imgur.com/HW0kh7d.png" alt="Maritime Professional" />
+              <img src="https://i.imgur.com/HW0kh7d.png" alt="Maritime Professional" /> */}
+              <img src= {PDXtxlh}alt="Maritime Career" />
+              <img src={ruwNMP} alt="Maritime Training" />
+              <img src={HW0kh7d} alt="Maritime Professional" />
             </motion.div>
           </div>
         </div>

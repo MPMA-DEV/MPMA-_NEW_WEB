@@ -15,6 +15,15 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './ImageCarousel3D.css';
 
+import hMNiPf3 from '../../assets/imagecarousel3d/hMNiPf3.jpeg'
+import wOCkko2 from '../../assets/imagecarousel3d/wOCkko2.jpeg'
+import Ab5Gh7o from '../../assets/imagecarousel3d/Ab5Gh7o.jpeg'
+import JIcJTwT from '../../assets/imagecarousel3d/JIcJTwT.jpeg'
+import vkNIi6y from '../../assets/imagecarousel3d/vkNIi6y.jpeg'
+import iySr14j from '../../assets/imagecarousel3d/iySr14j.jpeg'
+import xx4RHkn from '../../assets/imagecarousel3d/xx4RHkn.jpeg'
+import QdEnhhr from '../../assets/imagecarousel3d/QdEnhhr.jpeg'
+
 const ImageCarousel3D = () => {
   // Gallery images with Imgur URLs
   const images = [
@@ -22,49 +31,59 @@ const ImageCarousel3D = () => {
       id: 1,
       title: 'Maritime Law',
       description: 'International maritime regulations',
-      image: 'https://i.imgur.com/hMNiPf3.jpeg',
+      // image: 'https://i.imgur.com/hMNiPf3.jpeg',
+      src : {hMNiPf3},
     },
     {
       id: 2,
       title: 'Maritime Training Excellence',
       description: 'World-class training facilities',
-      image: 'https://i.imgur.com/wOCkko2.jpeg',
+      //image: 'https://i.imgur.com/wOCkko2.jpeg',
+      src : {wOCkko2}
+      
+      
     },
     {
       id: 3,
       title: 'Port Operations',
       description: 'Modern port management',
-      image: 'https://i.imgur.com/Ab5Gh7o.jpeg',
+      //image: 'https://i.imgur.com/Ab5Gh7o.jpeg',
+      src : {Ab5Gh7o}
     },
     {
       id: 4,
       title: 'Ship Navigation',
       description: 'Advanced navigation systems',
-      image: 'https://i.imgur.com/JIcJTwT.jpeg',
+      //image: 'https://i.imgur.com/JIcJTwT.jpeg',
+      src : {JIcJTwT}
     },
     {
       id: 5,
       title: 'Safety Training',
       description: 'International safety standards',
-      image: 'https://i.imgur.com/vkNIi6y.jpeg',
+      //image: 'https://i.imgur.com/vkNIi6y.jpeg',
+      src : {vkNIi6y}
     },
     {
       id: 6,
       title: 'Technical Skills',
       description: 'Hands-on technical training',
-      image: 'https://i.imgur.com/iySr14j.jpeg',
+      //image: 'https://i.imgur.com/iySr14j.jpeg',
+      src : {iySr14j}
     },
     {
       id: 7,
       title: 'Marine Engineering',
       description: 'State-of-the-art engineering',
       image: 'https://i.imgur.com/8x4RHkn.jpeg',
+    src:{xx4RHkn}
     },
     {
       id: 8,
       title: 'Cargo Handling',
       description: 'Professional cargo operations',
-      image: 'https://i.imgur.com/QdEnhhr.jpeg',
+      //image: 'https://i.imgur.com/QdEnhhr.jpeg',
+      src : {QdEnhhr}
     },
   ];
 
