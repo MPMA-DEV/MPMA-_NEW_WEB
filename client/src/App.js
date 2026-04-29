@@ -24,6 +24,9 @@ import Courses from "./pages/public/courses/Courses.jsx";
 import CourseCategories from "./pages/public/courses/CourseCategories.jsx";
 import CourseDetails from "./pages/public/courses/CourseDetails.jsx";
 import CategoryPage from "./pages/public/courses/CategoryPage.jsx";
+
+import Check from "./pages/public/courses/check.jsx";
+
 import CertificationRegistration from "./pages/results/CertificationRegistration.jsx";
 import ExternalResults from "./pages/results/ExternalResults.jsx";
 import InternalResults from "./pages/results/InternalResults.jsx";
@@ -76,12 +79,12 @@ function App() {
             <Route path="/site-map" element={<SiteMap />} />
 
             {/* Courses Routes */}
-            <Route path="/courses" element={<CourseCategories />} />
+            <Route path="/courses" element={<CourseCategories/>} />
             <Route path="/courses/:categorySlug" element={<CategoryPage />} />
-            <Route path="/course/:courseId" element={<CourseDetails />} />
-            <Route path="/registration/enroll" element={<EnrollmentPage />} />
+            {/* <Route path="/course/:courseId" element={<CourseDetails />} /> */}
+            <Route path="/course/enroll" element={<EnrollmentPage />} />
 
-            {/* Results Routes */}
+            {/* Results Routes
             <Route
               path="/results/certification-registration"
               element={<CertificationRegistration />}
@@ -154,6 +157,8 @@ function App() {
         <OceanWaveFooter />
       </div>
     </Router>
+
+  
   );
 }
 

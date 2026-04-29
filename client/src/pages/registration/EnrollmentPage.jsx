@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./EnrollmentPage.css";
 
@@ -18,52 +18,64 @@ function calculateAge(dob) {
   return Math.abs(ageDt.getUTCFullYear() - 1970);
 }
 
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+
 const EnrollmentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const course = location.state?.course || null;
 
-  const courseName =
-    course?.course_name || course?.courseName || course?.name || "Untitled Course";
-  const courseCode = course?.course_id || course?.courseId || course?.id || "-";
-  const fees = parseFloat(course?.fees || course?.fee || 0) || 0;
-  const regFee = parseFloat(course?.registrationFee || course?.registration_fee || 0) || 0;
-  const totalFee = fees + regFee;
+  const selected = location.state
+
+  const [coursess,setCourse] = useState()
+  const [fees,setFees] = useState(null)
+
+
+  useEffect(()=>{
+        const courses = selected.map((sel)=> sel.course)
+        
+        setCourse(courses.join(" | "))
+        
+
+        const fees = selected.map((sel)=> sel.fees)
+
+        const total = fees.reduce((total,i)=> total + i,0);
+        setFees(total)
+       setForm((prev)=> ({...prev,courses}))
+
+       
+        
+  },[])
+  
+
 
   const [form, setForm] = useState({
-    fullName: "",
-    nameWithInitials: "",
+
+    full_name: "",
     nic: "",
-    dob: "",
+    date_of_birth: "",
     gender: "",
     email: "",
-    mobile: "",
-    address: "",
-    emergencyContact: "",
-    // qualification, city, postalCode removed
-    agreeTerms: false,
-    // AL/OL fields removed
+    mobile_number: "",
+    address: ""
+  
   });
 
-  // location/city list removed
+   const[checked,setChecked] = useState(false)
+
+  const isChecked =()=>{
+    if(checked){
+      setChecked(false)
+    }else{
+      setChecked(true)
+    }
+  }
+ 
+
 
   const [errors, setErrors] = useState({});
 
-  if (!course) {
-    return (
-      <div className="enroll-page">
-        <div className="enroll-card">
-          <div className="course-header">
-            <h2 className="course-title">No course selected</h2>
-          </div>
-          <div className="notice">Please open a course and click <strong>Enroll Now</strong>.</div>
-          <div className="form-actions">
-            <button className="btn-cancel btn-cancel--red" onClick={() => navigate("/courses")}>Back to Courses</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+ 
 
   const validateField = (name, value) => {
     const v = typeof value === "string" ? value.trim() : value;
@@ -104,9 +116,9 @@ const EnrollmentPage = () => {
         if (v.length < 2) return "Enter a valid name with initials";
         return null;
       // AL/OL and nicFile validations removed
-      case "agreeTerms":
-        if (!v) return "You must agree to the terms";
-        return null;
+      // case "agreeTerms":
+      //   if (!v) return "You must agree to the terms";
+      //   return null;
       default:
         return null;
     }
@@ -115,14 +127,12 @@ const EnrollmentPage = () => {
   const validate = () => {
     const n = {};
     const fieldsToCheck = [
-      "fullName",
-      "nameWithInitials",
+      "full_name",
       "nic",
       "email",
-      "mobile",
+      "mobile_number",
       "address",
-      "dob",
-      "emergencyContact",
+      "date_of_birth",
       "agreeTerms",
     ];
 
@@ -151,65 +161,80 @@ const EnrollmentPage = () => {
       return copy;
     });
   };
-
-  // handleFile removed (no file input)
-
+  
   const validationErrors = validate();
   const canSubmit = Object.keys(validationErrors).length === 0;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async(e) => {
+     e.preventDefault();
     const n = validate();
     setErrors(n);
     if (Object.keys(n).length) return;
+  try{
 
-    const payload = {
-      course: { courseName, courseCode, totalFee },
-      applicant: { ...form },
-    };
+    
+    const response = await fetch('http://10.105.17.239:5003/api/portal/enrollments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'erp_portal_secure_key_2026'
+      },
+     body: JSON.stringify(form)
+     
+    });
 
-    console.log("Enrollment submitted:", payload);
-    alert("Enrollment data logged to console.");
-  };
+    
+    const data = await response.json();
+   // console.log(form)i
+   if(data.success){
+    navigate('/')
+   }else{
+    alert("Something went wronng!!")
+   }
+
+  }catch(err){
+    console.log(err)
+    
+  }
+
+    
+
+   
+   };
 
   return (
     <div className="enroll-page">
       <div className="enroll-card">
         <div className="course-header">
           <div className="course-title-wrap">
-            <h2 className="course-title">{courseName}</h2>
+            <h2 className="course-title">Selected Courses</h2>
           </div>
 
           <div className="course-summary-box">
-            <div className="course-code"><span className="label">Course Code</span><span className="value">{courseCode}</span></div>
-            <div className="course-fee"><span className="label">Total Fee</span><span className="value">Rs. {totalFee}</span></div>
+            <div className="course-code"><span className="label">Courses </span><span className="value">{coursess}</span></div>
+            {/* <div><span className="label">Registration fees </span><span > Rs. {fees}</span></div>
+            <div className="course-fee"><span className="label">Total Fee</span><span className="value">Rs. {fees}</span></div> */}
           </div>
         </div>
 
         <form className="enroll-form" onSubmit={handleSubmit} noValidate>
           <div className="form-grid">
-            <div className={`form-row ${errors.fullName ? "has-error" : ""}`}>
+            <div className={`form-row ${errors.full_name ? "has-error" : ""}`}>
               <label>Full Name *</label>
-              <input name="fullName" value={form.fullName} onChange={handleChange} aria-invalid={!!errors.fullName} />
-              {errors.fullName && <div className="error">{errors.fullName}</div>}
-            </div>
-
-            <div className={`form-row ${errors.nameWithInitials ? "has-error" : ""}`}>
-              <label>Name with Initials *</label>
-              <input name="nameWithInitials" value={form.nameWithInitials} onChange={handleChange} aria-invalid={!!errors.nameWithInitials} />
-              {errors.nameWithInitials && <div className="error">{errors.nameWithInitials}</div>}
+              <input name="full_name" value={form.full_name} onChange={handleChange} aria-invalid={!!errors.full_name} />
+              {errors.full_name && <div className="error">{errors.full_name}</div>}
             </div>
 
             <div className={`form-row ${errors.nic ? "has-error" : ""}`}>
-              <label>NIC / Passport Number *</label>
+              <label>NIC *</label>
               <input name="nic" value={form.nic} onChange={handleChange} aria-invalid={!!errors.nic} />
               {errors.nic && <div className="error">{errors.nic}</div>}
             </div>
 
-            <div className={`form-row ${errors.dob ? "has-error" : ""}`}>
+            <div className={`form-row ${errors.date_of_birth ? "has-error" : ""}`}>
               <label>Date of Birth</label>
-              <input type="date" name="dob" value={form.dob} onChange={handleChange} aria-invalid={!!errors.dob} />
-              {errors.dob && <div className="error">{errors.dob}</div>}
+              <input type="date" name="date_of_birth" value={form.date_of_birth} onChange={handleChange} aria-invalid={!!errors.date_of_birth} />
+              {errors.date_of_birth && <div className="error">{errors.date_of_birth}</div>}
             </div>
 
             <div className={`form-row ${errors.gender ? "has-error" : ""}`}>
@@ -218,7 +243,6 @@ const EnrollmentPage = () => {
                 <option value="">Select</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
-                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -228,9 +252,9 @@ const EnrollmentPage = () => {
               {errors.email && <div className="error">{errors.email}</div>}
             </div>
 
-            <div className={`form-row ${errors.mobile ? "has-error" : ""}`}>
+            <div className={`form-row ${errors.mobile_number ? "has-error" : ""}`}>
               <label>Mobile Number *</label>
-              <input name="mobile" value={form.mobile} onChange={handleChange} aria-invalid={!!errors.mobile} />
+              <input name="mobile_number" value={form.mobile_number} onChange={handleChange} aria-invalid={!!errors.mobile} />
               {errors.mobile && <div className="error">{errors.mobile}</div>}
             </div>
 
@@ -240,19 +264,9 @@ const EnrollmentPage = () => {
               {errors.address && <div className="error">{errors.address}</div>}
             </div>
 
-            <div className={`form-row ${errors.emergencyContact ? "has-error" : ""}`}>
-              <label>Emergency Contact Number</label>
-              <input name="emergencyContact" value={form.emergencyContact} onChange={handleChange} aria-invalid={!!errors.emergencyContact} />
-              {errors.emergencyContact && <div className="error">{errors.emergencyContact}</div>}
-            </div>
-
-            {/* Educational qualification and AL/OL sections removed */}
-
-            {/* Location and NIC file upload removed */}
-
             <div className={`form-row full-width checkbox-row ${errors.agreeTerms ? "has-error" : ""}`}>
               <label className="checkbox-label">
-                <input type="checkbox" name="agreeTerms" checked={form.agreeTerms} onChange={handleChange} />
+                <input type="checkbox"  checked={checked} onChange={isChecked} />
                 <span>I agree to the Terms &amp; Conditions *</span>
               </label>
               {errors.agreeTerms && <div className="error">{errors.agreeTerms}</div>}
@@ -261,11 +275,12 @@ const EnrollmentPage = () => {
 
           <div className="form-actions row" style={{alignItems: 'center'}}>
             <div className="col-auto">
-              <button type="submit" className="btn-submit btn btn-primary" disabled={!canSubmit}>Submit Enrollment</button>
+              <button type="button" className="btn-submit btn btn-primary" onClick={() => navigate(-1)}>Back</button>
             </div>
             <div className="col-auto">
-              <button type="button" className="btn-cancel btn-cancel--red btn btn-danger" onClick={() => navigate(-1)}>Cancel</button>
+              <button type="submit" className="btn-submit btn btn-primary" >Submit Enrollment</button>
             </div>
+            
           </div>
         </form>
       </div>

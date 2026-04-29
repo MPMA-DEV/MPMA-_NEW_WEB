@@ -738,6 +738,7 @@
 .back-section {
   text-align: center;
   padding: 32px 20px 60px;
+  color: #000000;
 }
 
 .back-btn {
@@ -746,14 +747,14 @@
   font-weight: 600;
   border: none;
   border-radius: 6px;
-  background: #f3f4f6;
-  color: #1e3a5f;
+  background: #22365d;
+  color: #ffffff;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
 
 .back-btn:hover {
-  background: #1e3a5f;
+  background: #082286;
   color: #fff;
   transform: translateY(-2px);
 }

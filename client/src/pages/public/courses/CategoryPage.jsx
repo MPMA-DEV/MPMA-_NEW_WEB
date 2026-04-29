@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import { FaFilePdf, FaSpinner, FaInfoCircle } from "react-icons/fa";
 import "./Courses.css";
 import "./CoursesNew.css";
@@ -60,13 +59,15 @@ const slugToTheme = {
 };
 
 // Smooth 3D tilt card wrapper
-const TiltCard = ({ children, className, onClick }) => {
+const TiltCard = ({ children, className}) => {
   const cardRef = useRef(null);
   const rafRef = useRef(null);
   const currentTilt = useRef({ x: 0, y: 0 });
   const targetTilt = useRef({ x: 0, y: 0 });
 
   const lerp = (start, end, factor) => start + (end - start) * factor;
+
+
 
   const animate = useCallback(() => {
     const card = cardRef.current;
@@ -86,38 +87,6 @@ const TiltCard = ({ children, className, onClick }) => {
     }
   }, []);
 
-  const handleMouseMove = useCallback((e) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    targetTilt.current = {
-      x: (0.5 - y) * 12,
-      y: (x - 0.5) * 12,
-    };
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(animate);
-  }, [animate]);
-
-  const handleMouseLeave = useCallback(() => {
-    targetTilt.current = { x: 0, y: 0 };
-
-    const resetAnim = () => {
-      const card = cardRef.current;
-      if (!card) return;
-      currentTilt.current.x = lerp(currentTilt.current.x, 0, 0.06);
-      currentTilt.current.y = lerp(currentTilt.current.y, 0, 0.06);
-      card.style.transform = `perspective(800px) rotateX(${currentTilt.current.x}deg) rotateY(${currentTilt.current.y}deg) scale3d(1, 1, 1)`;
-      if (Math.abs(currentTilt.current.x) > 0.01 || Math.abs(currentTilt.current.y) > 0.01) {
-        rafRef.current = requestAnimationFrame(resetAnim);
-      } else {
-        card.style.transform = '';
-      }
-    };
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(resetAnim);
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -129,15 +98,19 @@ const TiltCard = ({ children, className, onClick }) => {
     <div
       ref={cardRef}
       className={className}
-      onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+    
+      
       style={{ willChange: 'transform', transformStyle: 'preserve-3d' }}
     >
+
+    {/* Checkbox */}
+      
       {children}
     </div>
   );
 };
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
 
 const CategoryPage = () => {
   const { categorySlug } = useParams();
@@ -146,6 +119,11 @@ const CategoryPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selected, setSelected] = useState([])
+
+  const hanDleCheckbox=(value)=>{
+    setSelected((prev)=>prev.some((item) => item.course === value.course) ? prev.filter((sel)=> sel.course !== value.course) : [...prev,value])
+  }
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -157,9 +135,21 @@ const CategoryPage = () => {
         const streamName = slugToStream[categorySlug] || categorySlug;
         const normalizedCategory = normalizeStream(streamName);
         
-        // Fetch all courses using the same URL pattern as other components
-        const response = await axios.get("http://10.70.4.34:5005/api/courses");
+         //Fetch all courses using the same URL pattern as other components
+        const res = await fetch('http://10.105.17.239:5003/api/portal/courses', 
+        {
+          method: "GET",  
+          headers: { 
+                'x-api-key': 'erp_portal_secure_key_2026',
+                'Content-Type': 'application/json'
+                }
+        });
+
+        const response = await res.json();
+
         const allCourses = response.data || [];
+
+        
         
         // Filter courses by stream
         const filteredCourses = allCourses.filter((course) => {
@@ -175,9 +165,10 @@ const CategoryPage = () => {
         setLoading(false);
       }
     };
+    console.log(selected)
 
     fetchCourses();
-  }, [categorySlug]);
+  }, [categorySlug,selected]);
 
   const themeClass = slugToTheme[categorySlug] || "theme-default";
 
@@ -205,6 +196,7 @@ const CategoryPage = () => {
 
       {/* Courses Section */}
       <div className="category-courses-list">
+        <p className="select-course">Select Your Courses</p>
         {/* Loading State */}
         {loading && (
           <div className="loading-state">
@@ -235,39 +227,43 @@ const CategoryPage = () => {
         )}
 
         {/* Courses Grid */}
-        {!loading && !error && courses.length > 0 && (
-          <div className="courses-list-grid">
+
+        {!loading && !error && courses.length > 0 && (     
+          <div className="courses-list-grid">       
             {courses.map((course) => (
               <TiltCard
                 className="course-card-new" 
                 key={course.courseId}
-                onClick={() => navigate(`/course/${course.courseId}`, { state: { course } })}
               >
+
+                <input
+                     type="checkbox"
+                     checked={selected.some((sel)=> sel.course === course.course)}
+                     onChange={()=>hanDleCheckbox(course)}
+                     style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "10px",
+                          zIndex: 10,
+                          width: "18px",
+                          height: "18px",
+                          cursor: "pointer",
+                    }}
+                />
+
                 <div className="card-accent-bar"></div>
-                <h3 className="course-title">{course.courseName}</h3>
+
+                <h3 className="course-title">{course.course}</h3><br/>
                 <p className="course-desc">
-                  {course.description 
-                    ? course.description.substring(0, 150) + "..." 
-                    : "No description available"}
-                </p>
+                
+                  {`Rs.${course.fees}`} </p>
                 <div className="course-meta">
-                  <span className="course-duration">
-                    Duration: {course.duration || "N/A"}
-                  </span>
+                  
                   <span className="course-mode">
-                    Mode: {course.medium || "N/A"}
+                    Meduim : {course.medium || "N/A"}
                   </span>
                 </div>
                 <div className="course-actions">
-                  <button
-                    className="details-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/course/${course.courseId}`, { state: { course } });
-                    }}
-                  >
-                    View Details
-                  </button>
                 </div>
               </TiltCard>
             ))}
@@ -280,9 +276,10 @@ const CategoryPage = () => {
         <div className="back-section">
           <button 
             className="back-btn"
-            onClick={() => navigate('/courses')}
+            onClick={() => { navigate("/course/enroll", { state: selected }) }}
+            
           >
-            ← Back to All Categories
+            Next
           </button>
         </div>
       )}
