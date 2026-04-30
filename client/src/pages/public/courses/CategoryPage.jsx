@@ -4,6 +4,7 @@ import { FaFilePdf, FaSpinner, FaInfoCircle } from "react-icons/fa";
 import "./Courses.css";
 import "./CoursesNew.css";
 
+
 const categoryMeta = {
   "maritime-seamanship": {
     title: "Maritime & Seamanship",
@@ -136,13 +137,9 @@ const CategoryPage = () => {
         const normalizedCategory = normalizeStream(streamName);
         
          //Fetch all courses using the same URL pattern as other components
-        const res = await fetch('http://10.105.17.239:5003/api/portal/courses', 
+        const res = await fetch(process.env.REACT_APP_COURSE_API, 
         {
-          method: "GET",  
-          headers: { 
-                'x-api-key': 'erp_portal_secure_key_2026',
-                'Content-Type': 'application/json'
-                }
+          method: "GET"
         });
 
         const response = await res.json();

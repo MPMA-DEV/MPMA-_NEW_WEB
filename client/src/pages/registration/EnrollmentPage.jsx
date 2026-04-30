@@ -2,6 +2,7 @@ import React, { useState,useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./EnrollmentPage.css";
 
+
 const PHONE_RE = /^\+?\d{7,15}$/;
 const MOBILE_RE = /^\d{10}$/; // exactly 10 digits
 const EMAIL_RE = /\S+@\S+\.\S+/;
@@ -173,11 +174,10 @@ const EnrollmentPage = () => {
   try{
 
     
-    const response = await fetch('http://10.105.17.239:5003/api/portal/enrollments', {
+    const response = await fetch(process.env.REACT_APP_REGISTER_USER_API, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'erp_portal_secure_key_2026'
+    "Content-Type": "application/json"
       },
      body: JSON.stringify(form)
      
@@ -185,7 +185,8 @@ const EnrollmentPage = () => {
 
     
     const data = await response.json();
-   // console.log(form)i
+    console.log(data)
+ 
    if(data.success){
     navigate('/')
    }else{

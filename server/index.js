@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 
@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use("/api/courses", publicCourses);
 
-const PORT = process.env.PORT || 5003;
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`✅ Main API running on port ${PORT}`);
 });
