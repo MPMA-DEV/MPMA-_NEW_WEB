@@ -11,7 +11,8 @@ app.use(express.json());
 
 app.use("/api/courses", publicCourses);
 
-const PORT = 5000;
+
+const PORT = 5000 ;
 app.listen(PORT, () => {
   console.log(`✅ Main API running on port ${PORT}`);
 });
