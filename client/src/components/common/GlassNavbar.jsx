@@ -17,7 +17,7 @@ const GlassNavbar = () => {
 
   // Results pages
   const resultsPages = [
-    { name: 'Certification Registration', path: '/results/certification-registration' },
+    { name: 'Certificate Verification', path: '/results/certificate-verification' },
     { name: 'External Results', path: '/results/external-results' },
     { name: 'Internal Results', path: '/results/internal-results' },
   ];

@@ -63,7 +63,9 @@ import Documents from "./pages/registration/Documents";
 import Confirmation from "./pages/registration/Confirmation";
 
 // Results pages
-import CertificationRegistration from "./pages/results/CertificationRegistration";
+
+
+import CertificateVerification from "./pages/results/CertificateVerification";
 import ExternalResults from "./pages/results/ExternalResults";
 import InternalResults from "./pages/results/InternalResults";
 
@@ -199,8 +201,11 @@ function App() {
                             path="/courses/information-systems"
                             element={<InformationSystems />}
                           />
-
-                          {/* Registration Routes */}
+                          {/* Results Routes */}
+                          <Route
+                            path="/results/certificate-verification"
+                            element={<CertificateVerification />}
+                          />
                           <Route
                             path="/registration/personal-information"
                             element={<PersonalInformation />}
@@ -222,11 +227,7 @@ function App() {
                             element={<Confirmation />}
                           />
 
-                          {/* Results Routes */}
-                          <Route
-                            path="/results/certification-registration"
-                            element={<CertificationRegistration />}
-                          />
+
                           <Route
                             path="/results/external-results"
                             element={<ExternalResults />}

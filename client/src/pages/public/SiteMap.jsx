@@ -44,7 +44,7 @@ const SiteMap = () => {
       icon: FaCertificate,
       links: [
         { name: 'Course Registration', path: '/registration/personal-information', description: 'Start your application process' },
-        { name: 'Certification Registration', path: '/results/certification-registration', description: 'Apply for official certifications' },
+        { name: 'Certificate Verification', path: '/results/certificate-verification', description: 'Verify your maritime certification' },
         { name: 'External Results', path: '/results/external-results', description: 'Check external examination results' },
         { name: 'Internal Results', path: '/results/internal-results', description: 'View internal assessment results' },
       ]

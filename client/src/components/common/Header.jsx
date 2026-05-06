@@ -63,7 +63,7 @@ const Header = () => {
       name: 'Results',
       path: '/results',
       dropdown: [
-        { name: 'Certification Verification', path: '/results/certification-registration' },
+        { name: 'Certificate Verification', path: '/results/certificate-verification' },
         { name: 'Internal Exam Results', path: '/results/internal-results' },
         { name: 'External Exam Results', path: '/results/external-results' },
       ],

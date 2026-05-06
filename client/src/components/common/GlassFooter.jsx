@@ -13,7 +13,7 @@ const GlassFooter = () => {
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
     { name: 'Course Streams', path: '/courses/equipment-operations' },
-    { name: 'Results', path: '/results/certification-registration' },
+    { name: 'Verification', path: '/results/certificate-verification' },
     { name: 'News & Events', path: '/news-events' },
     { name: 'Contact', path: '/contact' },
   ];

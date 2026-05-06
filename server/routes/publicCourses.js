@@ -1,75 +1,8 @@
-// const express = require("express");
-// const router = express.Router();
-// const db = require("../db");
-
-// // GET all public courses
-// router.get("/", async (req, res) => {
-//   try {
-//     const [rows] = await db.query(`
-//       SELECT
-//         courseId,
-//         courseName,
-//         stream,
-//         medium,
-//         duration,
-//         fees,
-//         registrationFee,
-//         description
-//       FROM courses
-//       WHERE status = 'Active'
-//       ORDER BY courseName
-//     `);
-
-//     res.json(rows);
-//   } catch (err) {
-//     console.error("Public courses error:", err);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// });
-
-// // GET course by ID
-// router.get("/:courseId", async (req, res) => {
-//   try {
-//     const { courseId } = req.params;
-
-//     const [rows] = await db.query(
-//       `
-//       SELECT
-//         courseId,
-//         courseName,
-//         stream,
-//         medium,
-//         duration,
-//         fees,
-//         registrationFee,
-//         description
-//       FROM courses
-//       WHERE courseId = ? AND status = 'Active'
-//       `,
-//       [courseId],
-//     );
-
-//     if (rows.length === 0) {
-//       return res.status(404).json({ error: "Course not found" });
-//     }
-
-//     res.json(rows[0]);
-//   } catch (err) {
-//     console.error("Public course error:", err);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// });
-
-// module.exports = router;
-
-
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 
-
-
-// This is used to get courses 
+// GET all courses
 router.get("/", async (req, res) => {
   try {
     const response = await axios.get(
@@ -84,8 +17,7 @@ router.get("/", async (req, res) => {
 
     res.json(response.data);
   } catch (error) {
-    console.error(error.message);
-
+    console.error("Fetch courses error:", error.message);
     res.status(500).json({
       success: false,
       message: "Failed to fetch data",
@@ -93,9 +25,9 @@ router.get("/", async (req, res) => {
   }
 });
 
+// POST enrollments
 router.post("/save", async (req, res) => {
   try {
-    
     const response = await axios.post(
       process.env.REGISTER,
       req.body,
@@ -108,10 +40,10 @@ router.post("/save", async (req, res) => {
     );
 
     res.json(response.data);
-    cosole.log(req.body)
+    console.log("Enrollment saved:", req.body);
 
   } catch (err) {
-    console.log(err.message);
+    console.error("Save enrollment error:", err.message);
     res.status(500).json({
       success: false,
       message: "Failed to save enrollment",
@@ -119,6 +51,50 @@ router.post("/save", async (req, res) => {
   }
 });
 
+// Verify Certificate
+router.get("/verify", async (req, res) => {
+  const { id } = req.query;
+  const apiKey = process.env.X_API_KEY;
+  const verifyUrl = process.env.VERIFY;
+
+  console.log(`\n🔍 [PORTAL PROXY] New Verification Request:`);
+  console.log(`   - ID: ${id}`);
+  console.log(`   - Target URL: ${verifyUrl}?id=${id}`);
+  console.log(`   - API Key Present: ${apiKey ? 'YES' : 'NO'}`);
+
+  if (!id) {
+    return res.status(400).json({ success: false, message: "ID is required" });
+  }
+
+  try {
+    const response = await axios.get(
+      `${verifyUrl}?id=${id}`,
+      {
+        headers: {
+          "x-api-key": apiKey,
+          "Content-Type": process.env.CONTENT_TYPE || "application/json",
+        },
+        timeout: 5000 // 5 second timeout
+      }
+    );
+
+    console.log(`   ✅ [PORTAL PROXY] Success from ERP Server`);
+    res.json(response.data);
+  } catch (error) {
+    const status = error.response?.status || 500;
+    const errorData = error.response?.data;
+    
+    console.error(`   ❌ [PORTAL PROXY] Error from ERP Server:`);
+    console.error(`      - Status: ${status}`);
+    console.error(`      - Message: ${error.message}`);
+    if (errorData) console.error(`      - ERP Response:`, errorData);
+
+    res.status(status).json({
+      success: false,
+      message: errorData?.message || "Certificate not found or invalid details.",
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;
-
-

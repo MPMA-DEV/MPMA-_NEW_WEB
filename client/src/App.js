@@ -27,7 +27,8 @@ import CategoryPage from "./pages/public/courses/CategoryPage.jsx";
 
 import Check from "./pages/public/courses/check.jsx";
 
-import CertificationRegistration from "./pages/results/CertificationRegistration.jsx";
+
+import CertificateVerification from "./pages/results/CertificateVerification.jsx";
 import ExternalResults from "./pages/results/ExternalResults.jsx";
 import InternalResults from "./pages/results/InternalResults.jsx";
 import PersonalInformation from "./pages/registration/PersonalInformation.jsx";
@@ -84,10 +85,10 @@ function App() {
             {/* <Route path="/course/:courseId" element={<CourseDetails />} /> */}
             <Route path="/course/enroll" element={<EnrollmentPage />} />
 
-            {/* Results Routes
+            {/* Results Routes */}
             <Route
-              path="/results/certification-registration"
-              element={<CertificationRegistration />}
+              path="/results/certificate-verification"
+              element={<CertificateVerification />}
             />
             <Route
               path="/results/external-results"
