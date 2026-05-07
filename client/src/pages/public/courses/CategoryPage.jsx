@@ -165,7 +165,7 @@ const CategoryPage = () => {
     console.log(selected)
 
     fetchCourses();
-  }, [categorySlug,selected]);
+  }, [categorySlug]);
 
   const themeClass = slugToTheme[categorySlug] || "theme-default";
 
