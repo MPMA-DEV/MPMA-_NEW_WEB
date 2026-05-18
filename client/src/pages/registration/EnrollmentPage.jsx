@@ -188,9 +188,10 @@ const EnrollmentPage = () => {
     console.log(data)
  
    if(data.success){
+    alert("Student enrollment successfully. We will send confirmation mail to your email.");
     navigate('/')
    }else{
-    alert("Something went wronng!!")
+    alert("Something went wrong!!")
    }
 
   }catch(err){

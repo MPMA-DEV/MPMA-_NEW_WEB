@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { FaFilePdf, FaSpinner, FaInfoCircle } from "react-icons/fa";
+import { FaFilePdf, FaSpinner, FaInfoCircle, FaClock, FaLanguage, FaTag, FaCheckCircle } from "react-icons/fa";
 import "./Courses.css";
 import "./CoursesNew.css";
+import "./CourseCardModern.css";
 
 
 const categoryMeta = {
@@ -227,58 +228,140 @@ const CategoryPage = () => {
 
         {!loading && !error && courses.length > 0 && (     
           <div className="courses-list-grid">       
-            {courses.map((course) => (
-              <TiltCard
-                className="course-card-new" 
-                key={course.courseId}
-              >
+            {courses.map((course) => {
+              const isSelected = selected.some((sel) => sel.course === course.course);
+              return (
+                <div
+                  className={`modern-course-card ${isSelected ? "selected" : ""}`}
+                  key={course.course}
+                >
+                  {/* Card Header with Gradient */}
+                  <div className="card-header">
+                    <div className="card-header-content">
+                      <h3 className="course-title-modern">{course.course}</h3>
+                      <button
+                        className={`select-btn ${isSelected ? "selected" : ""}`}
+                        onClick={() => hanDleCheckbox(course)}
+                      >
+                        {isSelected ? (
+                          <>
+                            <FaCheckCircle /> Selected
+                          </>
+                        ) : (
+                          "Select Course"
+                        )}
+                      </button>
+                    </div>
+                  </div>
 
-                <input
-                     type="checkbox"
-                     checked={selected.some((sel)=> sel.course === course.course)}
-                     onChange={()=>hanDleCheckbox(course)}
-                     style={{
-                          position: "absolute",
-                          top: "10px",
-                          right: "10px",
-                          zIndex: 10,
-                          width: "18px",
-                          height: "18px",
-                          cursor: "pointer",
-                    }}
-                />
+                  {/* Card Body */}
+                  <div className="card-body">
+                    {/* Course Info Grid */}
+                    <div className="course-info-grid">
+                      <div className="info-item">
+                        <span className="info-icon">
+                          <FaTag />
+                        </span>
+                        <div className="info-content">
+                          <p className="info-label">Price</p>
+                          <p className="info-value">Rs. {course.fees}</p>
+                        </div>
+                      </div>
 
-                <div className="card-accent-bar"></div>
+                      <div className="info-item">
+                        <span className="info-icon">
+                          <FaLanguage />
+                        </span>
+                        <div className="info-content">
+                          <p className="info-label">Medium</p>
+                          <p className="info-value">{course.medium || "English"}</p>
+                        </div>
+                      </div>
 
-                <h3 className="course-title">{course.course}</h3><br/>
-                <p className="course-desc">
-                
-                  {`Rs.${course.fees}`} </p>
-                <div className="course-meta">
-                  
-                  <span className="course-mode">
-                    Meduim : {course.medium || "N/A"}
-                  </span>
+                      {course.duration && (
+                        <div className="info-item">
+                          <span className="info-icon">
+                            <FaClock />
+                          </span>
+                          <div className="info-content">
+                            <p className="info-label">Duration</p>
+                            <p className="info-value">{course.duration}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Divider */}
+                    <div className="card-divider"></div>
+
+                    {/* Description */}
+                    {course.description && (
+                      <p className="course-description">{course.description}</p>
+                    )}
+
+                    {/* Tags */}
+                    <div className="course-tags">
+                      {course.stream && (
+                        <span className="tag">{course.stream}</span>
+                      )}
+                      {course.level && (
+                        <span className="tag level-tag">{course.level}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Card Footer */}
+                  <div className="card-footer">
+                    <p className="course-code">Ref: {course.course.substring(0, 20)}</p>
+                  </div>
                 </div>
-                <div className="course-actions">
-                </div>
-              </TiltCard>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
 
       {/* Back Button */}
       {!loading && (
-        <div className="back-section">
-          <button 
-            className="back-btn"
-            onClick={() => { navigate("/course/enroll", { state: selected }) }}
-            
-          >
-            Next
-          </button>
-        </div>
+        <>
+          {/* Selected Courses Summary */}
+          {selected.length > 0 && (
+            <div className="selection-summary">
+              <div className="summary-header">
+                <h3>Your Selection ({selected.length})</h3>
+                <p className="summary-total">
+                  Total: <span>Rs. {selected.reduce((sum, course) => sum + (Number(course.fees) || 0), 0).toLocaleString()}</span>
+                </p>
+              </div>
+
+              <div className="selected-courses-list">
+                {selected.map((course) => (
+                  <div key={course.course} className="selected-item">
+                    <span className="selected-name">{course.course}</span>
+                    <span className="selected-fee">Rs. {course.fees}</span>
+                    <button
+                      className="remove-btn"
+                      onClick={() => hanDleCheckbox(course)}
+                      title="Remove course"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="back-section">
+            <button 
+              className={`back-btn ${selected.length === 0 ? "disabled" : ""}`}
+              onClick={() => { navigate("/course/enroll", { state: selected }) }}
+              disabled={selected.length === 0}
+            >
+              {selected.length === 0 ? "Select Courses to Continue" : `Proceed with ${selected.length} Course${selected.length > 1 ? "s" : ""}`}
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
