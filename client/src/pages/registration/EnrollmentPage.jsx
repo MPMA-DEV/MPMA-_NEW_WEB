@@ -1,5 +1,6 @@
 import React, { useState,useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaBook, FaTag } from "react-icons/fa";
 import "./EnrollmentPage.css";
 
 
@@ -62,7 +63,8 @@ const EnrollmentPage = () => {
   
   });
 
-   const[checked,setChecked] = useState(false)
+  const [showInstallments, setShowInstallments] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const isChecked =()=>{
     if(checked){
@@ -209,13 +211,60 @@ const EnrollmentPage = () => {
       <div className="enroll-card">
         <div className="course-header">
           <div className="course-title-wrap">
-            <h2 className="course-title">Selected Courses</h2>
+            <h2 className="course-title">Selected Course & Fee</h2>
           </div>
 
           <div className="course-summary-box">
-            <div className="course-code"><span className="label">Courses </span><span className="value">{coursess}</span></div>
-            {/* <div><span className="label">Registration fees </span><span > Rs. {fees}</span></div>
-            <div className="course-fee"><span className="label">Total Fee</span><span className="value">Rs. {fees}</span></div> */}
+            <div className="course-info-grid">
+              {/* Course Info Card */}
+              <div className="info-item">
+                <span className="info-icon">
+                  <FaBook />
+                </span>
+                <div className="info-content">
+                  <p className="info-label">Selected Course</p>
+                  <p className="info-value">{coursess}</p>
+                </div>
+              </div>
+
+              {/* Fee / Installments Clickable Card */}
+              <div 
+                className="info-item clickable"
+                onClick={() => setShowInstallments(!showInstallments)}
+              >
+                <span className="info-icon" style={{ background: 'linear-gradient(135deg, #00b4d8 0%, #0077b6 100%)' }}>
+                  <FaTag />
+                </span>
+                <div className="info-content">
+                  <p className="info-label">Course Fee (Click to view plans)</p>
+                  <p className="info-value" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    Rs. {fees?.toLocaleString()}
+                    <span style={{ transform: showInstallments ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s', display: 'inline-block', fontSize: '10px' }}>▼</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {showInstallments && (
+              <div className="installments-dropdown" style={{ 
+                marginTop: '5px', 
+                paddingTop: '15px', 
+                borderTop: '1px dashed #e2e8f0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                width: '100%'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                  <span style={{ color: '#64748b', fontWeight: 500 }}>Registration Fee:</span>
+                  <span style={{ fontWeight: 600, color: '#0f172a' }}>Rs. 1,000</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                  <span style={{ color: '#64748b', fontWeight: 500 }}>Installment Plan:</span>
+                  <span style={{ fontWeight: 600, color: '#0f172a' }}>2 Installments (50% upfront, 50% midway)</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

@@ -264,7 +264,7 @@ const CategoryPage = () => {
                         </span>
                         <div className="info-content">
                           <p className="info-label">Price</p>
-                          <p className="info-value">Rs. {course.fees}</p>
+                          <p className="info-value">Rs. {course.fees?.toLocaleString()}</p>
                         </div>
                       </div>
 
@@ -274,7 +274,13 @@ const CategoryPage = () => {
                         </span>
                         <div className="info-content">
                           <p className="info-label">Medium</p>
-                          <p className="info-value">{course.medium || "English"}</p>
+                          <p className="info-value">
+                            {Array.isArray(course.medium) 
+                              ? course.medium.join(", ") 
+                              : (typeof course.medium === 'string' && course.medium.startsWith('[')) 
+                                  ? JSON.parse(course.medium).join(", ") 
+                                  : course.medium || "English"}
+                          </p>
                         </div>
                       </div>
 
@@ -295,8 +301,12 @@ const CategoryPage = () => {
                     <div className="card-divider"></div>
 
                     {/* Description */}
-                    {course.description && (
+                    {course.description ? (
                       <p className="course-description">{course.description}</p>
+                    ) : (
+                      <p className="course-description">
+                        Professional course in the {course.stream} category, offering comprehensive industry-aligned training.
+                      </p>
                     )}
 
                     {/* Tags */}
@@ -312,7 +322,7 @@ const CategoryPage = () => {
 
                   {/* Card Footer */}
                   <div className="card-footer">
-                    <p className="course-code">Ref: {course.course.substring(0, 20)}</p>
+                    <p className="course-code">Ref: {course.code || course.course.substring(0, 15)}</p>
                   </div>
                 </div>
               );
