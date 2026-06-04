@@ -4,7 +4,6 @@
   flex-direction: column;
   gap: 0;
   position: relative;
-  background: linear-gradient(160deg, #e8eef5 0%, #dce6f1 30%, #d0dced 60%, #e0e9f3 100%);
   overflow: hidden;
 }
 
@@ -214,12 +213,10 @@
 }
 
 .alt-section-even {
-  background: rgba(255,255,255,0.35);
   backdrop-filter: blur(6px);
 }
 
 .alt-section-odd {
-  background: rgba(30,58,95,0.04);
 }
 .alt-section-even .cat-content { flex-direction: row; }
 .alt-section-odd .cat-content { flex-direction: row-reverse; }
@@ -338,6 +335,45 @@
     margin: 0 18px;
     padding: 0;
   }
+}
+
+.category-page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Category-specific wallpapers */
+/* To use your newly added photos, replace the linear-gradient with:
+   background-image: url('../../../assets/courses/YOUR_IMAGE_NAME.png'); */
+
+.category-page.theme-maritime {
+  /* Blue color wallpaper */
+  background-image: url('../../../assets/courses/blue.png');
+}
+
+.category-page.theme-health-safety {
+  /* Red color wallpaper */
+  background-image: url('../../../assets/courses/red.png');
+}
+
+.category-page.theme-port-logistics {
+  /* Green color wallpaper */
+  background-image: url('../../../assets/courses/green.png');
+}
+
+.category-page.theme-technical {
+  /* Pink color wallpaper */
+  background-image: url('../../../assets/courses/pink.png');
+}
+
+.category-page.theme-management-is {
+  /* Yellow color wallpaper */
+  background-image: url('../../../assets/courses/yellow.png');
 }
 
 .category-hero {

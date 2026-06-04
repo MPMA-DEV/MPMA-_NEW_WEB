@@ -235,8 +235,11 @@ const CategoryPage = () => {
                   className={`modern-course-card ${isSelected ? "selected" : ""}`}
                   key={course.course}
                 >
-                  {/* Card Header with Gradient */}
-                  <div className="card-header">
+                  {/* Card Header with Photo */}
+                  <div 
+                    className="card-header"
+                    style={{ backgroundImage: `linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(30,41,59,0.75) 100%), url('${meta.heroImg}')` }}
+                  >
                     <div className="card-header-content">
                       <h3 className="course-title-modern">{course.course}</h3>
                       <button
