@@ -110,8 +110,7 @@ const EnrollmentPage = () => {
 
   // Check if a course has installment plan
   const hasInstallmentPlan = (course) => {
-    return (course.installment1 && course.installment1 > 0) ||
-           (course.installment2 && course.installment2 > 0);
+    return Number(course.installment1) > 0 || Number(course.installment2) > 0;
   };
 
   return (
