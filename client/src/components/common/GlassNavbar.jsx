@@ -131,6 +131,14 @@ const GlassNavbar = () => {
           >
             Contact Us
           </Link>
+
+          <a
+            href="http://localhost:5173"
+            className="nav-item"
+            style={{ fontWeight: 'bold', color: '#0d9488' }}
+          >
+            Portal Login
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
@@ -162,6 +170,13 @@ const GlassNavbar = () => {
 
           <Link to="/news-events" className="mobile-nav-item">News & Events</Link>
           <Link to="/contact" className="mobile-nav-item">Contact Us</Link>
+          <a 
+            href="http://localhost:5173" 
+            className="mobile-nav-item"
+            style={{ fontWeight: 'bold', color: '#0d9488' }}
+          >
+            Portal Login
+          </a>
         </div>
       )}
     </nav>
