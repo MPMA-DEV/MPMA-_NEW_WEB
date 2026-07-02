@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { Eye, EyeOff, ArrowRight, GraduationCap, Briefcase } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, GraduationCap, Briefcase, ArrowLeft } from "lucide-react";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { loginSchema, type LoginFormData } from "../lib/validations";
+import GlassNavbar from "../components/GlassNavbar";
 
 export default function Login() {
   const { user, login } = useAuth();
@@ -66,12 +67,23 @@ export default function Login() {
   };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: 'url("/ocean-bg.png")' }}
-    >
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/40 z-0"></div>
+    <>
+      <GlassNavbar />
+      <div 
+        className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url("/ocean-bg.png")' }}
+      >
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-black/40 z-0"></div>
+
+        {/* Back Arrow */}
+        <a 
+          href="http://localhost:3001" 
+          className="absolute top-24 left-4 sm:left-8 z-10 flex items-center text-white/80 hover:text-white transition-colors font-medium bg-black/20 hover:bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10 shadow-lg"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Home
+        </a>
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -259,6 +271,7 @@ export default function Login() {
           &copy; {new Date().getFullYear()} SLPA OJT Portal. All rights reserved.
         </p>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
