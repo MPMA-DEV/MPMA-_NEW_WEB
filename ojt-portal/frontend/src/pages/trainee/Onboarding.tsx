@@ -83,6 +83,7 @@ export default function Onboarding() {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [showCustomPeriod, setShowCustomPeriod] = useState(false);
+  const [showCustomCourse, setShowCustomCourse] = useState(false);
   // Compact input style for this page
   const compactInputClass = "py-2 text-sm";
   // Sticky header show/hide on scroll
@@ -202,7 +203,12 @@ export default function Onboarding() {
             if (personal.address) setValue("personalDetails.address", personal.address, { shouldValidate: true });
             if (personal.training_type) setValue("personalDetails.trainingType", personal.training_type, { shouldValidate: true });
             if (personal.instituteName) setValue("personalDetails.instituteName", personal.instituteName, { shouldValidate: true });
-            if (personal.course) setValue("personalDetails.course", personal.course, { shouldValidate: true });
+            if (personal.course) { setValue("personalDetails.course", personal.course, { shouldValidate: true });
+            const standardCourses = ["Marine Engineering", "Nautical Science", "Logistics and Supply Chain Management"];
+            if (personal.course && !standardCourses.includes(personal.course)) {
+              setShowCustomCourse(true);
+            }
+}
             if (personal.training_period) {
               setValue("personalDetails.period", personal.training_period, { shouldValidate: true });
               const standardPeriods = ["3 Months", "6 Months", "8 Months", "1 Year", "2 Years"];
@@ -1156,20 +1162,63 @@ export default function Onboarding() {
                             );
                           }}
                         />
+                        
                         <Controller
                           name="personalDetails.course"
                           control={control}
-                          render={({ field, fieldState }) => (
-                            <Input
-                              label="Course *"
-                              {...field}
-                              error={fieldState.error?.message}
-                              placeholder="Enter course name"
-                              className={compactInputClass}
-                              required
-                            />
-                          )}
+                          render={({ field, fieldState }) => {
+                            const standardCourses = ["Marine Engineering", "Nautical Science", "Logistics and Supply Chain Management"];
+                            
+                            const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+                              const val = e.target.value;
+                              if (val === "Other") {
+                                setShowCustomCourse(true);
+                                field.onChange("");
+                              } else {
+                                setShowCustomCourse(false);
+                                field.onChange(val);
+                              }
+                            };
+
+                            return (
+                              <div className="flex flex-col gap-1 w-full">
+                                <label className="text-sm font-medium text-gray-700">
+                                  Course <span className="text-red-500">*</span>
+                                </label>
+                                <>
+                                  <select
+                                    value={showCustomCourse ? "Other" : (field.value || "")}
+                                    onChange={handleCourseChange}
+                                    className={`${compactInputClass} border rounded bg-white px-3 py-2 text-sm h-10 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${
+                                      (!showCustomCourse && fieldState.error) ? "border-red-500" : "border-gray-300"
+                                    }`}
+                                    required={!showCustomCourse}
+                                  >
+                                    <option value="" disabled>Select course name</option>
+                                    <option value="Marine Engineering">Marine Engineering</option>
+                                    <option value="Nautical Science">Nautical Science</option>
+                                    <option value="Logistics and Supply Chain Management">Logistics and Supply Chain Management</option>
+                                    <option value="Other">Other (Specify)</option>
+                                  </select>
+                                  {showCustomCourse && (
+                                    <Input
+                                      placeholder="Enter custom course name"
+                                      value={field.value}
+                                      onChange={(e) => field.onChange(e.target.value)}
+                                      error={fieldState.error?.message}
+                                      className={`mt-2 ${compactInputClass}`}
+                                      required
+                                    />
+                                  )}
+                                  {!showCustomCourse && fieldState.error?.message && (
+                                    <span className="text-xs text-red-500 mt-1">{fieldState.error.message}</span>
+                                  )}
+                                </>
+                              </div>
+                            );
+                          }}
                         />
+
                          <Controller
                           name="personalDetails.period"
                           control={control}

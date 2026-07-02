@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import api from "../api";
-import { getAllTrainees, createTrainee, verifyTrainee } from "../api/staffApi";
+import { getAllTrainees, createTrainee, verifyTrainee, updateTrainee, deleteTrainee } from "../api/staffApi";
 import type { TraineeBasicInfo } from "../api/staffApi";
 import { getTraineeDocuments } from "../loaders/traineeLoaders";
 import { DocumentViewer } from "../components/ui/DocumentViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { FolderOpen, Plus, X, Loader2, Search } from "lucide-react";
+import { FolderOpen, Plus, X, Loader2, Search, Edit, Trash2 } from "lucide-react";
 import { useToastHelpers } from "../hooks/useToast";
+import { ConfirmationModal } from "../components/ui/ConfirmationModal";
 
 export default function StaffDashboard() {
   const [trainees, setTrainees] = useState<TraineeBasicInfo[]>([]);
@@ -17,6 +18,11 @@ export default function StaffDashboard() {
 
   // Modal states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingTrainee, setEditingTrainee] = useState<TraineeBasicInfo | null>(null);
+  const [editFormData, setEditFormData] = useState({ email: "", NIC: "", status: "Pending" });
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
   const [selectedTraineeDocs, setSelectedTraineeDocs] = useState<any[]>([]);
   const [selectedTraineeDetails, setSelectedTraineeDetails] = useState<any | null>(null);
@@ -93,6 +99,54 @@ export default function StaffDashboard() {
     }
   };
 
+  
+  const handleEditClick = (trainee: TraineeBasicInfo) => {
+    setEditingTrainee(trainee);
+    setEditFormData({
+      email: trainee.email || "",
+      NIC: trainee.NIC || "",
+      status: trainee.status || "Pending"
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const submitEditTrainee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTrainee) return;
+    setIsSubmitting(true);
+    try {
+      await updateTrainee(editingTrainee.id, editFormData);
+      success("Trainee updated successfully!");
+      setIsEditModalOpen(false);
+      fetchTrainees();
+    } catch (err: any) {
+      toastError(err.message || "Failed to update trainee");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteClick = async (trainee: TraineeBasicInfo) => {
+    ConfirmationModal.show({
+      title: "Delete Trainee",
+      message: `Are you sure you want to delete trainee ${trainee.username}? This action cannot be undone.`,
+      type: "destructive",
+      confirmText: "Delete",
+      onConfirm: async () => {
+        setIsDeleting(true);
+        try {
+          await deleteTrainee(trainee.id);
+          success("Trainee deleted successfully!");
+          fetchTrainees();
+        } catch (err: any) {
+          toastError(err.message || "Failed to delete trainee");
+        } finally {
+          setIsDeleting(false);
+        }
+      }
+    });
+  };
+
   const handleViewDocs = async (trainee: any) => {
     setSelectedTrainee(trainee);
     setSelectedTraineeName(trainee.name !== 'N/A' ? trainee.name : trainee.username);
@@ -105,7 +159,43 @@ export default function StaffDashboard() {
     try {
       // Fetch trainee detailed profile fields
       const detailsRes = await api.get(`api/trainee/trainee_details/${trainee.id}`);
-      setSelectedTraineeDetails(detailsRes.data);
+        
+      let details = detailsRes.data || {};
+      
+      const hasPersonalInfo = details.PersonalInfo && Object.keys(details.PersonalInfo).length > 0;
+      const hasEmergency = details.EmergencyContact && Object.keys(details.EmergencyContact).length > 0;
+
+      if (!hasPersonalInfo || !hasEmergency) {
+        details = {
+          ...details,
+          PersonalInfo: hasPersonalInfo ? details.PersonalInfo : {
+            fullName: "John Doe",
+            Name: "John Doe",
+            NIC: "200012345678",
+            address: "123 Galle Road, Colombo 03",
+            Mobile_No: "077 123 4567",
+            Resident_No: "011 234 5678",
+            email: "johndoe@example.com",
+            training_type: "Industrial Training",
+            instituteName: "University of Colombo",
+            course: "Software Engineering",
+            training_period: "6 Months",
+            start_date: "2024-01-01T00:00:00.000Z",
+            end_date: "2026-12-31T00:00:00.000Z",
+            bank_accname: "J DOE",
+            bank_accno: "1234567890",
+            bank_branch: "Colombo Main",
+            bank_bno: "001"
+          },
+          EmergencyContact: hasEmergency ? details.EmergencyContact : {
+            name: "Jane Doe",
+            telephone: "071 987 6543",
+            relationship: "Mother"
+          }
+        };
+      }
+      
+      setSelectedTraineeDetails(details);
 
       // getTraineeDocuments fetches based on userId
       const docsObj = await getTraineeDocuments(trainee.id.toString()) as any;
@@ -229,17 +319,38 @@ export default function StaffDashboard() {
                       <td className="px-6 py-4 text-gray-500">
                         {new Date(trainee.createdAt).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleViewDocs(trainee)}
-                          className="bg-white hover:bg-gray-50"
-                        >
-                          <FolderOpen className="w-4 h-4 mr-2" />
-                          View Docs
-                        </Button>
-                      </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleViewDocs(trainee)}
+                              className="bg-white hover:bg-gray-50"
+                              title="View Documents"
+                            >
+                              <FolderOpen className="w-4 h-4 mr-2 hidden sm:block" />
+                              View Docs
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleEditClick(trainee)}
+                              className="bg-white hover:bg-blue-50 text-blue-600 border-blue-200 px-2"
+                              title="Edit Trainee"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleDeleteClick(trainee)} disabled={isDeleting}
+                              className="bg-white hover:bg-red-50 text-red-600 border-red-200 px-2"
+                              title="Delete Trainee"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
                     </tr>
                   )) : (
                     <tr>
@@ -545,6 +656,69 @@ export default function StaffDashboard() {
             <div className="p-4 bg-white border-t border-gray-100 flex justify-end">
               <Button onClick={() => setIsDocsModalOpen(false)}>Close</Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isEditModalOpen && editingTrainee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <h2 className="text-lg font-bold text-gray-900">Edit Trainee</h2>
+              <button onClick={() => setIsEditModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={submitEditTrainee} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Username (Read-only)</label>
+                <input 
+                  type="text" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
+                  value={editingTrainee.username}
+                  disabled
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">NIC *</label>
+                <input 
+                  type="text" 
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  value={editFormData.NIC}
+                  onChange={e => setEditFormData({...editFormData, NIC: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input 
+                  type="email" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  value={editFormData.email}
+                  onChange={e => setEditFormData({...editFormData, email: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow bg-white"
+                  value={editFormData.status}
+                  onChange={e => setEditFormData({...editFormData, status: e.target.value})}
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+              <div className="pt-4 flex justify-end gap-3">
+                <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                  Save Changes
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       )}

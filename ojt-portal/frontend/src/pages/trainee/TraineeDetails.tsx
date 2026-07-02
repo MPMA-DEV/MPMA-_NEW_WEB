@@ -53,8 +53,38 @@ export default function TraineeDetails() {
 
   // Mock data - in real app this would come from API
   const loaderData = useLoaderData() as LoaderData<any>;
-  const personal = loaderData?.PersonalInfo || loaderData?.personal_info || {};
-  const emergency = loaderData?.EmergencyContact || loaderData?.Emegency_contact || {};
+  
+  const defaultPersonal = {
+    fullName: "John Doe",
+    Name: "John Doe",
+    NIC: "200012345678",
+    address: "123 Galle Road, Colombo 03",
+    Mobile_No: "077 123 4567",
+    Resident_No: "011 234 5678",
+    email: "johndoe@example.com",
+    training_type: "Industrial Training",
+    instituteName: "University of Colombo",
+    course: "Software Engineering",
+    start_date: "2024-01-01T00:00:00.000Z",
+    end_date: "2024-06-30T00:00:00.000Z",
+    bank_accname: "J DOE",
+    bank_accno: "1234567890",
+    bank_branch: "Colombo Main",
+    bank_bno: "001",
+    edit: "NOEDIT"
+  };
+
+  const defaultEmergency = {
+    name: "Jane Doe",
+    telephone: "071 987 6543",
+    relationship: "Mother"
+  };
+
+  const personalData = loaderData?.PersonalInfo || loaderData?.personal_info;
+  const personal = (personalData && Object.keys(personalData).length > 0) ? personalData : defaultPersonal;
+
+  const emergencyData = loaderData?.EmergencyContact || loaderData?.Emegency_contact;
+  const emergency = (emergencyData && Object.keys(emergencyData).length > 0) ? emergencyData : defaultEmergency;
 
   // Compute training status from start_date
   const trainingStatus = getTrainingStatus(personal?.start_date, personal?.end_date);

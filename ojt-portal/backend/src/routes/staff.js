@@ -1,5 +1,5 @@
 import e from "express";
-import { getAllTrainees, createTrainee, verifyTrainee } from "../controllers/staffController.js";
+import { getAllTrainees, createTrainee, verifyTrainee, updateTrainee, deleteTrainee } from "../controllers/staffController.js";
 import { authenticateToken, requireRole } from "../middleware/auth.js";
 
 const router = e.Router();
@@ -12,5 +12,8 @@ router.get("/trainees", authenticateToken, requireRole("superadmin", "admin", "s
 router.post("/trainees", authenticateToken, requireRole("superadmin", "admin", "staff"), createTrainee);
 
 router.put("/trainees/:id/verify", authenticateToken, requireRole("superadmin", "admin", "staff"), verifyTrainee);
+
+router.put("/trainees/:id", authenticateToken, requireRole("superadmin", "admin", "staff"), updateTrainee);
+router.delete("/trainees/:id", authenticateToken, requireRole("superadmin", "admin", "staff"), deleteTrainee);
 
 export default router;

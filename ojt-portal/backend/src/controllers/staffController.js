@@ -116,3 +116,68 @@ export const verifyTrainee = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const updateTrainee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { email, NIC, status } = req.body;
+
+    const trainee = await TraineeUser.findByPk(id);
+    if (!trainee) {
+      return res.status(404).json({ error: "Trainee not found" });
+    }
+
+    if (NIC && NIC !== trainee.NIC) {
+      const existingNIC = await TraineeUser.findOne({ where: { NIC } });
+      if (existingNIC) {
+        return res.status(400).json({ error: "A trainee with this NIC already exists." });
+      }
+      trainee.NIC = NIC;
+    }
+
+    if (email !== undefined) trainee.email = email || null;
+    if (status) trainee.status = status;
+
+    await trainee.save();
+
+    res.status(200).json({
+      message: "Trainee updated successfully",
+      trainee: {
+        id: trainee.id,
+        username: trainee.username,
+        NIC: trainee.NIC,
+        email: trainee.email,
+        status: trainee.status,
+      }
+    });
+  } catch (error) {
+    console.error("Error updating trainee:", error);
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ 
+        error: "Validation error", 
+        details: error.errors.map(e => e.message) 
+      });
+    }
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const deleteTrainee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const trainee = await TraineeUser.findByPk(id);
+    if (!trainee) {
+      return res.status(404).json({ error: "Trainee not found" });
+    }
+
+    // This will delete the user, and relying on foreign key constraints or manual cleanup 
+    // to remove TraineeDetails if necessary. For now, removing the user is sufficient.
+    await trainee.destroy();
+
+    res.status(200).json({ message: "Trainee deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting trainee:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

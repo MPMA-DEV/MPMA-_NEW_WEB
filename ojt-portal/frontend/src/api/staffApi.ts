@@ -47,3 +47,29 @@ export const verifyTrainee = async (id: number | string, status: "Active" | "Rej
   }
 };
 
+
+export const updateTrainee = async (id: number | string, data: any): Promise<any> => {
+  try {
+    const response = await api.put(`/api/staff/trainees/${id}`, data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error updating trainee:", error);
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.error || "Failed to update trainee");
+    }
+    throw new Error("An unexpected error occurred while updating trainee");
+  }
+};
+
+export const deleteTrainee = async (id: number | string): Promise<any> => {
+  try {
+    const response = await api.delete(`/api/staff/trainees/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error deleting trainee:", error);
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.error || "Failed to delete trainee");
+    }
+    throw new Error("An unexpected error occurred while deleting trainee");
+  }
+};
