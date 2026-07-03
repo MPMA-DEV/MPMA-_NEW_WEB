@@ -27,6 +27,8 @@ import type { SubmitHandler } from "react-hook-form";
 import { useForm, Controller } from "react-hook-form";
 import api, { refreshAccessToken } from "../../api";
 import { traineeInterviewLoader } from "../../loaders/traineeLoaders";
+import { INSTITUTES_DATA } from "../../data/institutes";
+import { COURSES_DATA } from "../../data/courses";
 
 export default function Onboarding() {
   const {
@@ -367,105 +369,8 @@ export default function Onboarding() {
   const consentLetter = watch("documents.consentLetter");
   const bankPassbook = watch("documents.bankPassbook");
 
-  const isGovInstitute = trainingType === "SMTI" || trainingType === "NAITA Craft";
-
-  const [instituteSuggestions, setInstituteSuggestions] = useState<string[]>([]);
-  const allUniversitiesRef = useRef<string[]>([]);
   const watchInstituteName = watch("personalDetails.instituteName");
-
-  // Fetch the global university list on mount
-  useEffect(() => {
-    let mounted = true;
-    const fetchGlobalUniversities = async () => {
-      try {
-        const res = await fetch(
-          "https://cdn.jsdelivr.net/gh/Hipo/university-domains-list@master/world_universities_and_domains.json"
-        );
-        if (res.ok && mounted) {
-          const data = await res.json();
-          const names = data.map((u: any) => u.name) as string[];
-          allUniversitiesRef.current = Array.from(new Set(names));
-        }
-      } catch (err) {
-        console.warn("Failed to load global universities database:", err);
-      }
-    };
-    fetchGlobalUniversities();
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    const fixedMap: Record<string, string> = { CINEC: "CINEC", "NAITA Craft": "NAITA", SMTI: "SMTI" };
-    if (trainingType in fixedMap) {
-      setInstituteSuggestions([]);
-      return;
-    }
-
-    const SRI_LANKAN_INSTITUTES = [
-      "University of Moratuwa",
-      "University of Colombo",
-      "University of Sri Jayewardenepura",
-      "University of Kelaniya",
-      "University of Peradeniya",
-      "University of Ruhuna",
-      "Wayamba University of Sri Lanka",
-      "Rajarata University of Sri Lanka",
-      "Sabaragamuwa University of Sri Lanka",
-      "Eastern University, Sri Lanka",
-      "University of Jaffna",
-      "South Eastern University of Sri Lanka",
-      "Uva Wellassa University",
-      "Open University of Sri Lanka",
-      "General Sir John Kotelawala Defence University (KDU)",
-      "Ocean University of Sri Lanka",
-      "Sri Lanka Institute of Information Technology (SLIIT)",
-      "Informatics Institute of Technology (IIT)",
-      "NSBM Green University",
-      "National Institute of Business Management (NIBM)",
-      "Sri Lanka Technological Campus (SLTC)",
-      "Horizon Campus",
-      "CINEC Campus",
-      "APIIT Sri Lanka",
-      "ICBT Campus",
-      "ANC Education",
-      "Saegis Campus",
-      "Royal Institute of Colombo (RIC)",
-      "ESOFT Metro Campus",
-      "ACBT",
-      "BMS (Business Management School)",
-      "KIU",
-      "Sri Lanka Institute of Advanced Technological Education (SLIATE)",
-      "National Apprentice and Industrial Training Authority (NAITA)",
-      "SMTI",
-      "University of Vocational Technology (UNIVOTEC)"
-    ];
-
-    if (!watchInstituteName) {
-      setInstituteSuggestions(SRI_LANKAN_INSTITUTES.slice(0, 10));
-      return;
-    }
-
-    const query = watchInstituteName.trim().toLowerCase();
-
-    // 1. Get matches from our comprehensive local database (includes both public and private Sri Lankan institutes)
-    const localMatches = SRI_LANKAN_INSTITUTES.filter((inst) =>
-      inst.toLowerCase().includes(query)
-    );
-
-    if (allUniversitiesRef.current.length > 0) {
-      // 2. Get matches from global list
-      const globalMatches = allUniversitiesRef.current.filter((name) =>
-        name.toLowerCase().includes(query)
-      );
-      // Merge local matches (with private universities) and global matches, keeping them unique
-      const combined = [...localMatches, ...globalMatches];
-      setInstituteSuggestions(Array.from(new Set(combined)).slice(0, 20));
-    } else {
-      setInstituteSuggestions(localMatches);
-    }
-  }, [watchInstituteName, trainingType]);
+  const isGovInstitute = INSTITUTES_DATA.find(i => i.name === watchInstituteName)?.is_government === 1;
 
   /*
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -555,11 +460,9 @@ export default function Onboarding() {
           "personalDetails.nicNo",
           "personalDetails.username",
           "personalDetails.address",
-          "personalDetails.trainingType",
           "personalDetails.instituteName",
           "personalDetails.course",
           "personalDetails.period",
-          "personalDetails.start_date",
           "personalDetails.profilePhoto"
         ]);
         const validContact = await trigger([
@@ -698,16 +601,9 @@ export default function Onboarding() {
       );
       formData.append("personalDetails[nicNo]", data.personalDetails.nicNo);
       formData.append("personalDetails[address]", data.personalDetails.address);
-      formData.append("personalDetails[trainingType]", data.personalDetails.trainingType);
       formData.append("personalDetails[instituteName]", data.personalDetails.instituteName);
       formData.append("personalDetails[course]", data.personalDetails.course);
       formData.append("personalDetails[period]", data.personalDetails.period);
-      formData.append(
-        "personalDetails[start_date]",
-        data.personalDetails.start_date
-          ? new Date(data.personalDetails.start_date).toISOString()
-          : ""
-      );
 
       if (data.personalDetails.profilePhoto) {
         formData.append(
@@ -1095,69 +991,36 @@ export default function Onboarding() {
                             />
                           )}
                         />
-                        {/* Training Type - Radios */}
-                        <div className="md:col-span-2">
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Training Type *</label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {[
-                              "Undergraduate",
-                              "Certificate",
-                              "Diploma",
-                              "CINEC",
-                              "NAITA Craft",
-                              "SMTI",
-                            ].map((type) => (
-                              <label key={type} className="flex items-center space-x-2 p-2 border rounded-md cursor-pointer hover:border-blue-400">
-                                <input
-                                  type="radio"
-                                  className="h-4 w-4 text-blue-600"
-                                  value={type}
-                                  checked={trainingType === type}
-                                  onChange={() => {
-                                    setValue("personalDetails.trainingType", type as any, { shouldValidate: true });
-                                    const fixedMap: Record<string, string> = { CINEC: "CINEC", "NAITA Craft": "NAITA", SMTI: "SMTI" };
-                                    if (type in fixedMap) {
-                                      setValue("personalDetails.instituteName", fixedMap[type], { shouldValidate: true });
-                                    } else {
-                                      setValue("personalDetails.instituteName", "", { shouldValidate: true });
-                                    }
-                                  }}
-                                />
-                                <span className="text-sm text-gray-700">{type}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
+
 
                         {/* Institute Name */}
                         <Controller
                           name="personalDetails.instituteName"
                           control={control}
                           render={({ field, fieldState }) => {
-                            const fixedMap: Record<string, string> = { CINEC: "CINEC", "NAITA Craft": "NAITA", SMTI: "SMTI" };
-                            const isFixed = trainingType in fixedMap;
                             return (
-                              <div>
-                                <Input
-                                  label="Institute Name *"
+                              <div className="flex flex-col gap-1 w-full">
+                                <label className="text-sm font-medium text-gray-700">
+                                  Institute Name <span className="text-red-500">*</span>
+                                </label>
+                                <select
                                   {...field}
-                                  error={fieldState.error?.message}
-                                  placeholder="Enter institute name"
-                                  className={compactInputClass}
+                                  className={`${compactInputClass} border rounded bg-white px-3 py-2 text-sm h-10 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${
+                                    fieldState.error ? "border-red-500" : "border-gray-300"
+                                  }`}
+                                  disabled={prefilled.instituteName}
                                   required
-                                  readOnly={isFixed || prefilled.instituteName}
-                                  list="institute-suggestions"
-                                  value={
-                                    isFixed
-                                      ? fixedMap[trainingType as keyof typeof fixedMap]
-                                      : field.value
-                                  }
-                                />
-                                <datalist id="institute-suggestions">
-                                  {instituteSuggestions.map((suggestion) => (
-                                    <option key={suggestion} value={suggestion} />
+                                >
+                                  <option value="" disabled>Select institute name</option>
+                                  {INSTITUTES_DATA.map((institute) => (
+                                    <option key={institute.id} value={institute.name}>
+                                      {institute.name}
+                                    </option>
                                   ))}
-                                </datalist>
+                                </select>
+                                {fieldState.error && (
+                                  <p className="text-xs text-red-500 mt-1">{fieldState.error.message}</p>
+                                )}
                               </div>
                             );
                           }}
@@ -1167,8 +1030,6 @@ export default function Onboarding() {
                           name="personalDetails.course"
                           control={control}
                           render={({ field, fieldState }) => {
-                            const standardCourses = ["Marine Engineering", "Nautical Science", "Logistics and Supply Chain Management"];
-                            
                             const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                               const val = e.target.value;
                               if (val === "Other") {
@@ -1195,9 +1056,11 @@ export default function Onboarding() {
                                     required={!showCustomCourse}
                                   >
                                     <option value="" disabled>Select course name</option>
-                                    <option value="Marine Engineering">Marine Engineering</option>
-                                    <option value="Nautical Science">Nautical Science</option>
-                                    <option value="Logistics and Supply Chain Management">Logistics and Supply Chain Management</option>
+                                    {COURSES_DATA.map((course) => (
+                                      <option key={course.id} value={course.name}>
+                                        {course.name}
+                                      </option>
+                                    ))}
                                     <option value="Other">Other (Specify)</option>
                                   </select>
                                   {showCustomCourse && (
@@ -1280,39 +1143,7 @@ export default function Onboarding() {
                             );
                           }}
                         />
-                        <Controller
-                          name="personalDetails.start_date"
-                          control={control}
-                          // If using a validation schema (like Zod/Yup), handle the future date logic there.
-                          // Otherwise, you can add inline validation rules here:
-                          rules={{
-                            required: "Start date is required",
-                            validate: (value) => {
-                              if (!value) return true;
-                              const today = new Date();
-                              today.setHours(0, 0, 0, 0); // Reset time to compare just the calendar date
-                              return new Date(value) >= today || "Start date must be today or a future date";
-                            }
-                          }}
-                          render={({ field, fieldState }) => (
-                            <Input
-                              label="Start Date *"
-                              type="date"
-                              // Disables past dates in the browser's date picker UI
-                              min={new Date().toISOString().slice(0, 10)}
-                              value={field.value ? new Date(field.value).toISOString().slice(0, 10) : ""}
-                              onChange={(e) =>
-                                field.onChange(
-                                  e.target.value ? new Date(e.target.value) : undefined
-                                )
-                              }
-                              error={fieldState.error?.message}
-                              className={compactInputClass}
-                              required
-                              readOnly={prefilled.start_date}
-                            />
-                          )}
-                        />
+
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Address *

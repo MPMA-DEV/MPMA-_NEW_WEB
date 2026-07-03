@@ -21,6 +21,7 @@ import Profile from "./routes/profile.js";
 import Health from "./routes/health.js";
 import PasswordReset from "./routes/passwordReset.js";
 import ExternalRoutes from "./routes/external.js";
+import NotificationsRoutes from "./routes/notifications.js";
 
 
 
@@ -100,6 +101,7 @@ app.use("/health", Health);
 app.use("/api/password", PasswordReset);
 app.use("/api/staff", StaffRoutes);
 app.use("/api/external", ExternalRoutes);
+app.use("/api/notifications", NotificationsRoutes);
 
 // 404 handler (must be after all routes)
 app.use(notFoundHandler);

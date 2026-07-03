@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { INSTITUTES_DATA } from "../data/institutes";
 
 // Centralized file upload size limit (used across all pages)
 export const MAX_FILE_SIZE_MB = 1.0;
@@ -32,7 +33,8 @@ export const personalDetailsSchema = z
     name: z
       .string()
       .min(2, "Name must be at least 2 characters")
-      .max(50, "Name must be less than 50 characters"),
+      .max(50, "Name must be less than 50 characters")
+      .regex(/^([a-zA-Z][. ]+)+[a-zA-Z]{2,}([ ][a-zA-Z]+)*$/, "Please use format: S.H. Perera"),
     fullname: z
       .string()
       .min(2, "Full name must be at least 2 characters")
@@ -50,11 +52,11 @@ export const personalDetailsSchema = z
       "CINEC",
       "NAITA Craft",
       "SMTI",
-    ] as const),
+    ] as const).optional(),
     instituteName: z.string().min(2, "Institute name is required"),
     course: z.string().min(2, "Course is required"),
     period: z.string().min(2, "Training Period is required"),
-    start_date: z.date(),
+    start_date: z.date().optional(),
     profilePhoto: z
       .instanceof(File, { message: "Profile photo is required" })
       .nullable()
@@ -155,9 +157,7 @@ export const OnboardingSchema = z.object({
   }).optional(),
   documents: documentsSchema,
 }).superRefine((data, ctx) => {
-  const isGovInst =
-    data.personalDetails?.trainingType === "SMTI" ||
-    data.personalDetails?.trainingType === "NAITA Craft";
+  const isGovInst = INSTITUTES_DATA.find(i => i.name === data.personalDetails?.instituteName)?.is_government === 1;
 
   if (isGovInst) {
     const bd = data.bankDetails;

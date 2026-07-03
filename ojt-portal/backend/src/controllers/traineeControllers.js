@@ -81,15 +81,15 @@ export const addInformation = async (req, res) => {
   const schema = z.object({
     user_id: z.string(),
     personalDetails: z.object({
-      name: z.string().trim().min(2),
+      name: z.string().trim().min(2).regex(/^([a-zA-Z][. ]+)+[a-zA-Z]{2,}([ ][a-zA-Z]+)*$/, "Invalid name format"),
       fullname: z.string().trim().min(2),
       nicNo: z.string().trim(),
       address: z.string().trim().min(10),
-      trainingType: z.string().trim().min(2),
+      trainingType: z.string().trim().min(2).optional(),
       instituteName: z.string().trim().min(2),
       course: z.string().trim().min(2),
       period: z.string().trim().min(2),
-      start_date: z.string().trim().min(2),
+      start_date: z.string().trim().min(2).optional(),
     }),
     contactInfo: z.object({
       mobileNo: z.string().trim(),
@@ -135,7 +135,7 @@ export const addInformation = async (req, res) => {
       instituteName: parsedData.personalDetails.instituteName,
       course: parsedData.personalDetails.course,
       training_period: parsedData.personalDetails.period,
-      start_date: parsedData.personalDetails.start_date.split("T")[0],
+      start_date: parsedData.personalDetails.start_date ? parsedData.personalDetails.start_date.split("T")[0] : null,
       Mobile_No: parsedData.contactInfo.mobileNo,
       Resident_No: parsedData.contactInfo.residenceNo,
       ec_name: parsedData.contactInfo.emergencyContactName,
@@ -188,11 +188,22 @@ export const streamDocument = async (req, res) => {
     const { userId, docType } = req.params;
     const trainee = await TraineeDetails.findOne({ where: { user_id: userId } });
 
-    if (!trainee || !trainee[docType]) {
+    const docTypeMap = {
+      nicScan: 'nic_scan',
+      policeReport: 'police_report',
+      universityId: 'university_id',
+      instituteLetter: 'institute_letter',
+      consentLetter: 'consent_letter',
+      bankPassbook: 'bank_passbook'
+    };
+    
+    const dbField = docTypeMap[docType] || docType;
+
+    if (!trainee || !trainee[dbField]) {
       return res.status(404).json({ message: "Document not found" });
     }
 
-    const documentBuffer = trainee[docType];
+    const documentBuffer = trainee[dbField];
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", `inline; filename="${docType}.pdf"`);
     res.send(documentBuffer);
