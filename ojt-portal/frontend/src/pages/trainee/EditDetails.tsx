@@ -68,18 +68,18 @@ export default function EditDetails() {
 
     const [formData, setFormData] = useState<EditDetailsData>({
         personalDetails: {
-            name: pending?.Name || personal?.Name || "",
-            fullName: pending?.fullName || personal?.fullName || "",
-            nic: pending?.NIC || personal?.NIC || "",
+            name: pending?.name || pending?.Name || personal?.name || personal?.Name || "",
+            fullName: pending?.fullName || pending?.fullname || personal?.fullName || personal?.fullname || "",
+            nic: pending?.NIC || personal?.NIC || loaderData?.NIC || user?.NIC || "",
             address: pending?.address || personal?.address || "",
         },
         contactInfo: {
             mobileNo: pending?.Mobile_No || personal?.Mobile_No || "",
             residenceNo: pending?.Resident_No || personal?.Resident_No || "",
-            email: pending?.email || personal?.email || loaderData?.TraineeUser?.email || user?.email || "",
-            emergencyContactName: pending?.emergency_name || emergency?.name || "",
-            relationship: pending?.emergency_relationship || emergency?.relationship || "",
-            emergencyContactTelephone: pending?.emergency_telephone || emergency?.telephone || "",
+            email: pending?.email || personal?.email || loaderData?.email || user?.email || "",
+            emergencyContactName: pending?.emergency_name || personal?.ec_name || emergency?.name || "",
+            relationship: pending?.emergency_relationship || personal?.ec_relationship || emergency?.relationship || "",
+            emergencyContactTelephone: pending?.emergency_telephone || personal?.ec_telephone || emergency?.telephone || "",
         },
         bankDetails: {
             accountHolderName: pending?.bank_accname || personal?.bank_accname || "",
@@ -177,7 +177,7 @@ export default function EditDetails() {
                 },
             });
 
-            success("Edit request submitted! Waiting for admin approval.");
+            success("Details updated successfully!");
             navigate("/trainee/details");
         } catch (err) {
             console.error("Failed to update details:", err);
@@ -239,30 +239,26 @@ export default function EditDetails() {
                 </CardHeader>
                 <CardContent className="pt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Read-only fields */}
-                        <div className="space-y-1">
                             <Input
-                                label="Name with Initials"
+                                label="Name with Initials (Read-only)"
                                 value={formData.personalDetails.name}
-                                onChange={(e) => handleInputChange("personalDetails", "name", e.target.value)}
-                                placeholder="e.g. S.H Perera"
+                                onChange={() => { }}
+                                disabled
+                                className="bg-gray-50"
                             />
-                            <p className="text-xs text-gray-500 pl-1">
-                                Example: S.H Perera
-                            </p>
-                        </div>
                         <Input
                             label="NIC Number (Read-only)"
                             value={formData.personalDetails.nic}
-                            readOnly
-                            className="bg-gray-50 cursor-not-allowed"
+                            onChange={() => { }}
+                            disabled
+                            className="bg-gray-50"
                         />
-
-                        {/* Editable fields */}
                         <Input
-                            label="Full Name"
+                            label="Full Name (Read-only)"
                             value={formData.personalDetails.fullName}
-                            onChange={(e) => handleInputChange("personalDetails", "fullName", e.target.value)}
+                            onChange={() => { }}
+                            disabled
+                            className="bg-gray-50"
                         />
 
                         <div className="md:col-span-2">
@@ -304,11 +300,12 @@ export default function EditDetails() {
                         />
                         <div className="md:col-span-2">
                             <Input
-                                label="Email"
+                                label="Email (Read-only)"
                                 value={formData.contactInfo.email}
-                                onChange={(e) => handleInputChange("contactInfo", "email", e.target.value)}
+                                onChange={() => { }}
                                 type="email"
-                                placeholder="example@gmail.com"
+                                disabled
+                                className="bg-gray-50"
                             />
                         </div>
                     </div>
@@ -324,11 +321,6 @@ export default function EditDetails() {
                                 label="Contact Name"
                                 value={formData.contactInfo.emergencyContactName}
                                 onChange={(e) => handleInputChange("contactInfo", "emergencyContactName", e.target.value)}
-                            />
-                            <Input
-                                label="Relationship"
-                                value={formData.contactInfo.relationship}
-                                onChange={(e) => handleInputChange("contactInfo", "relationship", e.target.value)}
                             />
                             <Input
                                 label="Telephone"
@@ -354,107 +346,38 @@ export default function EditDetails() {
                 <CardContent className="pt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Input
-                            label="Account Holder Name"
+                            label="Account Holder Name (Read-only)"
                             value={formData.bankDetails.accountHolderName}
-                            onChange={(e) => handleInputChange("bankDetails", "accountHolderName", e.target.value)}
+                            onChange={() => { }}
+                            disabled
+                            className="bg-gray-50"
                         />
                         <Input
-                            label="Account Number"
+                            label="Account Number (Read-only)"
                             value={formData.bankDetails.accountNo}
-                            onChange={(e) => handleInputChange("bankDetails", "accountNo", e.target.value)}
+                            onChange={() => { }}
+                            disabled
+                            className="bg-gray-50"
                         />
                         <Input
-                            label="Branch Name"
+                            label="Branch Name (Read-only)"
                             value={formData.bankDetails.branchName}
-                            onChange={(e) => handleInputChange("bankDetails", "branchName", e.target.value)}
+                            onChange={() => { }}
+                            disabled
+                            className="bg-gray-50"
                         />
                         <Input
-                            label="Branch Code"
+                            label="Branch Code (Read-only)"
                             value={formData.bankDetails.branchCode}
-                            onChange={(e) => handleInputChange("bankDetails", "branchCode", e.target.value)}
+                            onChange={() => { }}
+                            disabled
+                            className="bg-gray-50"
                         />
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Documents Section */}
-            <Card>
-                <CardHeader className="border-b border-gray-100 pb-4">
-                    <div className="flex items-center space-x-2">
-                        <div className="p-2 bg-orange-100 text-orange-600 rounded-lg">
-                            <FileText className="h-5 w-5" />
-                        </div>
-                        <CardTitle>Documents</CardTitle>
-                    </div>
-                    <p className="text-sm text-gray-500 mt-1">Upload new documents to replace existing ones</p>
-                </CardHeader>
-                <CardContent className="pt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Profile Photo */}
 
-
-                        {/* NIC Scan */}
-                        <DocumentUploadBox
-                            label="NIC Scan"
-                            documentType="nicScan"
-                            existingDoc={formData.documents.nicScan}
-                            newFile={newFiles.nicScan}
-                            onUpload={(file) => handleFileUpload("nicScan", file)}
-                            onRemove={() => removeNewFile("nicScan")}
-                        />
-
-                        {/* Police Report */}
-                        <DocumentUploadBox
-                            label="Police Report"
-                            documentType="policeReport"
-                            existingDoc={formData.documents.policeReport}
-                            newFile={newFiles.policeReport}
-                            onUpload={(file) => handleFileUpload("policeReport", file)}
-                            onRemove={() => removeNewFile("policeReport")}
-                        />
-
-                        {/* University ID */}
-                        <DocumentUploadBox
-                            label="University ID"
-                            documentType="universityId"
-                            existingDoc={formData.documents.universityId}
-                            newFile={newFiles.universityId}
-                            onUpload={(file) => handleFileUpload("universityId", file)}
-                            onRemove={() => removeNewFile("universityId")}
-                        />
-
-                        {/* Institute Letter */}
-                        <DocumentUploadBox
-                            label="Institute Letter"
-                            documentType="instituteLetter"
-                            existingDoc={formData.documents.instituteLetter}
-                            newFile={newFiles.instituteLetter}
-                            onUpload={(file) => handleFileUpload("instituteLetter", file)}
-                            onRemove={() => removeNewFile("instituteLetter")}
-                        />
-
-                        {/* Consent Letter */}
-                        <DocumentUploadBox
-                            label="Consent Letter"
-                            documentType="consentLetter"
-                            existingDoc={formData.documents.consentLetter}
-                            newFile={newFiles.consentLetter}
-                            onUpload={(file) => handleFileUpload("consentLetter", file)}
-                            onRemove={() => removeNewFile("consentLetter")}
-                        />
-
-                        {/* BOC Bank Statement / Passbook */}
-                        <DocumentUploadBox
-                            label="BOC Bank Statement / Passbook"
-                            documentType="bankPassbook"
-                            existingDoc={formData.documents.bankPassbook}
-                            newFile={newFiles.bankPassbook}
-                            onUpload={(file) => handleFileUpload("bankPassbook", file)}
-                            onRemove={() => removeNewFile("bankPassbook")}
-                        />
-                    </div>
-                </CardContent>
-            </Card>
         </div>
     );
 }

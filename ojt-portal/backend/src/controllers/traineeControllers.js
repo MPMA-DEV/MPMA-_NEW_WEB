@@ -101,8 +101,8 @@ export const addInformation = async (req, res) => {
     }),
     bankDetails: z.object({
       accountHolderName: z.string().trim().optional().nullable(),
-      accountNo: z.string().trim().optional().nullable(),
-      branchCode: z.string().trim().optional().nullable(),
+      accountNo: z.string().trim().length(10, "BOC Account number must be exactly 10 digits").regex(/^\d+$/, "Account number must contain only numbers").optional().nullable(),
+      branchCode: z.string().trim().length(3, "BOC Branch code must be exactly 3 digits").regex(/^\d+$/, "Branch code must contain only numbers").optional().nullable(),
       branchName: z.string().trim().optional().nullable(),
     }).optional(),
   });
@@ -171,7 +171,7 @@ export const addInformation = async (req, res) => {
       await TraineeDetails.create({ ...traineeData, user_id: user.id }, { transaction });
     }
 
-    await user.update({ status: "Processing" }, { transaction });
+    await user.update({ status: "Processing", email: parsedData.contactInfo.email, rejection_reason: null }, { transaction });
 
     await transaction.commit();
 

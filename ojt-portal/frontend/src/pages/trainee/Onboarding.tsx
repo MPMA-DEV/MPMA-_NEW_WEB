@@ -195,13 +195,14 @@ export default function Onboarding() {
         const res = await api.get(`api/trainee/trainee_details/${user.id}`);
         const data = res.data;
         if (data) {
-          const personal = data.PersonalInfo;
-          const emergency = data.EmergencyContact;
+          const traineeDetail = data.trainee_detail || data.TraineeDetail || data.trainee_details || data.TraineeDetails || null;
+          const personal = traineeDetail || data.PersonalInfo;
+          const emergency = traineeDetail || data.EmergencyContact;
 
           if (personal) {
-            if (personal.Name) setValue("personalDetails.name", personal.Name, { shouldValidate: true });
-            if (personal.fullName) setValue("personalDetails.fullname", personal.fullName, { shouldValidate: true });
-            if (personal.NIC) setValue("personalDetails.nicNo", personal.NIC, { shouldValidate: true });
+            if (personal.name || personal.Name) setValue("personalDetails.name", personal.name || personal.Name, { shouldValidate: true });
+            if (personal.fullName || personal.fullname) setValue("personalDetails.fullname", personal.fullName || personal.fullname, { shouldValidate: true });
+            if (personal.NIC || data.NIC || user?.NIC) setValue("personalDetails.nicNo", personal.NIC || data.NIC || user?.NIC, { shouldValidate: true });
             if (personal.address) setValue("personalDetails.address", personal.address, { shouldValidate: true });
             if (personal.training_type) setValue("personalDetails.trainingType", personal.training_type, { shouldValidate: true });
             if (personal.instituteName) setValue("personalDetails.instituteName", personal.instituteName, { shouldValidate: true });
@@ -227,13 +228,13 @@ export default function Onboarding() {
             if (personal.bank_bno) setValue("bankDetails.branchCode", String(personal.bank_bno), { shouldValidate: true });
           }
 
-          if (emergency) {
-            if (emergency.name) setValue("contactInfo.emergencyContactName", emergency.name, { shouldValidate: true });
-            if (emergency.relationship) setValue("contactInfo.relationship", emergency.relationship, { shouldValidate: true });
-            if (emergency.telephone) setValue("contactInfo.emergencyContactTelephone", emergency.telephone, { shouldValidate: true });
+          if (personal) {
+            if (personal.ec_name || emergency?.name) setValue("contactInfo.emergencyContactName", personal.ec_name || emergency?.name, { shouldValidate: true });
+            if (personal.ec_relationship || emergency?.relationship) setValue("contactInfo.relationship", personal.ec_relationship || emergency?.relationship, { shouldValidate: true });
+            if (personal.ec_telephone || emergency?.telephone) setValue("contactInfo.emergencyContactTelephone", personal.ec_telephone || emergency?.telephone, { shouldValidate: true });
           }
 
-          const dbEmail = personal?.email || data.TraineeUser?.email || user?.email;
+          const dbEmail = personal?.email || data.email || user?.email;
           if (dbEmail) setValue("contactInfo.email", dbEmail, { shouldValidate: true });
           if (personal?.Mobile_No) setValue("contactInfo.mobileNo", personal.Mobile_No, { shouldValidate: true });
           if (personal?.Resident_No) setValue("contactInfo.residenceNo", personal.Resident_No, { shouldValidate: true });
@@ -378,10 +379,7 @@ export default function Onboarding() {
   };
 */
   const handleDocumentUpload = (file: File, documentType: string) => {
-    if (
-      file &&
-      (file.type.startsWith("image/") || file.type === "application/pdf")
-    ) {
+    if (file && file.type === "application/pdf") {
       setValue(`documents.${documentType}` as any, file);
       success(
         `${documentType
@@ -389,7 +387,7 @@ export default function Onboarding() {
           .replace(/^./, (str) => str.toUpperCase())} uploaded successfully`
       );
     } else {
-      error("Please select a valid image or PDF file");
+      error("Please select a valid PDF file");
     }
   };
 
@@ -557,7 +555,7 @@ export default function Onboarding() {
             `Please upload all required documents: ${missingDocs
               .map((doc) =>
                 doc === "bankPassbook"
-                  ? "BOC Bank Statement or Passbook"
+                  ? "BOC Bank Statement or passbook (Only Students of Government Universities/Technical Institute)"
                   : doc
                       .replace(/([A-Z])/g, " $1")
                       .replace(/^./, (str) => str.toUpperCase())
@@ -1297,7 +1295,7 @@ export default function Onboarding() {
                         <p className="text-gray-600">
                           {isGovInstitute 
                             ? "Please provide your Bank of Ceylon (BOC) account details. This is mandatory for government institute trainees."
-                            : "Provide your Bank of Ceylon (BOC) account details (optional)."}
+                            : <>Provide your Bank of Ceylon (BOC) account details <span className="text-amber-600 font-medium">(Only Students of Government Universities/Technical Institute)</span>.</>}
                         </p>
                       </div>
 
@@ -1388,7 +1386,7 @@ export default function Onboarding() {
                           <li>• Police Report</li>
                           <li>• Institute Letter</li>
                           <li>• Consent Letter</li>
-                          <li>• BOC Bank Statement or Passbook {isGovInstitute ? "" : "(Optional)"}</li>
+                          <li>• BOC Bank Statement or passbook <span className="text-amber-600 font-medium">(Only Students of Government Universities/Technical Institute)</span></li>
                         </ul>
                       </div>
 
@@ -1428,7 +1426,7 @@ export default function Onboarding() {
                         },
                         {
                           key: "bankPassbook",
-                          label: "BOC Bank Statement or Passbook",
+                          label: "BOC Bank Statement or passbook (Only Students of Government Universities/Technical Institute)",
                           file: bankPassbook,
                           uploadText: "Statement/Passbook",
                         },
@@ -1524,7 +1522,7 @@ export default function Onboarding() {
                                         id={`${key}-upload`}
                                         type="file"
                                         className="sr-only"
-                                        accept=".pdf,.png,.jpg,.jpeg"
+                                        accept=".pdf"
                                         onChange={(e) =>
                                           e.target.files?.[0] &&
                                           handleDocumentUpload(e.target.files[0], key)
@@ -1532,7 +1530,7 @@ export default function Onboarding() {
                                       />
                                     </label>
                                     <span className="text-[11px] text-gray-500 ml-2 font-medium">
-                                      Max 1MB (PDF, PNG, JPG)
+                                      Max 1MB (PDF)
                                     </span>
                                   </div>
                                 </div>

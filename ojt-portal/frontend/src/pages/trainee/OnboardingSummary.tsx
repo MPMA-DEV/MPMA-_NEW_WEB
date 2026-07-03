@@ -113,7 +113,7 @@ export default function OnboardingSummary() {
     },
     {
       id: "7",
-      name: "BOC Bank Statement / Passbook",
+      name: "BOC Bank Statement or passbook (Only Students of Government Universities/Technical Institute)",
       type: (loaderData?.Documents?._types?.bankPassbook || "").includes("pdf") ? ("pdf" as const) : ("image" as const),
       url: loaderData?.Documents?.bankPassbook || "",
       uploadDate: new Date().toISOString(),
@@ -176,8 +176,8 @@ export default function OnboardingSummary() {
               <div className="space-y-5">
                 <DetailItem label="Full Name" value={personal?.fullName} icon={User} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <DetailItem label="Name with Initials" value={personal?.Name || personal?.name || personal?.fullName} />
-                  <DetailItem label="NIC Number" value={personal?.NIC} />
+                  <DetailItem label="Name with Initials" value={personal?.name || personal?.fullName} />
+                  <DetailItem label="NIC Number" value={loaderData?.TraineeUser?.NIC} />
                 </div>
                 <DetailItem label="Address" value={personal?.address} icon={MapPin} />
               </div>
@@ -200,17 +200,17 @@ export default function OnboardingSummary() {
                   <DetailItem label="Mobile Number" value={personal?.Mobile_No} icon={Smartphone} />
                   <DetailItem label="Residence Number" value={personal?.Resident_No} icon={Phone} />
                 </div>
-                <DetailItem label="Email Address" value={personal?.email || loaderData?.TraineeUser?.email || user?.email} icon={Mail} />
+                <DetailItem label="Email Address" value={loaderData?.TraineeUser?.email || loaderData?.email || user?.email} icon={Mail} />
 
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                  <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-4">Emergency Contact</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <DetailItem label="Name" value={emergency?.name} />
-                    <DetailItem label="Relationship" value={emergency?.relationship} />
-                    <div className="sm:col-span-2">
-                      <DetailItem label="Telephone" value={emergency?.telephone} icon={Phone} />
-                    </div>
+                <div className="pt-4 border-t border-gray-100">
+                  <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-4 flex items-center">
+                    Emergency Contact
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                    <DetailItem label="Name" value={emergency?.ec_name} />
+                    <DetailItem label="Relationship" value={emergency?.ec_relationship} />
                   </div>
+                  <DetailItem label="Telephone" value={emergency?.ec_telephone} icon={Phone} />
                 </div>
               </div>
             </CardContent>
@@ -227,18 +227,11 @@ export default function OnboardingSummary() {
               </div>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <DetailItem label="Training Type" value={personal?.training_type} />
-                <DetailItem label="Institute Name" value={personal?.instituteName} />
-                <DetailItem label="Course" value={personal?.course} />
-                <DetailItem
-                  label="Start Date"
-                  value={personal?.start_date ? new Date(personal.start_date).toLocaleDateString() : ""}
-                  icon={Calendar}
-                />
-                <DetailItem label="Training Period" value={personal?.training_period} />
-                <DetailItem label="Institute Address" value={personal?.address} icon={MapPin} />
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <DetailItem label="Institute Name" value={personal?.instituteName} />
+              <DetailItem label="Course" value={personal?.course} />
+              <DetailItem label="Training Period" value={personal?.period || personal?.training_period} />
+            </div>
             </CardContent>
           </Card>
 

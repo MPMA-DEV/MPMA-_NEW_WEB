@@ -156,64 +156,71 @@ export const updateDetails = async (req, res) => {
     userId: z.string().or(z.number()).transform(String),
   });
 
-  const bodySchema = z.object({
-    personalDetails: z.object({
-      name: z.string().min(1, "Name is required").max(100).optional(),
-      fullName: z.string().min(1, "Full name is required").max(200).optional(),
-      address: z.string().min(1, "Address is required").max(200).optional(),
-    }).optional(),
-    contactInfo: z.object({
-      mobileNo: z.string().min(1, "Mobile number is required").optional(),
-      residenceNo: z.string().min(1, "Residence number is required").optional(),
-      emergencyContactName: z.string().min(1, "Emergency contact name is required").optional(),
-      relationship: z.string().min(1, "Relationship is required").optional(),
-      emergencyContactTelephone: z.string().min(1, "Emergency contact telephone is required").optional(),
-    }).optional(),
-  });
+    const bodySchema = z.object({
+      personalDetails: z.object({
+        name: z.string().min(1, "Name is required").max(100).optional(),
+        fullName: z.string().min(1, "Full name is required").max(200).optional(),
+        address: z.string().min(1, "Address is required").max(200).optional(),
+      }).optional(),
+      contactInfo: z.object({
+        mobileNo: z.string().min(1, "Mobile number is required").optional(),
+        residenceNo: z.string().min(1, "Residence number is required").optional(),
+        email: z.string().email("Invalid email").optional(),
+        emergencyContactName: z.string().min(1, "Emergency contact name is required").optional(),
+        relationship: z.string().min(1, "Relationship is required").optional(),
+        emergencyContactTelephone: z.string().min(1, "Emergency contact telephone is required").optional(),
+      }).optional(),
+    });
+  
+    try {
+      const { userId } = paramsSchema.parse(req.params);
+      const parsedBody = bodySchema.parse(req.parsedBody || req.body);
+  
+      const trainee = await TraineeDetails.findOne({ where: { user_id: userId } });
+      const user = await TraineeUser.findByPk(userId);
 
-  try {
-    const { userId } = paramsSchema.parse(req.params);
-    const parsedBody = bodySchema.parse(req.parsedBody || req.body);
-
-    const trainee = await TraineeDetails.findOne({ where: { user_id: userId } });
-    if (!trainee) {
-      return res.status(404).json({ message: "TraineeDetails profile not found" });
-    }
-
-    const updates = {};
-    if (parsedBody.personalDetails) {
-      if (parsedBody.personalDetails.name) updates.name = parsedBody.personalDetails.name;
-      if (parsedBody.personalDetails.fullName) updates.fullName = parsedBody.personalDetails.fullName;
-      if (parsedBody.personalDetails.address) updates.address = parsedBody.personalDetails.address;
-    }
-
-    if (parsedBody.contactInfo) {
-      if (parsedBody.contactInfo.mobileNo) updates.Mobile_No = parsedBody.contactInfo.mobileNo;
-      if (parsedBody.contactInfo.residenceNo) updates.Resident_No = parsedBody.contactInfo.residenceNo;
-      if (parsedBody.contactInfo.emergencyContactName) updates.ec_name = parsedBody.contactInfo.emergencyContactName;
-      if (parsedBody.contactInfo.relationship) updates.ec_relationship = parsedBody.contactInfo.relationship;
-      if (parsedBody.contactInfo.emergencyContactTelephone) updates.ec_telephone = parsedBody.contactInfo.emergencyContactTelephone;
-    }
-
-    if (req.files) {
-      const processFile = (fieldName, snapshotField) => {
-        if (req.files[fieldName] && req.files[fieldName][0]) {
-          updates[snapshotField] = req.files[fieldName][0].buffer;
+      if (!trainee || !user) {
+        return res.status(404).json({ message: "Trainee profile or user not found" });
+      }
+  
+      const updates = {};
+      if (parsedBody.personalDetails) {
+        if (parsedBody.personalDetails.name) updates.name = parsedBody.personalDetails.name;
+        if (parsedBody.personalDetails.fullName) updates.fullName = parsedBody.personalDetails.fullName;
+        if (parsedBody.personalDetails.address) updates.address = parsedBody.personalDetails.address;
+      }
+  
+      if (parsedBody.contactInfo) {
+        if (parsedBody.contactInfo.mobileNo) updates.Mobile_No = parsedBody.contactInfo.mobileNo;
+        if (parsedBody.contactInfo.residenceNo) updates.Resident_No = parsedBody.contactInfo.residenceNo;
+        if (parsedBody.contactInfo.emergencyContactName) updates.ec_name = parsedBody.contactInfo.emergencyContactName;
+        if (parsedBody.contactInfo.relationship) updates.ec_relationship = parsedBody.contactInfo.relationship;
+        if (parsedBody.contactInfo.emergencyContactTelephone) updates.ec_telephone = parsedBody.contactInfo.emergencyContactTelephone;
+        
+        if (parsedBody.contactInfo.email) {
+          await user.update({ email: parsedBody.contactInfo.email });
         }
-      };
-      processFile("nicScan", "nic_scan");
-      processFile("policeReport", "police_report");
-      processFile("universityId", "university_id");
-      processFile("instituteLetter", "institute_letter");
-      processFile("consentLetter", "consent_letter");
-      processFile("bankPassbook", "bank_passbook");
-    }
-
-    if (Object.keys(updates).length > 0) {
-      await trainee.update(updates);
-    }
-
-    return res.status(200).json({ message: "Details updated successfully." });
+      }
+  
+      if (req.files) {
+        const processFile = (fieldName, snapshotField) => {
+          if (req.files[fieldName] && req.files[fieldName][0]) {
+            updates[snapshotField] = req.files[fieldName][0].buffer;
+          }
+        };
+        processFile("nicScan", "nic_scan");
+        processFile("policeReport", "police_report");
+        processFile("universityId", "university_id");
+        processFile("instituteLetter", "institute_letter");
+        processFile("consentLetter", "consent_letter");
+        processFile("bankPassbook", "bank_passbook");
+      }
+  
+      if (Object.keys(updates).length > 0) {
+        await trainee.update(updates);
+      }
+  
+      return res.status(200).json({ message: "Details updated successfully." });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ message: "Invalid input", errors: error.errors });

@@ -162,6 +162,10 @@ export default function StaffDashboard() {
         
       let details = detailsRes.data || {};
       
+      const traineeDetail = details.trainee_detail || details.TraineeDetail || details.trainee_details || details.TraineeDetails || null;
+      details.PersonalInfo = traineeDetail || details.PersonalInfo;
+      details.EmergencyContact = traineeDetail || details.EmergencyContact;
+
       const hasPersonalInfo = details.PersonalInfo && Object.keys(details.PersonalInfo).length > 0;
       const hasEmergency = details.EmergencyContact && Object.keys(details.EmergencyContact).length > 0;
 
@@ -452,16 +456,16 @@ export default function StaffDashboard() {
                         </div>
                         <div>
                           <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Name with Initials</span>
-                          <span className="font-medium text-gray-900 break-words">{selectedTraineeDetails.PersonalInfo?.Name || "N/A"}</span>
+                          <span className="font-medium text-gray-900 break-words">{selectedTraineeDetails.PersonalInfo?.name || selectedTraineeDetails.PersonalInfo?.Name || "N/A"}</span>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">NIC</span>
-                            <span className="font-semibold text-gray-900">{selectedTraineeDetails.PersonalInfo?.NIC || "N/A"}</span>
+                            <span className="font-semibold text-gray-900">{selectedTraineeDetails.NIC || selectedTraineeDetails.PersonalInfo?.NIC || "N/A"}</span>
                           </div>
                           <div>
                             <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Username</span>
-                            <span className="font-semibold text-gray-900">{selectedTraineeDetails.TraineeUser?.username || "N/A"}</span>
+                            <span className="font-semibold text-gray-900">{selectedTraineeDetails.username || selectedTraineeDetails.TraineeUser?.username || "N/A"}</span>
                           </div>
                         </div>
                         <div>
@@ -482,12 +486,6 @@ export default function StaffDashboard() {
                           <div>
                             <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Training Period</span>
                             <span className="font-semibold text-gray-900">{selectedTraineeDetails.PersonalInfo?.training_period || "N/A"}</span>
-                          </div>
-                          <div>
-                            <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Start Date</span>
-                            <span className="font-semibold text-gray-900">
-                              {selectedTraineeDetails.PersonalInfo?.start_date ? new Date(selectedTraineeDetails.PersonalInfo.start_date).toLocaleDateString() : "N/A"}
-                            </span>
                           </div>
                         </div>
                         <div>
@@ -512,7 +510,7 @@ export default function StaffDashboard() {
                         </div>
                         <div>
                           <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Email</span>
-                          <span className="font-semibold text-gray-900 break-all">{selectedTraineeDetails.PersonalInfo?.email || "N/A"}</span>
+                          <span className="font-semibold text-gray-900 break-all">{selectedTraineeDetails.email || selectedTraineeDetails.PersonalInfo?.email || "N/A"}</span>
                         </div>
                       </div>
                     </div>
@@ -522,16 +520,16 @@ export default function StaffDashboard() {
                       <div className="space-y-3 text-xs">
                         <div>
                           <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Contact Name</span>
-                          <span className="font-semibold text-gray-900">{selectedTraineeDetails.EmergencyContact?.name || "N/A"}</span>
+                          <span className="font-semibold text-gray-900">{selectedTraineeDetails.EmergencyContact?.ec_name || selectedTraineeDetails.EmergencyContact?.name || "N/A"}</span>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Relationship</span>
-                            <span className="font-medium text-gray-900">{selectedTraineeDetails.EmergencyContact?.relationship || "N/A"}</span>
+                            <span className="font-medium text-gray-900">{selectedTraineeDetails.EmergencyContact?.ec_relationship || selectedTraineeDetails.EmergencyContact?.relationship || "N/A"}</span>
                           </div>
                           <div>
                             <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Telephone</span>
-                            <span className="font-semibold text-gray-900">{selectedTraineeDetails.EmergencyContact?.telephone || "N/A"}</span>
+                            <span className="font-semibold text-gray-900">{selectedTraineeDetails.EmergencyContact?.ec_telephone || selectedTraineeDetails.EmergencyContact?.telephone || "N/A"}</span>
                           </div>
                         </div>
                       </div>

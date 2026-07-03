@@ -49,9 +49,12 @@ export const TraineeUser = sequalize.define(
       },
     },
     status: {
-      type: DataTypes.ENUM("Active", "Inactive", "Pending", "Processing", "Rejected"),
-      allowNull: false,
+      type: DataTypes.ENUM("Pending", "Processing", "Active", "Inactive", "Rejected"),
       defaultValue: "Pending",
+    },
+    rejection_reason: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     refresh_token: {
       type: DataTypes.STRING(255),

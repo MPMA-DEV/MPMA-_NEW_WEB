@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Loader2,
   Landmark,
+  Smartphone,
 } from "lucide-react";
 import { useToastHelpers } from "../../hooks/useToast";
 import { DocumentViewer } from "../../components/ui/DocumentViewer";
@@ -45,6 +46,20 @@ const getTrainingStatus = (startDate: string | Date | null | undefined, endDate?
 
   return "Active";
 };
+
+const DetailItem = ({ label, value, icon: Icon }: any) => (
+  <div>
+    <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+      {Icon && <Icon className="w-3 h-3" />}
+      {label}
+    </span>
+    <div className="bg-gray-50/50 rounded border border-gray-100 p-2.5 min-h-[42px] flex items-center">
+      <span className="text-sm font-medium text-gray-700">
+        {value || "—"}
+      </span>
+    </div>
+  </div>
+);
 
 export default function TraineeDetails() {
   const { success } = useToastHelpers();
@@ -86,8 +101,8 @@ export default function TraineeDetails() {
   const emergencyData = loaderData?.EmergencyContact || loaderData?.Emegency_contact;
   const emergency = (emergencyData && Object.keys(emergencyData).length > 0) ? emergencyData : defaultEmergency;
 
-  // Compute training status from start_date
-  const trainingStatus = getTrainingStatus(personal?.start_date, personal?.end_date);
+  // Compute training status - requested to just be "Active"
+  const trainingStatus = "Active";
 
   // Track edit status from loader data - can be "NOEDIT", "REQEST", or "EDIT"
   const [editStatus, setEditStatus] = useState<string>(personal?.edit || "NOEDIT");
@@ -176,7 +191,7 @@ export default function TraineeDetails() {
     },
     {
       id: "7",
-      name: "BOC Bank Statement / Passbook",
+      name: "BOC Bank Statement or passbook (Only Students of Government Universities/Technical Institute)",
       type: (documentsData?._types?.bankPassbook || "").includes("pdf") ? ("pdf" as const) : ("image" as const),
       url: documentsData?.bankPassbook || "",
       uploadDate: new Date().toISOString(),
@@ -227,7 +242,7 @@ export default function TraineeDetails() {
             ) : (
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center ring-2 ring-blue-100 shadow-sm">
                 <span className="text-white font-bold text-lg">
-                  {(personal?.Name || loaderData?.name || loaderData?.TraineeUser?.nickname || 'T')
+                  {(personal?.fullName || personal?.name || loaderData?.name || loaderData?.TraineeUser?.nickname || 'T')
                     .split(' ')
                     .map((n: string) => n[0])
                     .slice(0, 2)
@@ -240,7 +255,7 @@ export default function TraineeDetails() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {personal?.Name || loaderData?.name || loaderData?.TraineeUser?.nickname || ''}
+              {personal?.fullName || personal?.name || loaderData?.name || loaderData?.TraineeUser?.nickname || ''}
             </h1>
             <p className="text-base text-gray-500 font-medium">
               {personal?.instituteName || loaderData?.institute || ''}
@@ -287,227 +302,95 @@ export default function TraineeDetails() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Personal Information */}
-        <Card color="blue">
-          <CardHeader className="border-b border-blue-100/50 pb-3">
-            <div className="flex items-center space-x-2">
-              <div className="p-1.5 bg-blue-100 text-blue-600 rounded-md">
-                <User className="h-4 w-4" />
+        <Card className="border-t-4 border-t-blue-500 shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                <User className="h-5 w-5" />
               </div>
-              <CardTitle size="sm">Personal Information</CardTitle>
+              <CardTitle size="md">Personal Information</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="pt-1">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Full Name
-                  </label>
-                  <p className="text-sm font-medium text-gray-900 break-words">
-                    {personal?.fullName || loaderData?.name || loaderData?.TraineeUser?.nickname || 'N/A'}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    NIC Number
-                  </label>
-                  <p className="text-sm font-medium text-gray-900">
-                    {personal?.NIC || loaderData?.nic || 'N/A'}
-                  </p>
-                </div>
+          <CardContent className="pt-6">
+            <div className="space-y-5">
+              <DetailItem label="Full Name" value={personal?.fullName || loaderData?.name || loaderData?.TraineeUser?.nickname} icon={User} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <DetailItem label="Name with Initials" value={personal?.Name || personal?.name || personal?.fullName || loaderData?.name || loaderData?.TraineeUser?.nickname} />
+                <DetailItem label="NIC Number" value={loaderData?.TraineeUser?.NIC} />
               </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Address
-                </label>
-                <p className="text-sm font-medium text-gray-900 flex items-start">
-                  <MapPin className="h-3.5 w-3.5 mr-1.5 text-gray-400 mt-0.5 shrink-0" />
-                  {personal?.address || 'N/A'}
-                </p>
-              </div>
+              <DetailItem label="Address" value={personal?.address} icon={MapPin} />
             </div>
           </CardContent>
         </Card>
 
         {/* Contact Information */}
-        <Card color="purple">
-          <CardHeader className="border-b border-purple-100/50 pb-3">
-            <div className="flex items-center space-x-2">
-              <div className="p-1.5 bg-purple-100 text-purple-600 rounded-md">
-                <Phone className="h-4 w-4" />
+        <Card className="border-t-4 border-t-purple-500 shadow-md hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
+                <Phone className="h-5 w-5" />
               </div>
-              <CardTitle size="sm">Contact Information</CardTitle>
+              <CardTitle size="md">Contact Information</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="pt-1">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Mobile Number
-                  </label>
-                  <p className="text-sm font-medium text-gray-900 flex items-center">
-                    <Phone className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-                    {personal?.Mobile_No || 'N/A'}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Residence Number
-                  </label>
-                  <p className="text-sm font-medium text-gray-900 flex items-center">
-                    <Phone className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-                    {personal?.Resident_No || 'N/A'}
-                  </p>
-                </div>
+          <CardContent className="pt-6">
+            <div className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <DetailItem label="Mobile Number" value={personal?.Mobile_No} icon={Smartphone} />
+                <DetailItem label="Residence Number" value={personal?.Resident_No} icon={Phone} />
               </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Email Address
-                </label>
-                <p className="text-sm font-medium text-gray-900 flex items-center">
-                  <Mail className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-                  {personal?.email || loaderData?.TraineeUser?.email || loaderData?.email || 'N/A'}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              <DetailItem label="Email Address" value={loaderData?.TraineeUser?.email || loaderData?.email || user?.email} icon={Mail} />
 
-        {/* Emergency Contact */}
-        <Card color="orange">
-          <CardHeader className="border-b border-orange-100/50 pb-3">
-            <div className="flex items-center space-x-2">
-              <div className="p-1.5 bg-orange-100 text-orange-600 rounded-md">
-                <AlertCircle className="h-4 w-4" />
-              </div>
-              <CardTitle size="sm">Emergency Contact</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-1">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Name
-                </label>
-                <p className="text-sm font-medium text-gray-900">
-                  {emergency?.name || 'N/A'}
-                </p>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Phone
-                </label>
-                <p className="text-sm font-medium text-gray-900">
-                  {emergency?.telephone || 'N/A'}
-                </p>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Relationship
-                </label>
-                <p className="text-sm font-medium text-gray-900">
-                  {emergency?.relationship || 'N/A'}
-                </p>
+              <div className="pt-4 border-t border-gray-100">
+                <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-4 flex items-center">
+                  Emergency Contact
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                  <DetailItem label="Name" value={emergency?.ec_name} />
+                  <DetailItem label="Relationship" value={emergency?.ec_relationship} />
+                </div>
+                <DetailItem label="Telephone" value={emergency?.ec_telephone} icon={Phone} />
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Training Information */}
-        <Card color="green">
-          <CardHeader className="border-b border-green-100/50 pb-3">
-            <div className="flex items-center space-x-2">
-              <div className="p-1.5 bg-green-100 text-green-600 rounded-md">
-                <FileText className="h-4 w-4" />
+        <Card className="border-t-4 border-t-green-500 shadow-md hover:shadow-lg transition-shadow lg:col-span-2">
+          <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+                <Calendar className="h-5 w-5" />
               </div>
-              <CardTitle size="sm">Training Information</CardTitle>
+              <CardTitle size="md">Training Information</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="pt-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Training Type
-                </label>
-                <p className="text-sm font-medium text-gray-900">
-                  {personal?.training_type || 'N/A'}
-                </p>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Institute
-                </label>
-                <p className="text-sm font-medium text-gray-900">
-                  {personal?.instituteName || 'N/A'}
-                </p>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Course
-                </label>
-                <p className="text-sm font-medium text-gray-900">
-                  {personal?.course || 'N/A'}
-                </p>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                  Start Date
-                </label>
-                <p className="text-sm font-medium text-gray-900 flex items-center">
-                  <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-                  {personal?.start_date ? new Date(personal.start_date).toLocaleDateString() : 'N/A'}
-                </p>
-              </div>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <DetailItem label="Institute Name" value={personal?.instituteName} />
+              <DetailItem label="Course" value={personal?.course} />
+              <DetailItem label="Training Period" value={personal?.period || personal?.training_period} />
             </div>
           </CardContent>
         </Card>
 
         {/* BOC Bank Details */}
         {(personal?.bank_accno || personal?.bank_branch) && (
-          <Card color="yellow">
-            <CardHeader className="border-b border-yellow-100/50 pb-3">
-              <div className="flex items-center space-x-2">
-                <div className="p-1.5 bg-yellow-100/80 text-yellow-700 rounded-md">
-                  <Landmark className="h-4 w-4" />
+          <Card className="border-t-4 border-t-amber-500 shadow-md hover:shadow-lg transition-shadow lg:col-span-2 animate-fade-in">
+            <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-amber-100 text-amber-600 rounded-lg">
+                  <Landmark className="h-5 w-5" />
                 </div>
-                <CardTitle size="sm" className="text-yellow-900">BOC Bank Details</CardTitle>
+                <CardTitle size="md">BOC Bank Details</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="pt-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Account Holder Name
-                  </label>
-                  <p className="text-sm font-medium text-gray-900 break-words">
-                    {personal?.bank_accname || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Account Number
-                  </label>
-                  <p className="text-sm font-medium text-gray-900">
-                    {personal?.bank_accno || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Branch Name
-                  </label>
-                  <p className="text-sm font-medium text-gray-900 break-words">
-                    {personal?.bank_branch || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Branch Code
-                  </label>
-                  <p className="text-sm font-medium text-gray-900">
-                    {personal?.bank_bno ? String(personal.bank_bno) : "N/A"}
-                  </p>
-                </div>
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <DetailItem label="Account Holder Name" value={personal?.bank_accname} />
+                <DetailItem label="Account Number" value={personal?.bank_accno} />
+                <DetailItem label="Branch Name" value={personal?.bank_branch} />
+                <DetailItem label="Branch Code" value={personal?.bank_bno ? String(personal.bank_bno) : undefined} />
               </div>
             </CardContent>
           </Card>

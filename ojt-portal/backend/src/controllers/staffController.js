@@ -102,7 +102,8 @@ export const verifyTrainee = async (req, res) => {
     }
 
     const newStatus = status === 'Active' ? 'Active' : 'Pending';
-    await traineeUser.update({ status: newStatus }, { transaction });
+    const rejectionReason = status === 'Rejected' ? comment : null;
+    await traineeUser.update({ status: newStatus, rejection_reason: rejectionReason }, { transaction });
 
     await transaction.commit();
 

@@ -369,11 +369,13 @@ const fetchTraineeDetails = async (user: any) => {
     console.warn("Secondary (by user id) fetch failed: ", err);
   }
 
+  const traineeDetail = secondaryByUserId?.trainee_detail || secondaryByUserId?.TraineeDetail || secondaryByUserId?.trainee_details || secondaryByUserId?.TraineeDetails || null;
+
   const finalResult: any = {
     ...primaryByNIC, // flat NIC-based fields at top-level
-    TraineeUser: secondaryByUserId?.TraineeUser ?? null,
-    PersonalInfo: secondaryByUserId?.PersonalInfo ?? null,
-    EmergencyContact: secondaryByUserId?.EmergencyContact ?? null,
+    TraineeUser: secondaryByUserId || null,
+    PersonalInfo: traineeDetail || null,
+    EmergencyContact: traineeDetail || null,
   };
 
   // Map status from NIC API: true->Active, false->Inactive, null/undefined->Pending

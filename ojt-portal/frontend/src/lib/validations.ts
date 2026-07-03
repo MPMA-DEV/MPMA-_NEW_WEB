@@ -136,8 +136,7 @@ export const OnboardingSchema = z.object({
       .nullable()
       .optional(),
     accountNo: z.string()
-      .min(8, "Account number must be 8-20 digits")
-      .max(20, "Account number must be 8-20 digits")
+      .length(10, "BOC Account number must be exactly 10 digits")
       .regex(/^\d+$/, "Account number must contain only numbers")
       .or(z.literal(""))
       .nullable()
@@ -148,8 +147,7 @@ export const OnboardingSchema = z.object({
       .nullable()
       .optional(),
     branchCode: z.string()
-      .min(3, "Branch code must be 3-10 digits")
-      .max(10, "Branch code must be 3-10 digits")
+      .length(3, "BOC Branch code must be exactly 3 digits")
       .regex(/^\d+$/, "Branch code must contain only numbers")
       .or(z.literal(""))
       .nullable()
@@ -192,7 +190,7 @@ export const OnboardingSchema = z.object({
     if (!data.documents?.bankPassbook) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "BOC Bank Statement or passbook is required",
+        message: "BOC Bank Statement or passbook (Only Students of Government Universities/Technical Institute) is required",
         path: ["documents", "bankPassbook"],
       });
     }
