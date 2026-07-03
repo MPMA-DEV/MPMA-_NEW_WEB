@@ -145,8 +145,10 @@ export default function TraineeProfile() {
       if (!user?.id) return;
       try {
         const res = await api.get(`api/trainee/trainee_details/${user.id}`);
-        const personalInfo = res?.data?.PersonalInfo;
-        const pendingDetails = res?.data?.PendingDetails;
+        const responseData = res?.data || {};
+        // The API returns the TraineeUser object with the associated TraineeDetails
+        const personalInfo = responseData.trainee_detail || responseData.TraineeDetail || responseData.trainee_details || responseData.TraineeDetails || {};
+        const pendingDetails = responseData.PendingDetails;
 
         // Set edit status
         if (personalInfo?.edit) {
@@ -157,7 +159,7 @@ export default function TraineeProfile() {
           setProfileData(prev => ({ ...prev, phone: personalInfo.Mobile_No }));
         }
 
-        const traineeUser = res?.data?.TraineeUser;
+        const traineeUser = responseData;
         const dbEmail = personalInfo?.email || traineeUser?.email || user?.email;
         if (dbEmail) {
           setProfileData(prev => ({ ...prev, email: dbEmail }));
