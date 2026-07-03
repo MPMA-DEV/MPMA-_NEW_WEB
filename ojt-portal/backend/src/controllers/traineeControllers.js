@@ -81,7 +81,7 @@ export const addInformation = async (req, res) => {
   const schema = z.object({
     user_id: z.string(),
     personalDetails: z.object({
-      name: z.string().trim().min(2).regex(/^([a-zA-Z][. ]+)+[a-zA-Z]{2,}([ ][a-zA-Z]+)*$/, "Invalid name format"),
+      name: z.string().trim().min(2).regex(/^([a-zA-Z]\.)*[a-zA-Z]\s[a-zA-Z]{2,}( [a-zA-Z]+)*$/, "Invalid name format"),
       fullname: z.string().trim().min(2),
       nicNo: z.string().trim(),
       address: z.string().trim().min(10),

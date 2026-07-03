@@ -245,10 +245,10 @@ export default function EditDetails() {
                                 label="Name with Initials"
                                 value={formData.personalDetails.name}
                                 onChange={(e) => handleInputChange("personalDetails", "name", e.target.value)}
-                                placeholder="e.g. S.H. Perera"
+                                placeholder="e.g. S.H Perera"
                             />
                             <p className="text-xs text-gray-500 pl-1">
-                                Example: S.H. Perera
+                                Example: S.H Perera
                             </p>
                         </div>
                         <Input

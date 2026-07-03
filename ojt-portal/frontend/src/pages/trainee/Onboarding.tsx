@@ -937,13 +937,13 @@ export default function Onboarding() {
                                 label="Name with Initials *"
                                 {...field}
                                 error={fieldState.error?.message}
-                                placeholder="e.g. S.H. Perera"
+                                placeholder="e.g. S.H Perera"
                                 className={compactInputClass}
                                 required
                               />
                               {!fieldState.error?.message && (
                                 <p className="text-xs text-gray-500 pl-1">
-                                  Example: S.H. Perera
+                                  Example: S.H Perera
                                 </p>
                               )}
                             </div>
