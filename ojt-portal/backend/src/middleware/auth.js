@@ -172,3 +172,46 @@ export const requireRole = (...allowedRoles) => {
     next();
   };
 };
+
+/**
+ * Middleware to ensure the authenticated user is only accessing their own data
+ * or has staff privileges.
+ * 
+ * @param {string} field - The name of the field to check (e.g. 'userId', 'id', 'nic')
+ * @param {string} location - Where to find the field in the request ('params' or 'body')
+ * @param {string} type - What the field represents ('id' or 'nic')
+ */
+export const authorizeUserOrStaff = (field = 'userId', location = 'params', type = 'id') => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: 'Authentication required' });
+    }
+
+    const requestedValue = req[location] && req[location][field] ? req[location][field] : (req.parsedBody && req.parsedBody[field]);
+    if (!requestedValue) {
+      // If the field isn't present, we let the controller or validation handle it
+      return next();
+    }
+
+    const isStaff = ['superadmin', 'admin', 'staff'].includes(req.user.role);
+    if (isStaff) {
+      return next();
+    }
+
+    let isOwner = false;
+    if (type === 'id') {
+      isOwner = req.user.id.toString() === requestedValue.toString();
+    } else if (type === 'nic') {
+      isOwner = req.user.NIC === requestedValue;
+    }
+
+    if (!isOwner) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied: You can only access your own data'
+      });
+    }
+
+    next();
+  };
+};
