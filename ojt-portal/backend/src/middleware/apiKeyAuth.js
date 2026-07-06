@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 /**
  * Middleware to authenticate requests using an API Key
  * Validates the x-api-key header against EXTERNAL_API_KEY environment variable.
@@ -23,7 +25,10 @@ export const apiKeyAuth = (req, res, next) => {
       });
     }
 
-    if (apiKey !== validApiKey) {
+    if (
+      apiKey.length !== validApiKey.length ||
+      !crypto.timingSafeEqual(Buffer.from(apiKey), Buffer.from(validApiKey))
+    ) {
       return res.status(403).json({
         success: false,
         message: 'Invalid API key'

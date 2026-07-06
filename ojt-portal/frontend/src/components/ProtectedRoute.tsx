@@ -1,6 +1,5 @@
 import { Navigate, useNavigation } from "react-router-dom";
-import { useAuth, type User } from "../contexts/AuthContext";
-import { getAccessToken, isTokenExpired } from "../api";
+import { useAuth } from "../contexts/AuthContext";
 import PageLoader from "./ui/PageLoader";
 
 interface ProtectedRouteProps {
@@ -9,28 +8,6 @@ interface ProtectedRouteProps {
   allowStaff?: boolean;
 }
 
-// Utility to decode user from token (same as AuthContext)
-const getUserFromToken = (token: string | null): User | null => {
-  if (!token) return null;
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return null;
-    const payload = JSON.parse(atob(parts[1]));
-    return {
-      id: payload.userId,
-      username: payload.username,
-      email: payload.email,
-      NIC: payload.NIC,
-      status: payload.status,
-      nickname: payload.username,
-      notifyChat: payload.notifyChat,
-      notifyPayment: payload.notifyPayment,
-      notifyHoliday: payload.notifyHoliday,
-    };
-  } catch {
-    return null;
-  }
-};
 
 export default function ProtectedRoute({
   children,
@@ -45,26 +22,12 @@ export default function ProtectedRoute({
     return <PageLoader />;
   }
 
-  // IMPORTANT: If AuthContext hasn't synced yet, check the API module directly
-  // This handles the case where the loader refreshed the token but AuthContext
-  // hasn't processed the subscription update yet
-  let user = authUser;
-  let accessToken = authToken;
-
-  if (!user || !accessToken) {
-    const rawToken = getAccessToken();
-    if (rawToken && !isTokenExpired(rawToken)) {
-      // Token is valid in API module, decode user from it
-      user = getUserFromToken(rawToken);
-      accessToken = rawToken;
-      console.log("ProtectedRoute: Using token from API module (AuthContext not synced)");
-    }
-  }
-
-  // If still no valid token, redirect to login
-  if (!user || !accessToken) {
+  // If no valid user or token, redirect to login
+  if (!authUser || !authToken) {
     return <Navigate to="/login" replace />;
   }
+
+  const user = authUser;
 
   if (requiresOnboarding) {
     // If user paused after documents but before payment, send to payment step

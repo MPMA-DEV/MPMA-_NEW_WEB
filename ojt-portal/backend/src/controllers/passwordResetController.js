@@ -46,7 +46,9 @@ export const forgotPassword = async (req, res) => {
         const resetToken = crypto.randomUUID();
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-        user.reset_token = resetToken;
+        const tokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+        user.reset_token = tokenHash;
         user.reset_token_expires = expiresAt;
         await user.save();
 
@@ -81,9 +83,10 @@ export const resetPassword = async (req, res) => {
     try {
         const parsedData = schema.parse(req.body);
 
-        let user = await TraineeUser.findOne({ where: { reset_token: parsedData.token } });
+        const tokenHash = crypto.createHash('sha256').update(parsedData.token).digest('hex');
+        let user = await TraineeUser.findOne({ where: { reset_token: tokenHash } });
         if (!user) {
-            user = await Staff.findOne({ where: { reset_token: parsedData.token } });
+            user = await Staff.findOne({ where: { reset_token: tokenHash } });
         }
 
         if (!user) {
@@ -114,9 +117,10 @@ export const validateResetToken = async (req, res) => {
     if (!token) return res.status(400).json({ valid: false, message: "Token is required" });
 
     try {
-        let user = await TraineeUser.findOne({ where: { reset_token: token } });
+        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+        let user = await TraineeUser.findOne({ where: { reset_token: tokenHash } });
         if (!user) {
-            user = await Staff.findOne({ where: { reset_token: token } });
+            user = await Staff.findOne({ where: { reset_token: tokenHash } });
         }
 
         if (!user) {

@@ -102,7 +102,7 @@ export const login = async (req, res) => {
         );
 
         return res.status(401).json({
-          message: "Invalid password",
+          message: "Invalid username or password",
         });
       }
 
@@ -134,6 +134,15 @@ export const login = async (req, res) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         maxAge: Number(process.env.JWT_REFRESH_EXPIRY_DAYS) * 24 * 60 * 60 * 1000, // 7 days
+        path: "/",
+      });
+
+      // Set access token as httpOnly cookie
+      res.cookie("accessToken", tokens.accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 15 * 60 * 1000, // 15 minutes (matches JWT_ACCESS_EXPIRY)
         path: "/",
       });
 
@@ -184,8 +193,8 @@ export const login = async (req, res) => {
         "User not found"
       );
 
-      return res.status(404).json({
-        message: "User not found",
+      return res.status(401).json({
+        message: "Invalid username or password",
       });
     }
   } catch (error) {
@@ -281,6 +290,15 @@ export const refreshToken = async (req, res) => {
           path: "/",
         });
 
+        // Set access token as httpOnly cookie
+        res.cookie("accessToken", tokens.accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: 15 * 60 * 1000, // 15 minutes
+          path: "/",
+        });
+
         logger.business.userAuth(
           "token_refresh",
           user.id,
@@ -291,6 +309,18 @@ export const refreshToken = async (req, res) => {
 
         return res.status(200).json({
           message: "Token refreshed successfully",
+          user: {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            status: user.status,
+            NIC: user.NIC,
+            staffId: user.staffId,
+            role: user.role,
+            notifyChat: user.notifyChat,
+            notifyPayment: user.notifyPayment,
+            notifyHoliday: user.notifyHoliday
+          },
           tokens: {
             accessToken: tokens.accessToken,
             tokenType: tokens.tokenType,
@@ -351,8 +381,14 @@ export const logout = async (req, res) => {
       await revokeRefreshToken(refreshToken);
     }
 
-    // Clear the httpOnly cookie
+    // Clear the httpOnly cookies
     res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
+    res.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -382,4 +418,11 @@ export const logout = async (req, res) => {
       message: "Internal server error",
     });
   }
+};
+
+export const getMe = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+  return res.status(200).json({ user: req.user });
 };

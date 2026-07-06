@@ -1,54 +1,27 @@
-import api, { getAccessToken, isTokenExpired, refreshAccessToken } from "../api";
+import api from "../api";
 import { createLoader } from "./index";
 import { redirect } from "react-router-dom";
 
-// Helper function to get current user from access token with refresh capability
+// Helper function to get current user from API
 const getCurrentUser = async () => {
-  // First, try to get existing access token
-  let token = getAccessToken();
-
-  // If no token or token is expired, try to refresh it first
-  if (!token || isTokenExpired(token)) {
-    try {
-      console.log("Loader: Token missing or expired, using shared refresh...");
-      // Use the SHARED refreshAccessToken to avoid race conditions with AuthContext
-      token = await refreshAccessToken();
-    } catch (refreshError) {
-      console.error("Loader: Token refresh failed:", refreshError);
-      throw new Error("No valid access token");
-    }
-  }
-
-  if (!token) {
-    throw new Error("No access token found");
-  }
-
   try {
-    // Decode JWT token to get user data
-    const parts = token.split(".");
-    if (parts.length !== 3) {
-      throw new Error("Invalid token format");
+    const response = await api.get("/auth/me");
+    if (response.status === 200 && response.data.user) {
+      const payload = response.data.user;
+      return {
+        id: payload.id || payload.userId,
+        username: payload.username,
+        email: payload.email,
+        NIC: payload.NIC,
+        staffId: payload.staffId,
+        role: payload.role,
+        status: payload.status,
+      };
     }
-
-    const payload = JSON.parse(atob(parts[1]));
-
-    // Validate required fields
-    if (!payload.userId) {
-      throw new Error("Token missing required user data");
-    }
-
-    return {
-      id: payload.userId,
-      username: payload.username,
-      email: payload.email,
-      NIC: payload.NIC,
-      staffId: payload.staffId,
-      role: payload.role,
-      status: payload.status,
-    };
+    throw new Error("No user data in response");
   } catch (error) {
-    console.error("Error decoding token in loader:", error);
-    throw new Error("Invalid access token");
+    console.error("Loader: Failed to fetch current user:", error);
+    throw new Error("Invalid or expired session");
   }
 };
 
@@ -524,19 +497,9 @@ export const onboardingSummaryLoader = async () => {
 
 export async function traineeScheduleLoader() {
   try {
-    // Get access token from the api module
-    let token = getAccessToken();
-
-    if (!token) return null;
-
-    // Decode JWT token to get user data
-    const parts = token.split(".");
-    if (parts.length !== 3) {
-      return null;
-    }
-
-    const payload = JSON.parse(atob(parts[1]));
-    const NIC = payload.NIC;
+    // Get user using getCurrentUser to fetch from API
+    const user = await getCurrentUser();
+    const NIC = user.NIC;
 
     if (!NIC) return null;
 

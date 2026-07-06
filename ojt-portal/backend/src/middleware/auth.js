@@ -10,7 +10,7 @@ import { TraineeUser, Staff } from '../models/index.js';
 export const authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+    const token = req.cookies?.accessToken || (authHeader && authHeader.split(' ')[1]); // Bearer TOKEN
 
     if (!token) {
       return res.status(401).json({
@@ -75,7 +75,7 @@ export const authenticateToken = async (req, res, next) => {
 export const optionalAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = req.cookies?.accessToken || (authHeader && authHeader.split(' ')[1]);
 
     if (!token) {
       // No token provided, continue without authentication

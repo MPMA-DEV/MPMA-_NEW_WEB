@@ -26,44 +26,26 @@ export const subscribeToTokenChanges = (callback: TokenObserver) => {
   };
 };
 
-// Function to set access token
+// Function to set access token (no longer stored in sessionStorage)
 export const setAccessToken = (token: string | null) => {
   accessToken = token;
-  // Persist to sessionStorage to survive page refreshes
-  if (token) {
-    sessionStorage.setItem("accessToken", token);
-  } else {
-    sessionStorage.removeItem("accessToken");
-  }
   // Notify all subscribers
   observers.forEach((cb) => cb(token));
 };
 
-// Function to get access token
+// Function to get access token from memory
 export const getAccessToken = () => {
-  // If not in memory, try to get from sessionStorage
-  if (!accessToken) {
-    accessToken = sessionStorage.getItem("accessToken");
-  }
   return accessToken;
 };
 
-accessToken = getAccessToken();
+// We don't initialize from sessionStorage anymore
+// accessToken = getAccessToken();
 
 export const isTokenExpired = (token: string | null) => {
-  if (!token) return true;
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return true;
-
-    const payload = JSON.parse(atob(parts[1]));
-    const currentTime = Math.floor(Date.now() / 1000);
-
-    // Check if token expires within the next 60 seconds
-    return payload.exp <= currentTime + 60;
-  } catch {
-    return true;
-  }
+  // We can't read the token from the cookie in the frontend
+  // so we can't proactively check expiration.
+  // We will rely on the 401 interceptor instead.
+  return false;
 };
 
 // Encapsulated refresh function to avoid duplicate calls
@@ -95,41 +77,11 @@ export const refreshAccessToken = async (): Promise<string | null> => {
   return refreshPromise;
 };
 
-// Request interceptor to add access token
+// Request interceptor
 instance.interceptors.request.use(async (config) => {
-  // Skip auth endpoints and public endpoints to prevent loops
-  const url = config.url || "";
-  const isPublicEndpoint =
-    url.includes("/auth/login") ||
-    url.includes("/auth/refresh") ||
-    url.includes("/api/password/"); // Password reset endpoints are public
-
-  // Ensure latest token from storage
-  const current = getAccessToken();
-
-  if (!isPublicEndpoint) {
-    // Proactively refresh if token is missing or expired
-    if (!current || isTokenExpired(current)) {
-      try {
-        const newToken = await refreshAccessToken();
-        if (newToken) {
-          config.headers = config.headers || {};
-          (config.headers as any).Authorization = `Bearer ${newToken}`;
-          return config;
-        }
-      } catch (e) {
-        // Propagate error so caller/response interceptor can handle (e.g., redirect to login)
-        return Promise.reject(e);
-      }
-    }
-  }
-
-  // Use whichever token is available (fresh or existing)
-  const tokenToUse = getAccessToken();
-  if (tokenToUse) {
-    config.headers = config.headers || {};
-    (config.headers as any).Authorization = `Bearer ${tokenToUse}`;
-  }
+  // Note: withCredentials is true, so cookies (including accessToken) 
+  // are sent automatically. We don't need to manually inject the 
+  // Authorization header here anymore.
   return config;
 });
 
@@ -163,8 +115,8 @@ instance.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Check for 401 status OR expired token
-    if ((error.response?.status === 401 || isTokenExpired(accessToken)) && !originalRequest._retry) {
+    // Check for 401 status
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -173,8 +125,7 @@ instance.interceptors.response.use(
         if (!newToken) throw new Error("No new token after refresh");
         console.log("Token refreshed successfully in interceptor");
 
-        // Retry original request with new token
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        // Retry original request (cookies are sent automatically, no header needed)
         return instance(originalRequest);
       } catch (refreshError) {
         // Refresh failed: clear token and let app routing handle redirect

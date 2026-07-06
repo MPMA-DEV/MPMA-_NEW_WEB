@@ -15,36 +15,27 @@ export interface User {
   notifyHoliday?: boolean;
 }
 
-// Utility function to decode JWT token and extract user data
-const getUserFromToken = (token: string | null): User | null => {
-  if (!token) {
-    return null;
-  }
-
+// Utility function to fetch user profile via API
+const fetchUserProfile = async (): Promise<User | null> => {
   try {
-    // JWT tokens have 3 parts separated by dots: header.payload.signature
-    const parts = token.split(".");
-    if (parts.length !== 3) {
-      return null;
+    const response = await api.get("/auth/me");
+    if (response.status === 200 && response.data.user) {
+      const user = response.data.user;
+      return {
+        id: user.id || user.userId,
+        username: user.username,
+        email: user.email,
+        NIC: user.NIC,
+        status: user.status,
+        nickname: user.username,
+        notifyChat: user.notifyChat,
+        notifyPayment: user.notifyPayment,
+        notifyHoliday: user.notifyHoliday,
+      };
     }
-
-    // Decode the payload (second part)
-    const payload = JSON.parse(atob(parts[1]));
-
-    // Extract user data from token payload
-    return {
-      id: payload.userId,
-      username: payload.username,
-      email: payload.email,
-      NIC: payload.NIC,
-      status: payload.status,
-      nickname: payload.username, // Use username as nickname fallback
-      notifyChat: payload.notifyChat,
-      notifyPayment: payload.notifyPayment,
-      notifyHoliday: payload.notifyHoliday,
-    };
+    return null;
   } catch (error) {
-    console.error("Error decoding token:", error);
+    console.error("Error fetching user profile:", error);
     return null;
   }
 };
@@ -65,11 +56,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessTokenState] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Update user state when access token changes
+  // Since token is HTTPOnly, we fetch user profile when we know we're authenticated
+  // (e.g., after login or refresh). Alternatively, this could also be driven by API calls directly.
   useEffect(() => {
     if (accessToken) {
-      const userData = getUserFromToken(accessToken);
-      setUser(userData);
+      fetchUserProfile().then((userData) => {
+        setUser(userData);
+      });
     } else {
       setUser(null);
     }
@@ -99,26 +92,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const tryRefreshToken = async () => {
     try {
-      const currentToken = getAccessToken();
-
-      // Refresh token 2 minutes before expiry for better UX
-      if (!currentToken || isTokenExpired(currentToken)) {
-        console.log("AuthContext: Token expired, using shared refresh...");
-        // Use the SHARED refreshAccessToken to avoid race conditions with loaders
-        await refreshAccessToken();
-        // IMPORTANT: Re-read the token from the API module after refresh completes
-        // This ensures we get the latest token even if subscription hasn't fired yet
-        const newToken = getAccessToken();
-        if (newToken) {
-          setAccessTokenState(newToken);
-        }
+      // Always try to fetch profile first (maybe we have a valid cookie)
+      const userData = await fetchUserProfile();
+      if (userData) {
+        // Assume we have an access token cookie since we fetched data
+        setAccessTokenState("cookie_token"); 
+        setUser(userData);
       } else {
-        // Token is still valid, just set it in state
-        setAccessTokenState(currentToken);
+        // If it failed, try to refresh
+        console.log("AuthContext: Profile fetch failed, using shared refresh...");
+        await refreshAccessToken();
+        const freshData = await fetchUserProfile();
+        if (freshData) {
+          setAccessTokenState("cookie_token");
+          setUser(freshData);
+        } else {
+           setAccessTokenState(null);
+        }
       }
     } catch (error) {
-      // Refresh failed, user needs to login again
-      console.log("Token refresh failed:", error);
+      console.log("Token refresh or profile fetch failed:", error);
       setAccessTokenState(null);
       setAccessToken(null);
     } finally {
@@ -139,10 +132,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (response.status === 200) {
-        const { tokens } = response.data;
-
-        // Store access token via api helper (notifies subscribers)
-        setAccessToken(tokens.accessToken);
+        // Let the state know we logged in by setting a dummy token in memory
+        // since the actual token is in the HttpOnly cookie.
+        setAccessToken("cookie_token");
+        // Also fetch user profile immediately to ensure synchronous login feel
+        const userData = await fetchUserProfile();
+        if (userData) setUser(userData);
 
         return true;
       }
