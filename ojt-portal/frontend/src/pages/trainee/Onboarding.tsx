@@ -34,7 +34,7 @@ export default function Onboarding() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
     control,
     getValues,
     setValue,
@@ -80,7 +80,6 @@ export default function Onboarding() {
       },
     },
     resolver: zodResolver(OnboardingSchema),
-    mode: "onChange",
   });
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -99,6 +98,35 @@ export default function Onboarding() {
     null
   );
 
+  // Prevent accidental reload/leave if form is dirty
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
+  // Auto-save form progress to sessionStorage
+  useEffect(() => {
+    if (!user?.id) return;
+    const subscription = watch((value) => {
+      const { documents, ...rest } = value;
+      const dataToSave = {
+        ...rest,
+        personalDetails: {
+          ...rest.personalDetails,
+          profilePhoto: null // Don't save files
+        }
+      };
+      sessionStorage.setItem(`onboarding_draft_${user.id}`, JSON.stringify(dataToSave));
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, user?.id]);
+
   // Flags to mark which fields are prefilled from interview and should be read-only
   const [prefilled, setPrefilled] = useState({
     name: false,
@@ -110,6 +138,7 @@ export default function Onboarding() {
 
   // Rejection notification state
   const [rejectionNotification, setRejectionNotification] = useState<string | null>(null);
+  const [localIsSubmitting, setLocalIsSubmitting] = useState(false);
 
   const checkIsRejected = (docKey: string) => {
     if (!rejectionNotification) return false;
@@ -248,6 +277,37 @@ export default function Onboarding() {
           setValue("personalDetails.nicNo", user.NIC, { shouldValidate: true });
         }
 
+        // Overwrite text fields with any unsaved draft from sessionStorage
+        try {
+          const draftStr = sessionStorage.getItem(`onboarding_draft_${user.id}`);
+          if (draftStr) {
+            const draft = JSON.parse(draftStr);
+            if (draft.personalDetails) {
+              Object.entries(draft.personalDetails).forEach(([key, val]) => {
+                if (val !== undefined && val !== null && val !== "" && key !== 'profilePhoto') {
+                  setValue(`personalDetails.${key}` as any, val, { shouldValidate: true });
+                }
+              });
+            }
+            if (draft.contactInfo) {
+              Object.entries(draft.contactInfo).forEach(([key, val]) => {
+                if (val !== undefined && val !== null && val !== "") {
+                  setValue(`contactInfo.${key}` as any, val, { shouldValidate: true });
+                }
+              });
+            }
+            if (draft.bankDetails) {
+              Object.entries(draft.bankDetails).forEach(([key, val]) => {
+                if (val !== undefined && val !== null && val !== "") {
+                  setValue(`bankDetails.${key}` as any, val, { shouldValidate: true });
+                }
+              });
+            }
+          }
+        } catch (e) {
+          console.warn("Failed to load draft data", e);
+        }
+
         // 2. Fetch existing documents as Files (blobs converted to File objects)
         const docKeys = ["nicScan", "policeReport", "universityId", "instituteLetter", "consentLetter", "bankPassbook"] as const;
         for (const docKey of docKeys) {
@@ -362,7 +422,6 @@ export default function Onboarding() {
   }, [setValue]);
 
   const profilePhoto = watch("personalDetails.profilePhoto");
-  const trainingType = watch("personalDetails.trainingType");
   const nicScan = watch("documents.nicScan");
   const policeReport = watch("documents.policeReport");
   const universityId = watch("documents.universityId");
@@ -380,7 +439,32 @@ export default function Onboarding() {
 */
   const handleDocumentUpload = (file: File, documentType: string) => {
     if (file && file.type === "application/pdf") {
-      setValue(`documents.${documentType}` as any, file);
+      if (file.size > 1 * 1024 * 1024) {
+        error("File size should be less than 1MB");
+        return;
+      }
+      
+      const currentDocs = getValues("documents");
+      
+      // Check if the file is already uploaded in any slot
+      const duplicateKey = Object.keys(currentDocs).find((key) => {
+        const existingFile = currentDocs[key as keyof typeof currentDocs];
+        if (existingFile instanceof File) {
+          return existingFile.name === file.name && existingFile.size === file.size;
+        }
+        return false;
+      });
+
+      if (duplicateKey) {
+        if (duplicateKey === documentType) {
+          error("This file is already uploaded for this document.");
+        } else {
+          error("This file has already been uploaded for another document.");
+        }
+        return;
+      }
+
+      setValue(`documents.${documentType}` as any, file, { shouldValidate: true });
       success(
         `${documentType
           .replace(/([A-Z])/g, " $1")
@@ -393,6 +477,10 @@ export default function Onboarding() {
 
   const handlePhotoUpload = (file: File) => {
     if (file && file.type.startsWith("image/")) {
+      if (file.size > 1 * 1024 * 1024) {
+        error("File size should be less than 1MB");
+        return;
+      }
       setValue("personalDetails.profilePhoto", file);
       success("Profile photo uploaded successfully");
     } else {
@@ -566,8 +654,10 @@ export default function Onboarding() {
         }
 
         if (isValidDocs) {
+          setLocalIsSubmitting(true);
           const formData = getValues();
           const ok = await onSubmitTraineeData(formData);
+          setLocalIsSubmitting(false);
           if (ok) {
             try {
               await refreshAccessToken();
@@ -672,17 +762,18 @@ export default function Onboarding() {
 
       formData.append("user_id", user?.id?.toString() || "");
 
-      // Debug FormData contents
-      console.log("FormData contents:");
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+      // Debug FormData contents removed
 
       await api.post("api/trainee/information", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      // Clear the draft from sessionStorage on successful submission
+      if (user?.id) {
+        sessionStorage.removeItem(`onboarding_draft_${user.id}`);
+      }
 
       success("Trainee data submitted successfully!");
       return true;
@@ -1566,7 +1657,7 @@ export default function Onboarding() {
                     ) : (
                       <Button
                         onClick={nextStep}
-                        loading={isSubmitting}
+                        loading={isSubmitting || localIsSubmitting}
                         variant="primary"
                         className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700"
                         type="button"

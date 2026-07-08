@@ -70,8 +70,8 @@ export const personalDetailsSchema = z
       "NAITA Craft": "NAITA",
       SMTI: "SMTI",
     };
-    if (data.trainingType in fixedMap) {
-      const expected = fixedMap[data.trainingType];
+    if (data.trainingType && data.trainingType in fixedMap) {
+      const expected = fixedMap[data.trainingType as keyof typeof fixedMap];
       if (data.instituteName !== expected) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -92,20 +92,25 @@ export const contactInfoSchema = z.object({
 });
 
 const documentsSchema = z.object({
-  nicScan: z.any().refine((file) => file !== null, "NIC Scan is required"),
+  nicScan: z.any().refine((file) => file !== null, "NIC Scan is required").refine((file) => file === null || (file instanceof File && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024), `File must be less than ${MAX_FILE_SIZE_MB}MB`),
   policeReport: z
     .any()
-    .refine((file) => file !== null, "Police Report is required"),
+    .refine((file) => file !== null, "Police Report is required")
+    .refine((file) => file === null || (file instanceof File && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024), `File must be less than ${MAX_FILE_SIZE_MB}MB`),
   universityId: z
     .any()
-    .refine((file) => file !== null, "University ID is required"),
+    .refine((file) => file !== null, "University ID is required")
+    .refine((file) => file === null || (file instanceof File && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024), `File must be less than ${MAX_FILE_SIZE_MB}MB`),
   instituteLetter: z
     .any()
-    .refine((file) => file !== null, "Institute Letter is required"),
+    .refine((file) => file !== null, "Institute Letter is required")
+    .refine((file) => file === null || (file instanceof File && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024), `File must be less than ${MAX_FILE_SIZE_MB}MB`),
   consentLetter: z
     .any()
-    .refine((file) => file !== null, "Consent Letter is required"),
-  bankPassbook: z.any().nullable().optional(),
+    .refine((file) => file !== null, "Consent Letter is required")
+    .refine((file) => file === null || (file instanceof File && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024), `File must be less than ${MAX_FILE_SIZE_MB}MB`),
+  bankPassbook: z.any().nullable().optional()
+    .refine((file) => !file || (file instanceof File && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024), `File must be less than ${MAX_FILE_SIZE_MB}MB`),
 });
 
 

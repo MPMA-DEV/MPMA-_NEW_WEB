@@ -122,6 +122,25 @@ export default function EditDetails() {
             error(`File size should be less than ${MAX_FILE_SIZE_MB}MB`);
             return;
         }
+
+        // Check for duplicates in newly selected files
+        const duplicateKey = Object.keys(newFiles).find((key) => {
+            const existingFile = newFiles[key as keyof typeof newFiles];
+            if (existingFile instanceof File) {
+                return existingFile.name === file.name && existingFile.size === file.size;
+            }
+            return false;
+        });
+
+        if (duplicateKey) {
+            if (duplicateKey === documentType) {
+                error("This file is already selected for this document.");
+            } else {
+                error("This file has already been selected for another document.");
+            }
+            return;
+        }
+
         if (file.type.startsWith("image/") || file.type === "application/pdf") {
             setNewFiles((prev) => ({ ...prev, [documentType]: file }));
             success(`${documentType.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())} selected`);
