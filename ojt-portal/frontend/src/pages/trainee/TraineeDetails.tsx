@@ -47,16 +47,13 @@ const getTrainingStatus = (startDate: string | Date | null | undefined, endDate?
   return "Active";
 };
 
-const DetailItem = ({ label, value, icon: Icon }: any) => (
+const DetailItem = ({ label, value }: any) => (
   <div>
-    <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
-      {Icon && <Icon className="w-3 h-3" />}
+    <span className="block text-sm font-medium text-gray-500 mb-1">
       {label}
     </span>
-    <div className="bg-gray-50/50 rounded border border-gray-100 p-2.5 min-h-[42px] flex items-center">
-      <span className="text-sm font-medium text-gray-700">
-        {value || "—"}
-      </span>
+    <div className="text-sm font-medium text-gray-900">
+      {value || "—"}
     </div>
   </div>
 );
@@ -302,12 +299,10 @@ export default function TraineeDetails() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Personal Information */}
-        <Card className="border-t-4 border-t-blue-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+        <Card className="shadow-sm border border-gray-200">
+          <CardHeader className="pb-4 border-b border-gray-100">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                <User className="h-5 w-5" />
-              </div>
+              <User className="h-5 w-5 text-gray-500" />
               <CardTitle size="md">Personal Information</CardTitle>
             </div>
           </CardHeader>
@@ -324,12 +319,10 @@ export default function TraineeDetails() {
         </Card>
 
         {/* Contact Information */}
-        <Card className="border-t-4 border-t-purple-500 shadow-md hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+        <Card className="shadow-sm border border-gray-200">
+          <CardHeader className="pb-4 border-b border-gray-100">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
-                <Phone className="h-5 w-5" />
-              </div>
+              <Phone className="h-5 w-5 text-gray-500" />
               <CardTitle size="md">Contact Information</CardTitle>
             </div>
           </CardHeader>
@@ -342,7 +335,7 @@ export default function TraineeDetails() {
               <DetailItem label="Email Address" value={loaderData?.TraineeUser?.email || loaderData?.email || user?.email} icon={Mail} />
 
               <div className="pt-4 border-t border-gray-100">
-                <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-4 flex items-center">
+                <h4 className="text-sm font-semibold text-gray-900 mb-4">
                   Emergency Contact
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
@@ -356,12 +349,10 @@ export default function TraineeDetails() {
         </Card>
 
         {/* Training Information */}
-        <Card className="border-t-4 border-t-green-500 shadow-md hover:shadow-lg transition-shadow lg:col-span-2">
-          <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+        <Card className="shadow-sm border border-gray-200 lg:col-span-2">
+          <CardHeader className="pb-4 border-b border-gray-100">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-green-100 text-green-600 rounded-lg">
-                <Calendar className="h-5 w-5" />
-              </div>
+              <Calendar className="h-5 w-5 text-gray-500" />
               <CardTitle size="md">Training Information</CardTitle>
             </div>
           </CardHeader>
@@ -376,12 +367,10 @@ export default function TraineeDetails() {
 
         {/* BOC Bank Details */}
         {(personal?.bank_accno || personal?.bank_branch) && (
-          <Card className="border-t-4 border-t-amber-500 shadow-md hover:shadow-lg transition-shadow lg:col-span-2 animate-fade-in">
-            <CardHeader className="pb-4 border-b border-gray-100 bg-gray-50/50">
+          <Card className="shadow-sm border border-gray-200 lg:col-span-2 animate-fade-in">
+            <CardHeader className="pb-4 border-b border-gray-100">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-amber-100 text-amber-600 rounded-lg">
-                  <Landmark className="h-5 w-5" />
-                </div>
+                <Landmark className="h-5 w-5 text-gray-500" />
                 <CardTitle size="md">BOC Bank Details</CardTitle>
               </div>
             </CardHeader>
@@ -398,26 +387,24 @@ export default function TraineeDetails() {
       </div>
 
       {/* Documents Section - Collapsible with Animation */}
-      <Card className="overflow-hidden border-2 border-indigo-100 shadow-md rounded-xl bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-50">
+      <Card className="overflow-hidden shadow-sm border border-gray-200 rounded-xl bg-white">
         <button
           onClick={() => setIsDocumentsExpanded(!isDocumentsExpanded)}
           className="w-full text-left"
         >
-          <CardHeader className="py-4 bg-gradient-to-r from-indigo-50 to-blue-50 cursor-pointer hover:from-indigo-100 hover:to-blue-100 transition-all duration-300 rounded-xl">
+          <CardHeader className="py-4 cursor-pointer hover:bg-gray-50 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-indigo-100 text-indigo-600 rounded-xl shadow-sm">
-                  <FolderOpen className="h-5 w-5" />
-                </div>
+                <FolderOpen className="h-5 w-5 text-gray-500" />
                 <div>
-                  <CardTitle size="sm" className="text-indigo-900">Documents</CardTitle>
-                  <p className="text-xs text-indigo-500 mt-0.5">
+                  <CardTitle size="sm" className="text-gray-900">Documents</CardTitle>
+                  <p className="text-xs text-gray-500 mt-0.5">
                     {isDocumentsExpanded ? "Click to collapse" : "Click to view uploaded documents"}
                   </p>
                 </div>
               </div>
               <ChevronDown
-                className={`h-5 w-5 text-indigo-400 transition-transform duration-300 ${isDocumentsExpanded ? "rotate-180" : ""
+                className={`h-5 w-5 text-gray-400 transition-transform duration-300 ${isDocumentsExpanded ? "rotate-180" : ""
                   }`}
               />
             </div>
@@ -428,16 +415,16 @@ export default function TraineeDetails() {
             }`}
         >
           <div className="overflow-hidden">
-            <CardContent className="p-4 m-3 bg-white/60 rounded-xl">
+            <CardContent className="p-4 m-3">
               {isLoadingDocuments ? (
                 <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-6 w-6 animate-spin text-indigo-400" />
-                  <span className="ml-2 text-sm text-indigo-500">Loading documents...</span>
+                  <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                  <span className="ml-2 text-sm text-gray-500">Loading documents...</span>
                 </div>
               ) : documents.length > 0 ? (
                 <DocumentViewer documents={documents} />
               ) : (
-                <div className="flex flex-col items-center justify-center py-8 text-indigo-300">
+                <div className="flex flex-col items-center justify-center py-8 text-gray-400">
                   <FolderOpen className="h-10 w-10 mb-2" />
                   <p className="text-sm">No documents available</p>
                 </div>

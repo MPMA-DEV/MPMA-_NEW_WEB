@@ -220,28 +220,19 @@ export default function EditDetails() {
                         <ChevronLeft className="h-5 w-5" />
                     </button>
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Edit Details</h1>
-                        <p className="text-sm text-gray-500">Update your profile information</p>
+                        <h1 className="text-2xl font-bold text-gray-900">View Details</h1>
+                        <p className="text-sm text-gray-500">Your profile information</p>
                     </div>
                 </div>
-                <Button
-                    onClick={handleSubmit}
-                    variant="primary"
-                    icon={Save}
-                    disabled={isSubmitting}
-                    className="bg-emerald-600 hover:bg-emerald-700"
-                >
-                    {isSubmitting ? "Saving..." : "Save Changes"}
-                </Button>
             </div>
 
             {/* Notification */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start">
                 <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" />
                 <div>
-                    <h3 className="text-sm font-medium text-blue-800">Approval Required</h3>
+                    <h3 className="text-sm font-medium text-blue-800">Read-only View</h3>
                     <p className="text-sm text-blue-600 mt-1">
-                        Any changes made from here send to the admin for approval.
+                        All details are read-only. Please contact your administrator to make any changes.
                     </p>
                 </div>
             </div>
@@ -281,12 +272,13 @@ export default function EditDetails() {
                         />
 
                         <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Address (Read-only)</label>
                             <textarea
                                 value={formData.personalDetails.address}
-                                onChange={(e) => handleInputChange("personalDetails", "address", e.target.value)}
+                                onChange={() => {}}
+                                disabled
                                 rows={3}
-                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none"
                             />
                         </div>
                     </div>
@@ -306,15 +298,19 @@ export default function EditDetails() {
                 <CardContent className="pt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Input
-                            label="Mobile Number"
+                            label="Mobile Number (Read-only)"
                             value={formData.contactInfo.mobileNo}
-                            onChange={(e) => handleInputChange("contactInfo", "mobileNo", e.target.value)}
+                            onChange={() => {}}
+                            disabled
+                            className="bg-gray-50"
                             type="tel"
                         />
                         <Input
-                            label="Residence Number"
+                            label="Residence Number (Read-only)"
                             value={formData.contactInfo.residenceNo}
-                            onChange={(e) => handleInputChange("contactInfo", "residenceNo", e.target.value)}
+                            onChange={() => {}}
+                            disabled
+                            className="bg-gray-50"
                             type="tel"
                         />
                         <div className="md:col-span-2">
@@ -337,14 +333,18 @@ export default function EditDetails() {
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <Input
-                                label="Contact Name"
+                                label="Contact Name (Read-only)"
                                 value={formData.contactInfo.emergencyContactName}
-                                onChange={(e) => handleInputChange("contactInfo", "emergencyContactName", e.target.value)}
+                                onChange={() => {}}
+                                disabled
+                                className="bg-gray-50"
                             />
                             <Input
-                                label="Telephone"
+                                label="Telephone (Read-only)"
                                 value={formData.contactInfo.emergencyContactTelephone}
-                                onChange={(e) => handleInputChange("contactInfo", "emergencyContactTelephone", e.target.value)}
+                                onChange={() => {}}
+                                disabled
+                                className="bg-gray-50"
                                 type="tel"
                             />
                         </div>
