@@ -225,20 +225,20 @@ export default function TraineeDetails() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <div className="flex items-center gap-4">
+      {/* Header Banner */}
+      <div className="bg-blue-700 rounded-xl shadow-sm p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+        <div className="flex items-center gap-5 z-10">
           {/* Profile Photo */}
           <div className="relative shrink-0">
             {documentsData?.profilePhoto ? (
               <img
                 src={documentsData.profilePhoto}
                 alt="Profile"
-                className="w-14 h-14 rounded-full object-cover ring-2 ring-blue-100 shadow-sm"
+                className="w-20 h-20 rounded-full object-cover ring-4 ring-blue-600/50 shadow-md"
               />
             ) : (
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center ring-2 ring-blue-100 shadow-sm">
-                <span className="text-white font-bold text-lg">
+              <div className="w-20 h-20 rounded-full bg-blue-800 flex items-center justify-center ring-4 ring-blue-600/50 shadow-md">
+                <span className="text-white font-bold text-2xl">
                   {(personal?.fullName || personal?.name || loaderData?.name || loaderData?.TraineeUser?.nickname || 'T')
                     .split(' ')
                     .map((n: string) => n[0])
@@ -248,53 +248,29 @@ export default function TraineeDetails() {
                 </span>
               </div>
             )}
-            <span className="absolute -bottom-0.5 -right-0.5 block h-3.5 w-3.5 rounded-full bg-emerald-400 ring-2 ring-white" />
+            <span className="absolute bottom-0 right-0 block h-4 w-4 rounded-full bg-emerald-400 ring-2 ring-blue-700" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {personal?.fullName || personal?.name || loaderData?.name || loaderData?.TraineeUser?.nickname || ''}
-            </h1>
-            <p className="text-base text-gray-500 font-medium">
+            <div className="flex items-center flex-wrap gap-3">
+              <h1 className="text-2xl font-bold text-white">
+                {personal?.fullName || personal?.name || loaderData?.name || loaderData?.TraineeUser?.nickname || ''}
+              </h1>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                {trainingStatus}
+              </span>
+            </div>
+            <p className="text-sm text-blue-100 font-medium mt-1">
               {personal?.instituteName || loaderData?.institute || ''}
             </p>
-            {(loaderData?.ATT_NO || loaderData?.REG_NO) && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {loaderData?.ATT_NO && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                    ATT_NO: {loaderData.ATT_NO}
-                  </span>
-                )}
-                {loaderData?.REG_NO && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
-                    REG_NO: {loaderData.REG_NO}
-                  </span>
-                )}
-              </div>
-            )}
           </div>
         </div>
-        <Button
+        <button
           onClick={handleEditRequest}
-          variant={getButtonVariant()}
-          icon={Edit}
-          size="sm"
-          className={getButtonClassName()}
+          className="z-10 flex items-center text-sm font-medium text-white hover:text-blue-200 transition-colors"
         >
-          {getButtonText()}
-        </Button>
-      </div>
-
-      {/* Status Card */}
-      <div className={`${trainingStatus === 'Active' ? 'bg-emerald-50 border-emerald-100' : trainingStatus === 'Inactive' ? 'bg-red-50 border-red-100' : 'bg-amber-50 border-amber-100'} border rounded-lg p-3 shadow-sm flex items-center`}>
-        <span className="flex h-2.5 w-2.5 relative mr-2.5">
-          {trainingStatus !== 'Inactive' && (
-            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${trainingStatus === 'Active' ? 'bg-emerald-400' : 'bg-amber-400'} opacity-75`}></span>
-          )}
-          <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${trainingStatus === 'Active' ? 'bg-emerald-500' : trainingStatus === 'Inactive' ? 'bg-red-500' : 'bg-amber-500'}`}></span>
-        </span>
-        <span className={`text-sm ${trainingStatus === 'Active' ? 'text-emerald-800' : trainingStatus === 'Inactive' ? 'text-red-800' : 'text-amber-800'} font-semibold tracking-wide`}>
-          Training Status: {trainingStatus}
-        </span>
+          <Edit className="w-4 h-4 mr-2" />
+          Modify Profile
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -384,55 +360,54 @@ export default function TraineeDetails() {
             </CardContent>
           </Card>
         )}
-      </div>
-
-      {/* Documents Section - Collapsible with Animation */}
-      <Card className="overflow-hidden shadow-sm border border-gray-200 rounded-xl bg-white">
-        <button
-          onClick={() => setIsDocumentsExpanded(!isDocumentsExpanded)}
-          className="w-full text-left"
-        >
-          <CardHeader className="py-4 cursor-pointer hover:bg-gray-50 transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <FolderOpen className="h-5 w-5 text-gray-500" />
-                <div>
-                  <CardTitle size="sm" className="text-gray-900">Documents</CardTitle>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    {isDocumentsExpanded ? "Click to collapse" : "Click to view uploaded documents"}
-                  </p>
+        {/* Documents Section */}
+        <Card className="shadow-sm border border-gray-200 rounded-xl bg-white lg:col-span-2 flex flex-col h-full">
+          <button
+            onClick={() => setIsDocumentsExpanded(!isDocumentsExpanded)}
+            className="w-full text-left"
+          >
+            <CardHeader className="py-4 cursor-pointer hover:bg-gray-50 transition-all duration-300">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <FolderOpen className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <CardTitle size="sm" className="text-gray-900">Documents</CardTitle>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {isDocumentsExpanded ? "Click to collapse" : "Click to view uploaded documents"}
+                    </p>
+                  </div>
                 </div>
+                <ChevronDown
+                  className={`h-5 w-5 text-gray-400 transition-transform duration-300 ${isDocumentsExpanded ? "rotate-180" : ""
+                    }`}
+                />
               </div>
-              <ChevronDown
-                className={`h-5 w-5 text-gray-400 transition-transform duration-300 ${isDocumentsExpanded ? "rotate-180" : ""
-                  }`}
-              />
+            </CardHeader>
+          </button>
+          <div
+            className={`grid transition-all duration-300 ease-in-out ${isDocumentsExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              }`}
+          >
+            <div className="overflow-hidden">
+              <CardContent className="p-4 m-3">
+                {isLoadingDocuments ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                    <span className="ml-2 text-sm text-gray-500">Loading documents...</span>
+                  </div>
+                ) : documents.length > 0 ? (
+                  <DocumentViewer documents={documents} />
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-8 text-gray-400">
+                    <FolderOpen className="h-10 w-10 mb-2" />
+                    <p className="text-sm">No documents available</p>
+                  </div>
+                )}
+              </CardContent>
             </div>
-          </CardHeader>
-        </button>
-        <div
-          className={`grid transition-all duration-300 ease-in-out ${isDocumentsExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-            }`}
-        >
-          <div className="overflow-hidden">
-            <CardContent className="p-4 m-3">
-              {isLoadingDocuments ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-                  <span className="ml-2 text-sm text-gray-500">Loading documents...</span>
-                </div>
-              ) : documents.length > 0 ? (
-                <DocumentViewer documents={documents} />
-              ) : (
-                <div className="flex flex-col items-center justify-center py-8 text-gray-400">
-                  <FolderOpen className="h-10 w-10 mb-2" />
-                  <p className="text-sm">No documents available</p>
-                </div>
-              )}
-            </CardContent>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

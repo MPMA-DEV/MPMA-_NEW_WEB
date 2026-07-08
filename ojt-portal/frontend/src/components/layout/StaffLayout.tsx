@@ -18,7 +18,7 @@ export default function StaffLayout() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const nav = useNavigation();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 

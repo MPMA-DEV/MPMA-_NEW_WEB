@@ -48,7 +48,7 @@ export default function TraineeLayout() {
   const loaderResponse = useLoaderData() as LoaderResponse | null;
   const loaderData = loaderResponse?.data;
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [profilePhotoVersion, setProfilePhotoVersion] = useState(0);
   const [profilePhoto, setProfilePhoto] = useState<string | null>(loaderData?.profilePhoto ?? null);
 
