@@ -661,7 +661,7 @@ export default function TraineeProfile() {
                     onBlur={(e) => bankValidation.handleFieldBlur("accountHolderName", e.target.value, bankDetails)}
                     error={bankValidation.getFieldError("accountHolderName")}
                     required
-                    readOnly={editStatus === "REQEST"}
+                    readOnly
                     className="bg-gray-50/50 focus:bg-white"
                     placeholder="Account holder name"
                   />
@@ -675,7 +675,7 @@ export default function TraineeProfile() {
                       onBlur={(e) => bankValidation.handleFieldBlur("accountNo", e.target.value, bankDetails)}
                       error={bankValidation.getFieldError("accountNo")}
                       required
-                      readOnly={editStatus === "REQEST"}
+                      readOnly
                       className="bg-gray-50/50 focus:bg-white font-mono"
                       placeholder="Account no"
                     />
@@ -687,36 +687,11 @@ export default function TraineeProfile() {
                       onBlur={(e) => bankValidation.handleFieldBlur("branchCode", e.target.value, bankDetails)}
                       error={bankValidation.getFieldError("branchCode")}
                       required
-                      readOnly={editStatus === "REQEST"}
+                      readOnly
                       className="bg-gray-50/50 focus:bg-white font-mono"
                       placeholder="Branch code"
                     />
                   </div>
-                </div>
-
-                {editStatus === "REQEST" && (
-                  <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm flex items-start gap-2">
-                    <div className="p-1 bg-yellow-100 rounded shrink-0">
-                      <Shield className="w-4 h-4 text-yellow-600" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Details submitted for admin approve</p>
-                      <p className="opacity-90 mt-1">Your recent changes are pending review. The form above shows your pending updates.</p>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex justify-end pt-6 border-t border-gray-100">
-                  <Button
-                    type="submit"
-                    loading={bankValidation.isSubmitting}
-                    variant="success"
-                    icon={Save}
-                    disabled={editStatus === "REQEST"} // Optional: Disable saving if pending? User requirement unclear "if edit status = REQEST those input boxes auto fild", doesn't explicitly forbid re-submitting. But usually pending means wait.
-                    className={`bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 text-sm shadow-md shadow-emerald-500/20 ${editStatus === "REQEST" ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    {editStatus === "REQEST" ? "Request Pending" : "Save Bank Details"}
-                  </Button>
                 </div>
               </form>
             )}
