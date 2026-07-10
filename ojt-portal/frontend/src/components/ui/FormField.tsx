@@ -60,7 +60,7 @@ export function ValidatedInput({
             }
             ${Icon && iconPosition === 'left' ? 'pl-10' : 'pl-3'}
             ${(Icon && iconPosition === 'right') || error ? 'pr-10' : 'pr-3'}
-            bg-white
+            ${props.readOnly ? 'bg-gray-50/70 text-gray-500 cursor-not-allowed select-none border-gray-200' : 'bg-white'}
             ${className}
           `}
           aria-invalid={error ? "true" : "false"}

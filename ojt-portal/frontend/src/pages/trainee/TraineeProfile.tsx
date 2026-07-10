@@ -569,6 +569,7 @@ export default function TraineeProfile() {
                     onBlur={(e) => profileValidation.handleFieldBlur("name", e.target.value, profileData)}
                     error={profileValidation.getFieldError("name")}
                     placeholder="Enter your username"
+                    readOnly
                   />
 
                   <ValidatedInput
@@ -594,6 +595,7 @@ export default function TraineeProfile() {
                       onBlur={(e) => profileValidation.handleFieldBlur("email", e.target.value, profileData)}
                       error={profileValidation.getFieldError("email")}
                       placeholder="Enter your email address"
+                      readOnly
                     />
                   </div>
                 </div>
