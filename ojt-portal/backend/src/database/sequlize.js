@@ -19,6 +19,7 @@ export const sequalize = new Sequelize({
   },
 
   // Retry configuration for connection failures
+
   retry: {
     max: 3,                                             // Maximum retry attempts
     backoffBase: 1000,                                  // Initial backoff time (ms)
