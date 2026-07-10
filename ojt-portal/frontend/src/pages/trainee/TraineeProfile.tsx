@@ -164,9 +164,11 @@ export default function TraineeProfile() {
         if (dbEmail) {
           setProfileData(prev => ({ ...prev, email: dbEmail }));
         }
-        // Compute training status from start_date
-        if (personalInfo?.start_date || personalInfo?.end_date) {
-          setDisplayStatus(getTrainingStatus(personalInfo.start_date, personalInfo.end_date));
+        // Compute training status from start_date (override with Active if user account is Active)
+        if (user?.status === "Active") {
+          setDisplayStatus("Active");
+        } else {
+          setDisplayStatus(getTrainingStatus(personalInfo?.start_date, personalInfo?.end_date));
         }
 
         // Load bank details - prioritize pending details if available
@@ -375,7 +377,6 @@ export default function TraineeProfile() {
     ...(allowBank
       ? [{ id: "banking", name: "Bank Details", icon: CreditCard, desc: "Update payment methods" }]
       : []),
-    { id: "security", name: "Security", icon: Shield, desc: "Password and authentication" },
     { id: "notifications", name: "Notifications", icon: Bell, desc: "Configure alert preferences" },
   ];
 
@@ -660,6 +661,7 @@ export default function TraineeProfile() {
                     onBlur={(e) => bankValidation.handleFieldBlur("accountHolderName", e.target.value, bankDetails)}
                     error={bankValidation.getFieldError("accountHolderName")}
                     required
+                    readOnly={editStatus === "REQEST"}
                     className="bg-gray-50/50 focus:bg-white"
                     placeholder="Account holder name"
                   />
@@ -673,6 +675,7 @@ export default function TraineeProfile() {
                       onBlur={(e) => bankValidation.handleFieldBlur("accountNo", e.target.value, bankDetails)}
                       error={bankValidation.getFieldError("accountNo")}
                       required
+                      readOnly={editStatus === "REQEST"}
                       className="bg-gray-50/50 focus:bg-white font-mono"
                       placeholder="Account no"
                     />
@@ -684,6 +687,7 @@ export default function TraineeProfile() {
                       onBlur={(e) => bankValidation.handleFieldBlur("branchCode", e.target.value, bankDetails)}
                       error={bankValidation.getFieldError("branchCode")}
                       required
+                      readOnly={editStatus === "REQEST"}
                       className="bg-gray-50/50 focus:bg-white font-mono"
                       placeholder="Branch code"
                     />

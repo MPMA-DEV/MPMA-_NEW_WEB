@@ -140,7 +140,7 @@ export function ValidatedSelect({
               ? 'border-red-300 text-red-900 focus:border-red-500 focus:ring-2 focus:ring-red-500/20'
               : 'border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:border-gray-400'
             }
-            bg-white
+            ${props.disabled ? 'bg-gray-50/70 text-gray-500 cursor-not-allowed select-none border-gray-200' : 'bg-white'}
             ${className}
           `}
           aria-invalid={error ? "true" : "false"}
