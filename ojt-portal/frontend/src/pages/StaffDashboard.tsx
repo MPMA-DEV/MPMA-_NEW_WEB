@@ -1,14 +1,74 @@
-import { useState, useEffect } from "react";
-import api from "../api";
-import { getAllTrainees, createTrainee, verifyTrainee, updateTrainee, deleteTrainee } from "../api/staffApi";
+import { useEffect, useState, useRef } from "react";
+import { getAllTrainees, createTrainee, updateTrainee, deleteTrainee, verifyTrainee } from "../api/staffApi";
 import type { TraineeBasicInfo } from "../api/staffApi";
-import { getTraineeDocuments } from "../loaders/traineeLoaders";
 import { DocumentViewer } from "../components/ui/DocumentViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { FolderOpen, Plus, X, Loader2, Search, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { FolderOpen, Plus, X, Loader2, Search, Edit, Trash2, Eye, EyeOff, User } from "lucide-react";
 import { useToastHelpers } from "../hooks/useToast";
 import { ConfirmationModal } from "../components/ui/ConfirmationModal";
+import api from "../api";
+
+function TraineeAvatar({ userId, name }: { userId: number; name: string }) {
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    let localUrl: string | null = null;
+
+    const fetchPhoto = async () => {
+      try {
+        const response = await api.get(`api/trainee/stream-photo/${userId}`, {
+          responseType: "blob",
+        });
+        if (active && response.data) {
+          localUrl = URL.createObjectURL(response.data);
+          setImgUrl(localUrl);
+        }
+      } catch (err) {
+        // Silent catch: fall back to generic initials avatar
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    fetchPhoto();
+
+    return () => {
+      active = false;
+      if (localUrl) {
+        URL.revokeObjectURL(localUrl);
+      }
+    };
+  }, [userId]);
+
+  if (imgUrl) {
+    return (
+      <img
+        src={imgUrl}
+        alt={name}
+        className="w-10 h-10 rounded-full object-cover border border-gray-100 shadow-sm shrink-0"
+      />
+    );
+  }
+
+  // Generate initials
+  const initials = name
+    ? name
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : "";
+
+  return (
+    <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-semibold text-sm shrink-0 shadow-sm">
+      {initials || <User className="w-5 h-5 text-blue-500" />}
+    </div>
+  );
+}
 
 export default function StaffDashboard() {
   const [trainees, setTrainees] = useState<TraineeBasicInfo[]>([]);
@@ -372,8 +432,13 @@ export default function StaffDashboard() {
                   {filteredTrainees.length > 0 ? filteredTrainees.map(trainee => (
                     <tr key={trainee.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">{trainee.name !== 'N/A' ? trainee.name : trainee.username}</div>
-                        <div className="text-gray-500 text-xs mt-0.5">{trainee.email || 'No email provided'}</div>
+                        <div className="flex items-center gap-3">
+                          <TraineeAvatar userId={trainee.id} name={trainee.name !== 'N/A' ? trainee.name : trainee.username} />
+                          <div>
+                            <div className="font-medium text-gray-900">{trainee.name !== 'N/A' ? trainee.name : trainee.username}</div>
+                            <div className="text-gray-500 text-xs mt-0.5">{trainee.email || 'No email provided'}</div>
+                          </div>
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-gray-600">{trainee.NIC}</td>
                       <td className="px-6 py-4">
