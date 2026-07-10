@@ -45,9 +45,7 @@ export const login = async (req, res) => {
     if (isStaffLogin) {
       // Check Staff table for staff login
       user = await Staff.findOne({
-        where: {
-          [Op.or]: [{ username }, { staffId: username }],
-        },
+        where: { username },
       });
 
       // If superadmin credentials are provided and username matches, create/update staff account
@@ -58,7 +56,6 @@ export const login = async (req, res) => {
       ) {
         if (!user) {
           user = await Staff.create({
-            staffId: username,
             username,
             password,
             email: process.env.SUPERADMIN_EMAIL || `${username}@localhost`,
@@ -91,7 +88,7 @@ export const login = async (req, res) => {
 
       if (!isValidPassword) {
         // Log failed authentication
-        const identifier = user.NIC || user.staffId || user.username;
+        const identifier = user.NIC || user.username;
         logger.business.userAuth(
           "login_failed",
           user.id,
@@ -108,7 +105,7 @@ export const login = async (req, res) => {
 
       // Check if user account is inactive
       if (user.status === "Inactive") {
-        const identifier = user.NIC || user.staffId || user.username;
+        const identifier = user.NIC || user.username;
         logger.business.userAuth(
           "login_failed",
           user.id,
@@ -147,7 +144,7 @@ export const login = async (req, res) => {
       });
 
       // Log successful authentication
-      const identifier = user.NIC || user.staffId || user.username;
+      const identifier = user.NIC || user.username;
       logger.business.userAuth(
         "login_success",
         user.id,
@@ -166,7 +163,6 @@ export const login = async (req, res) => {
 
       // Add model-specific fields
       if (user.NIC) responseUser.NIC = user.NIC;
-      if (user.staffId) responseUser.staffId = user.staffId;
       if (user.notifyChat !== undefined) responseUser.notifyChat = user.notifyChat;
       if (user.notifyPayment !== undefined) responseUser.notifyPayment = user.notifyPayment;
       if (user.notifyHoliday !== undefined) responseUser.notifyHoliday = user.notifyHoliday;
@@ -315,7 +311,6 @@ export const refreshToken = async (req, res) => {
             username: user.username,
             status: user.status,
             NIC: user.NIC,
-            staffId: user.staffId,
             role: user.role,
             notifyChat: user.notifyChat,
             notifyPayment: user.notifyPayment,

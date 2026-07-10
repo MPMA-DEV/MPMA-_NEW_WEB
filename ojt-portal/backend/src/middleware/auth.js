@@ -52,8 +52,7 @@ export const authenticateToken = async (req, res, next) => {
       email: user.email,
       status: user.status || 'Active', // Staff might not have a status field
       role: isStaff ? user.role : 'trainee',
-      NIC: user.NIC,
-      staffId: user.staffId
+      NIC: user.NIC
     };
 
     next();

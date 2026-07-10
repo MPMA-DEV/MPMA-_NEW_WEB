@@ -22,7 +22,6 @@ async function seed() {
     const [admin, createdAdmin] = await Staff.findOrCreate({
       where: { username: "admin1" },
       defaults: {
-        staffId: "admin1",
         email: "admin1@example.com",
         password: "admin123",
         firstName: "Admin",

@@ -73,7 +73,7 @@ export const verifyRefreshToken = async (refreshToken) => {
     const tokenHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
     let user;
 
-    if (payload.role || payload.staffId) {
+    if (payload.role) {
       user = await Staff.findByPk(payload.userId);
     } else {
       user = await TraineeUser.findByPk(payload.userId);
@@ -100,7 +100,7 @@ export const revokeRefreshToken = async (refreshToken) => {
     if (!payload) return false;
 
     let user;
-    if (payload.role || payload.staffId) {
+    if (payload.role) {
       user = await Staff.findByPk(payload.userId);
     } else {
       user = await TraineeUser.findByPk(payload.userId);
@@ -129,7 +129,6 @@ export const generateTokenPair = async (user, userAgent = null, ipAddress = null
     };
 
     if (user.NIC) payload.NIC = user.NIC;
-    if (user.staffId) payload.staffId = user.staffId;
     if (user.role) payload.role = user.role;
 
     const [accessToken, refreshToken] = await Promise.all([

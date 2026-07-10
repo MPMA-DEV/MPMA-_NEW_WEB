@@ -22,7 +22,6 @@ USE \`${dbName}\`;
 
 CREATE TABLE IF NOT EXISTS \`staff\` (
   \`id\` INT AUTO_INCREMENT PRIMARY KEY,
-  \`staffId\` VARCHAR(50) NOT NULL,
   \`email\` VARCHAR(100) NULL,
   \`username\` VARCHAR(100) NOT NULL,
   \`password\` VARCHAR(255) NOT NULL,
@@ -36,7 +35,6 @@ CREATE TABLE IF NOT EXISTS \`staff\` (
   \`reset_token_expires\` DATETIME NULL,
   \`createdAt\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   \`updatedAt\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  UNIQUE KEY \`staff_id_unique\` (\`staffId\`),
   UNIQUE KEY \`staff_email_unique\` (\`email\`),
   UNIQUE KEY \`staff_username_unique\` (\`username\`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

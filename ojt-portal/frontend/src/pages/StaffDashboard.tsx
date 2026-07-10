@@ -6,7 +6,7 @@ import { getTraineeDocuments } from "../loaders/traineeLoaders";
 import { DocumentViewer } from "../components/ui/DocumentViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { FolderOpen, Plus, X, Loader2, Search, Edit, Trash2 } from "lucide-react";
+import { FolderOpen, Plus, X, Loader2, Search, Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { useToastHelpers } from "../hooks/useToast";
 import { ConfirmationModal } from "../components/ui/ConfirmationModal";
 
@@ -22,6 +22,10 @@ export default function StaffDashboard() {
   const [editingTrainee, setEditingTrainee] = useState<TraineeBasicInfo | null>(null);
   const [editFormData, setEditFormData] = useState({ email: "", NIC: "", status: "Pending" });
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const [addErrors, setAddErrors] = useState<Record<string, string>>({});
+  const [editErrors, setEditErrors] = useState<Record<string, string>>({});
+  const [showAddPassword, setShowAddPassword] = useState(false);
 
   const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
   const [selectedTraineeDocs, setSelectedTraineeDocs] = useState<any[]>([]);
@@ -68,6 +72,14 @@ export default function StaffDashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    if (!isAddModalOpen) {
+      setAddErrors({});
+      setFormData({ username: "", password: "", NIC: "", email: "" });
+      setShowAddPassword(false);
+    }
+  }, [isAddModalOpen]);
+
+  useEffect(() => {
     fetchTrainees();
   }, []);
 
@@ -85,12 +97,43 @@ export default function StaffDashboard() {
 
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const errors: Record<string, string> = {};
+
+    // Validate Username
+    if (!formData.username.trim() || formData.username.length < 3) {
+      errors.username = "Username must be at least 3 characters.";
+    }
+
+    // Validate NIC
+    const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
+    if (!formData.NIC.trim()) {
+      errors.NIC = "NIC is required.";
+    } else if (!nicRegex.test(formData.NIC)) {
+      errors.NIC = "NIC must be 9 digits followed by 'V/X' or 12 digits.";
+    }
+
+    // Validate Password
+    if (!formData.password || formData.password.length < 6) {
+      errors.password = "Password must be at least 6 characters.";
+    }
+
+    // Validate Email
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Please enter a valid email address.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setAddErrors(errors);
+      return;
+    }
+    setAddErrors({});
+
     try {
       setIsSubmitting(true);
       await createTrainee(formData);
       success("Trainee created successfully");
       setIsAddModalOpen(false);
-      setFormData({ username: "", password: "", NIC: "", email: "" });
       fetchTrainees(); // Refresh the list
     } catch (err: any) {
       toastError(err.message || "Failed to create trainee");
@@ -99,7 +142,6 @@ export default function StaffDashboard() {
     }
   };
 
-  
   const handleEditClick = (trainee: TraineeBasicInfo) => {
     setEditingTrainee(trainee);
     setEditFormData({
@@ -107,12 +149,35 @@ export default function StaffDashboard() {
       NIC: trainee.NIC || "",
       status: trainee.status || "Pending"
     });
+    setEditErrors({});
     setIsEditModalOpen(true);
   };
 
   const submitEditTrainee = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingTrainee) return;
+
+    const errors: Record<string, string> = {};
+
+    // Validate NIC
+    const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
+    if (!editFormData.NIC.trim()) {
+      errors.NIC = "NIC is required.";
+    } else if (!nicRegex.test(editFormData.NIC)) {
+      errors.NIC = "NIC must be 9 digits followed by 'V/X' or 12 digits.";
+    }
+
+    // Validate Email
+    if (editFormData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editFormData.email)) {
+      errors.email = "Please enter a valid email address.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setEditErrors(errors);
+      return;
+    }
+    setEditErrors({});
+
     setIsSubmitting(true);
     try {
       await updateTrainee(editingTrainee.id, editFormData);
@@ -386,39 +451,64 @@ export default function StaffDashboard() {
                 <input 
                   type="text" 
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.username ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={formData.username}
-                  onChange={e => setFormData({...formData, username: e.target.value})}
+                  onChange={e => {
+                    setFormData({...formData, username: e.target.value});
+                    if (addErrors.username) setAddErrors({...addErrors, username: ""});
+                  }}
                 />
+                {addErrors.username && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.username}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">NIC <span className="text-red-500">*</span></label>
                 <input 
                   type="text" 
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.NIC ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={formData.NIC}
-                  onChange={e => setFormData({...formData, NIC: e.target.value})}
+                  onChange={e => {
+                    setFormData({...formData, NIC: e.target.value});
+                    if (addErrors.NIC) setAddErrors({...addErrors, NIC: ""});
+                  }}
                 />
+                {addErrors.NIC && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.NIC}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Password <span className="text-red-500">*</span></label>
-                <input 
-                  type="password" 
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
-                  value={formData.password}
-                  onChange={e => setFormData({...formData, password: e.target.value})}
-                />
+                <div className="relative">
+                  <input 
+                    type={showAddPassword ? "text" : "password"} 
+                    required
+                    className={`w-full pl-3 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.password ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
+                    value={formData.password}
+                    onChange={e => {
+                      setFormData({...formData, password: e.target.value});
+                      if (addErrors.password) setAddErrors({...addErrors, password: ""});
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
+                    onClick={() => setShowAddPassword(!showAddPassword)}
+                  >
+                    {showAddPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {addErrors.password && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.password}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input 
                   type="email" 
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.email ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={formData.email}
-                  onChange={e => setFormData({...formData, email: e.target.value})}
+                  onChange={e => {
+                    setFormData({...formData, email: e.target.value});
+                    if (addErrors.email) setAddErrors({...addErrors, email: ""});
+                  }}
                 />
+                {addErrors.email && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.email}</p>}
               </div>
               <div className="pt-4 flex justify-end gap-3">
                 <Button type="button" variant="outline" onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
@@ -682,19 +772,27 @@ export default function StaffDashboard() {
                 <input 
                   type="text" 
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${editErrors.NIC ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={editFormData.NIC}
-                  onChange={e => setEditFormData({...editFormData, NIC: e.target.value})}
+                  onChange={e => {
+                    setEditFormData({...editFormData, NIC: e.target.value});
+                    if (editErrors.NIC) setEditErrors({...editErrors, NIC: ""});
+                  }}
                 />
+                {editErrors.NIC && <p className="text-xs text-red-500 font-medium mt-1">{editErrors.NIC}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input 
                   type="email" 
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${editErrors.email ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={editFormData.email}
-                  onChange={e => setEditFormData({...editFormData, email: e.target.value})}
+                  onChange={e => {
+                    setEditFormData({...editFormData, email: e.target.value});
+                    if (editErrors.email) setEditErrors({...editErrors, email: ""});
+                  }}
                 />
+                {editErrors.email && <p className="text-xs text-red-500 font-medium mt-1">{editErrors.email}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>

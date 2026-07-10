@@ -10,14 +10,7 @@ export const Staff = sequalize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    staffId: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      unique: "staff_id_unique",
-      validate: {
-        notEmpty: true,
-      },
-    },
+
     email: {
       type: DataTypes.STRING(100),
       allowNull: true,

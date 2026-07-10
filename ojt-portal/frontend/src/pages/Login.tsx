@@ -154,7 +154,7 @@ export default function Login() {
           <form className="space-y-5" onSubmit={onSubmit}>
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-gray-700 ml-1">
-                {loginType === "staff" ? "Staff ID / Username" : "Username"}
+                Username
               </label>
               <input
                 type="text"
@@ -171,11 +171,7 @@ export default function Login() {
                     : "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-blue-400"
                   }
                 `}
-                placeholder={
-                  loginType === "staff"
-                    ? "Enter your staff ID or username"
-                    : "Enter your username"
-                }
+                placeholder="Enter your username"
               />
               {getFieldError("username") && (
                 <p className="text-xs text-red-500 font-medium ml-1 animate-pulse">
