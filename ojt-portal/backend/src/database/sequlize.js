@@ -45,7 +45,7 @@ export const sync = async () => {
       database: process.env.DB_NAME,
     });
 
-    await sequalize.sync({ alter: true });
+    await sequalize.sync();
     logger.business.databaseEvent(
       "sync",
       "All models synchronized successfully",

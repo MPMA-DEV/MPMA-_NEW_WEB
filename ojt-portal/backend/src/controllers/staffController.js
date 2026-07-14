@@ -5,6 +5,7 @@ import { Op } from "sequelize";
 export const getAllTrainees = async (req, res) => {
   try {
     const trainees = await TraineeUser.findAll({
+      where: { status: 'Active' },
       attributes: ['id', 'NIC', 'username', 'email', 'status', 'createdAt'],
       order: [['createdAt', 'DESC']],
     });
@@ -112,7 +113,13 @@ export const verifyTrainee = async (req, res) => {
       status: newStatus
     });
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) {
+      try {
+        await transaction.rollback();
+      } catch (rollbackError) {
+        console.error("Rollback failed:", rollbackError);
+      }
+    }
     console.error("Error in verifyTrainee:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }

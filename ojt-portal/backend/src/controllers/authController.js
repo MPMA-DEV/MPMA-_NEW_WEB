@@ -339,12 +339,25 @@ export const refreshToken = async (req, res) => {
       req.connection?.remoteAddress ||
       req.headers["x-forwarded-for"]?.split(",")[0]?.trim();
 
-    logger.error("Refresh token error", {
-      type: "token_refresh_error",
-      error: error.message,
-      stack: error.stack,
-      ip: ipAddress,
-    });
+    const isExpectedError = 
+      error.code === 'ERR_JWT_EXPIRED' || 
+      error.message === 'Refresh token is expired or revoked' || 
+      error.message === 'jwt expired';
+
+    if (isExpectedError) {
+      logger.warn("Refresh token invalid or expired", {
+        type: "token_refresh_failed",
+        reason: error.message,
+        ip: ipAddress,
+      });
+    } else {
+      logger.error("Refresh token error", {
+        type: "token_refresh_error",
+        error: error.message,
+        stack: error.stack,
+        ip: ipAddress,
+      });
+    }
 
     return res.status(401).json({
       message: "Invalid or expired refresh token",

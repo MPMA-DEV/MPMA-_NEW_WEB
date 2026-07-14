@@ -70,6 +70,11 @@ export const getDetailsById = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Restrict access for external API requests unless the trainee status is Active
+    if (req.user && req.user.role === 'external_system' && user.status !== 'Active') {
+      return res.status(403).json({ message: "Access denied: Trainee has not been verified/activated yet." });
+    }
+
     return res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -186,6 +191,15 @@ export const addInformation = async (req, res) => {
 export const streamDocument = async (req, res) => {
   try {
     const { userId, docType } = req.params;
+
+    // Check status if request is from external system
+    if (req.user && req.user.role === 'external_system') {
+      const user = await TraineeUser.findByPk(userId);
+      if (!user || user.status !== 'Active') {
+        return res.status(403).json({ message: "Access denied: Trainee has not been verified/activated yet." });
+      }
+    }
+
     const trainee = await TraineeDetails.findOne({ where: { user_id: userId } });
 
     const docTypeMap = {

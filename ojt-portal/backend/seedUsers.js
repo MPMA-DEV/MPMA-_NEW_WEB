@@ -19,6 +19,22 @@ async function seed() {
     });
     console.log(createdTrainee ? "Created trainee1" : "trainee1 already exists");
 
+    const [trainee2, createdTrainee2] = await TraineeUser.findOrCreate({
+      where: { username: "trainee2" },
+      defaults: {
+        nickname: "Trainee Two",
+        NIC: "200109988776",
+        email: "active_trainee@example.com",
+        password: "trainee123",
+        status: "Pending"
+      }
+    });
+    if (!createdTrainee2) {
+      trainee2.status = "Pending";
+      await trainee2.save();
+    }
+    console.log(createdTrainee2 ? "Created trainee2" : "trainee2 status updated to Pending");
+
     const [admin, createdAdmin] = await Staff.findOrCreate({
       where: { username: "admin1" },
       defaults: {

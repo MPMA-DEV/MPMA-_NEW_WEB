@@ -85,6 +85,9 @@ export const verifyRefreshToken = async (refreshToken) => {
 
     return { payload, user };
   } catch (error) {
+    if (error.code === 'ERR_JWT_EXPIRED' || error.message === 'Refresh token is expired or revoked') {
+      throw error;
+    }
     console.error('Error verifying refresh token:', error);
     throw error;
   }
