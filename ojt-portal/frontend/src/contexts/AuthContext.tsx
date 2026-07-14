@@ -10,6 +10,7 @@ export interface User {
   NIC: string;
   username: string;
   status: string;
+  role?: string;
   notifyChat?: boolean;
   notifyPayment?: boolean;
   notifyHoliday?: boolean;
@@ -28,6 +29,7 @@ const fetchUserProfile = async (): Promise<User | null> => {
         NIC: user.NIC,
         status: user.status,
         nickname: user.username,
+        role: user.role,
         notifyChat: user.notifyChat,
         notifyPayment: user.notifyPayment,
         notifyHoliday: user.notifyHoliday,

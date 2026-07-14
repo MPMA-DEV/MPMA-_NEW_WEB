@@ -8,6 +8,7 @@ import { FolderOpen, Plus, X, Loader2, Search, Edit, Trash2, Eye, EyeOff, User }
 import { useToastHelpers } from "../hooks/useToast";
 import { ConfirmationModal } from "../components/ui/ConfirmationModal";
 import api from "../api";
+import { useAuth } from "../contexts/AuthContext";
 
 function TraineeAvatar({ userId, name }: { userId: number; name: string }) {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
@@ -71,6 +72,8 @@ function TraineeAvatar({ userId, name }: { userId: number; name: string }) {
 }
 
 export default function StaffDashboard() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin" || user?.role === "superadmin";
   const [trainees, setTrainees] = useState<TraineeBasicInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -741,68 +744,76 @@ export default function StaffDashboard() {
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
                   <h3 className="text-sm font-semibold text-gray-900">Document Verification Review</h3>
                   
-                  {/* Individual Document Flagging Options */}
-                  {selectedTraineeDocs.length > 0 && (
-                    <div className="bg-white p-4 rounded-xl border border-gray-200/80 space-y-3">
-                      <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Flag Specific Document Issues:</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {selectedTraineeDocs.map((doc) => {
-                          const isChecked = !!docErrors[doc.id]?.hasError;
-                          const reasonVal = docErrors[doc.id]?.reason || "";
-                          return (
-                            <div key={doc.id} className="flex flex-col space-y-1 bg-gray-50/50 p-3 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-                              <label className="flex items-center space-x-2.5 cursor-pointer select-none">
-                                <input 
-                                  type="checkbox" 
-                                  className="rounded text-blue-600 focus:ring-blue-500 border-gray-300 w-4 h-4 cursor-pointer"
-                                  checked={isChecked}
-                                  onChange={(e) => handleDocErrorChange(doc.id, e.target.checked, reasonVal)}
-                                />
-                                <span className="text-sm font-semibold text-gray-800">{doc.name} has issue</span>
-                              </label>
-                              {isChecked && (
-                                <input 
-                                  type="text"
-                                  placeholder="Specify error (e.g. Blurry scan, Expired, Missing page)..."
-                                  className="mt-1.5 w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-shadow text-gray-850"
-                                  value={reasonVal}
-                                  onChange={(e) => handleDocErrorChange(doc.id, true, e.target.value)}
-                                />
-                              )}
-                            </div>
-                          );
-                        })}
+                  {isAdmin ? (
+                    <>
+                      {/* Individual Document Flagging Options */}
+                      {selectedTraineeDocs.length > 0 && (
+                        <div className="bg-white p-4 rounded-xl border border-gray-200/80 space-y-3">
+                          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Flag Specific Document Issues:</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {selectedTraineeDocs.map((doc) => {
+                              const isChecked = !!docErrors[doc.id]?.hasError;
+                              const reasonVal = docErrors[doc.id]?.reason || "";
+                              return (
+                                <div key={doc.id} className="flex flex-col space-y-1 bg-gray-50/50 p-3 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
+                                  <label className="flex items-center space-x-2.5 cursor-pointer select-none">
+                                    <input 
+                                      type="checkbox" 
+                                      className="rounded text-blue-600 focus:ring-blue-500 border-gray-300 w-4 h-4 cursor-pointer"
+                                      checked={isChecked}
+                                      onChange={(e) => handleDocErrorChange(doc.id, e.target.checked, reasonVal)}
+                                    />
+                                    <span className="text-sm font-semibold text-gray-800">{doc.name} has issue</span>
+                                  </label>
+                                  {isChecked && (
+                                    <input 
+                                      type="text"
+                                      placeholder="Specify error (e.g. Blurry scan, Expired, Missing page)..."
+                                      className="mt-1.5 w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-shadow text-gray-850"
+                                      value={reasonVal}
+                                      onChange={(e) => handleDocErrorChange(doc.id, true, e.target.value)}
+                                    />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Compiled Feedback Message:</label>
+                        <textarea 
+                          placeholder="Enter rejection reason/feedback (required for rejection)..."
+                          className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-gray-900"
+                          rows={3}
+                          value={verificationComment}
+                          onChange={(e) => setVerificationComment(e.target.value)}
+                        />
                       </div>
+                      
+                      <div className="flex justify-end gap-3 pt-2">
+                        <Button 
+                          variant="danger" 
+                          onClick={() => handleVerify("Rejected")} 
+                          disabled={isVerifying || !verificationComment.trim()}
+                        >
+                          Reject Trainee & Request Re-upload
+                        </Button>
+                        <Button 
+                          variant="success" 
+                          onClick={() => handleVerify("Active")} 
+                          disabled={isVerifying || Object.values(docErrors).some(val => val.hasError)}
+                        >
+                          Approve Trainee
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm font-medium">
+                      ⚠️ Only administrators are authorized to verify documents and approve/reject trainees.
                     </div>
                   )}
-
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Compiled Feedback Message:</label>
-                    <textarea 
-                      placeholder="Enter rejection reason/feedback (required for rejection)..."
-                      className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-gray-900"
-                      rows={3}
-                      value={verificationComment}
-                      onChange={(e) => setVerificationComment(e.target.value)}
-                    />
-                  </div>
-                  
-                  <div className="flex justify-end gap-3 pt-2">
-                    <Button 
-                      variant="danger" 
-                      onClick={() => handleVerify("Rejected")} 
-                      disabled={isVerifying || !verificationComment.trim()}
-                    >
-                      Reject Trainee & Request Re-upload
-                    </Button>
-                    <Button 
-                      variant="success" 
-                      onClick={() => handleVerify("Active")} 
-                      disabled={isVerifying || Object.values(docErrors).some(val => val.hasError)}
-                    >
-                      Approve Trainee
-                    </Button>
-                  </div>
                 </div>
               )}
             </div>

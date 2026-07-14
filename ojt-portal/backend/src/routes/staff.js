@@ -11,7 +11,7 @@ router.get("/trainees", authenticateToken, requireRole("superadmin", "admin", "s
 
 router.post("/trainees", authenticateToken, requireRole("superadmin", "admin", "staff"), createTrainee);
 
-router.put("/trainees/:id/verify", authenticateToken, requireRole("superadmin", "admin", "staff"), verifyTrainee);
+router.put("/trainees/:id/verify", authenticateToken, requireRole("superadmin", "admin"), verifyTrainee);
 
 router.put("/trainees/:id", authenticateToken, requireRole("superadmin", "admin", "staff"), updateTrainee);
 router.delete("/trainees/:id", authenticateToken, requireRole("superadmin", "admin", "staff"), deleteTrainee);
