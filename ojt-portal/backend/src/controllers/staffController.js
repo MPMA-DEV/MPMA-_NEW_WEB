@@ -5,7 +5,6 @@ import { Op } from "sequelize";
 export const getAllTrainees = async (req, res) => {
   try {
     const trainees = await TraineeUser.findAll({
-      where: { status: 'Active' },
       attributes: ['id', 'NIC', 'username', 'email', 'status', 'createdAt'],
       order: [['createdAt', 'DESC']],
     });
@@ -30,7 +29,7 @@ export const getAllTrainees = async (req, res) => {
     console.error("Error fetching trainees:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}; // Ensure this function only closes ONCE here before createTrainee starts
 
 export const createTrainee = async (req, res) => {
   try {
@@ -71,9 +70,9 @@ export const createTrainee = async (req, res) => {
   } catch (error) {
     console.error("Error creating trainee:", error);
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(400).json({ 
-        error: "Validation error", 
-        details: error.errors.map(e => e.message) 
+      return res.status(400).json({
+        error: "Validation error",
+        details: error.errors.map(e => e.message)
       });
     }
     res.status(500).json({ error: "Internal Server Error" });
@@ -161,9 +160,9 @@ export const updateTrainee = async (req, res) => {
   } catch (error) {
     console.error("Error updating trainee:", error);
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(400).json({ 
-        error: "Validation error", 
-        details: error.errors.map(e => e.message) 
+      return res.status(400).json({
+        error: "Validation error",
+        details: error.errors.map(e => e.message)
       });
     }
     res.status(500).json({ error: "Internal Server Error" });
@@ -173,7 +172,7 @@ export const updateTrainee = async (req, res) => {
 export const deleteTrainee = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const trainee = await TraineeUser.findByPk(id);
     if (!trainee) {
       return res.status(404).json({ error: "Trainee not found" });

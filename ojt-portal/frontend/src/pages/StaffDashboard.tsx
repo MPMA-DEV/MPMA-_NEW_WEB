@@ -9,6 +9,8 @@ import { useToastHelpers } from "../hooks/useToast";
 import { ConfirmationModal } from "../components/ui/ConfirmationModal";
 import api from "../api";
 import { useAuth } from "../contexts/AuthContext";
+// Remove it from staffApi if it's there and import it from your trainee loaders file:
+import { getTraineeDocuments } from "../loaders/traineeLoaders";
 
 function TraineeAvatar({ userId, name }: { userId: number; name: string }) {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
@@ -57,11 +59,11 @@ function TraineeAvatar({ userId, name }: { userId: number; name: string }) {
   // Generate initials
   const initials = name
     ? name
-        .split(" ")
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase()
+      .split(" ")
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase()
     : "";
 
   return (
@@ -160,7 +162,7 @@ export default function StaffDashboard() {
 
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const errors: Record<string, string> = {};
 
     // Validate Username
@@ -285,11 +287,10 @@ export default function StaffDashboard() {
     setVerificationComment("");
 
     try {
-      // Fetch trainee detailed profile fields
+      // 1. Fetch trainee detailed profile fields
       const detailsRes = await api.get(`api/trainee/trainee_details/${trainee.id}`);
-        
       let details = detailsRes.data || {};
-      
+
       const traineeDetail = details.trainee_detail || details.TraineeDetail || details.trainee_details || details.TraineeDetails || null;
       details.PersonalInfo = traineeDetail || details.PersonalInfo;
       details.EmergencyContact = traineeDetail || details.EmergencyContact;
@@ -326,34 +327,46 @@ export default function StaffDashboard() {
           }
         };
       }
-      
+
       setSelectedTraineeDetails(details);
 
-      // getTraineeDocuments fetches based on userId
-      const docsObj = await getTraineeDocuments(trainee.id.toString()) as any;
+      // 2. Fetch documents using the validated loader function
+      const docsObj = await getTraineeDocuments(trainee.id.toString());
+
+      // 3. Map keys to align with <DocumentViewer />
       const docTypes = [
         { key: "nicScan", label: "NIC Scan" },
         { key: "universityId", label: "University ID" },
-        { key: "policeReport", label: "Police Report" },
         { key: "instituteLetter", label: "Institute Letter" },
+        { key: "policeReport", label: "Police Report" },
         { key: "consentLetter", label: "Consent Letter" },
+        { key: "profilePhoto", label: "Profile Photo" },
         { key: "bankPassbook", label: "Bank Statement / Passbook" },
       ];
-      
+
       const mappedDocs = docTypes
-        .filter(({ key }) => docsObj[key])
-        .map(({ key, label }) => ({
-          id: key,
-          name: label,
-          type: docsObj._types?.[key] === "application/pdf" ? "pdf" : "image",
-          url: docsObj[key] as string,
-          uploadDate: trainee.createdAt || new Date().toISOString(),
-          size: "Document File",
-        }));
+        .filter(({ key }) => docsObj && docsObj[key])
+        .map(({ key, label }) => {
+          const fileUrl = docsObj[key] as string;
+
+          const isPdf =
+            (docsObj._types?.[key] || "").includes("pdf") ||
+            (typeof fileUrl === "string" && fileUrl.toLowerCase().endsWith(".pdf"));
+
+          return {
+            id: key,
+            name: label,
+            type: isPdf ? ("pdf" as const) : ("image" as const),
+            url: fileUrl,
+            uploadDate: trainee.createdAt || new Date().toISOString(),
+            size: "Document File",
+          };
+        });
 
       if (mappedDocs.length === 0) {
         toastError("No documents found for this trainee");
       }
+
       setSelectedTraineeDocs(mappedDocs);
     } catch (err: any) {
       toastError("Failed to fetch trainee details/documents: " + (err.message || ""));
@@ -378,8 +391,8 @@ export default function StaffDashboard() {
   };
 
 
-  const filteredTrainees = trainees.filter(t => 
-    t.username.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  const filteredTrainees = trainees.filter(t =>
+    t.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     t.NIC.includes(searchTerm) ||
     (t.name && t.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -403,9 +416,9 @@ export default function StaffDashboard() {
             <CardTitle>Registered Trainees</CardTitle>
             <div className="relative w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Search by Name, NIC or Username..." 
+              <input
+                type="text"
+                placeholder="Search by Name, NIC or Username..."
                 className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -445,49 +458,48 @@ export default function StaffDashboard() {
                       </td>
                       <td className="px-6 py-4 text-gray-600">{trainee.NIC}</td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${
-                          trainee.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${trainee.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                           trainee.status === 'Processing' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                          'bg-gray-100 text-gray-700 border-gray-200'
-                        }`}>
+                            'bg-gray-100 text-gray-700 border-gray-200'
+                          }`}>
                           {trainee.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-gray-500">
                         {new Date(trainee.createdAt).toLocaleDateString()}
                       </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => handleViewDocs(trainee)}
-                              className="bg-white hover:bg-gray-50"
-                              title="View Documents"
-                            >
-                              <FolderOpen className="w-4 h-4 mr-2 hidden sm:block" />
-                              View Docs
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => handleEditClick(trainee)}
-                              className="bg-white hover:bg-blue-50 text-blue-600 border-blue-200 px-2"
-                              title="Edit Trainee"
-                            >
-                              <Edit className="w-4 h-4" />
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => handleDeleteClick(trainee)} disabled={isDeleting}
-                              className="bg-white hover:bg-red-50 text-red-600 border-red-200 px-2"
-                              title="Delete Trainee"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewDocs(trainee)}
+                            className="bg-white hover:bg-gray-50"
+                            title="View Documents"
+                          >
+                            <FolderOpen className="w-4 h-4 mr-2 hidden sm:block" />
+                            View Docs
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEditClick(trainee)}
+                            className="bg-white hover:bg-blue-50 text-blue-600 border-blue-200 px-2"
+                            title="Edit Trainee"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteClick(trainee)} disabled={isDeleting}
+                            className="bg-white hover:bg-red-50 text-red-600 border-red-200 px-2"
+                            title="Delete Trainee"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
                   )) : (
                     <tr>
@@ -516,28 +528,28 @@ export default function StaffDashboard() {
             <form onSubmit={handleAddSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Username <span className="text-red-500">*</span></label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   required
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.username ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={formData.username}
                   onChange={e => {
-                    setFormData({...formData, username: e.target.value});
-                    if (addErrors.username) setAddErrors({...addErrors, username: ""});
+                    setFormData({ ...formData, username: e.target.value });
+                    if (addErrors.username) setAddErrors({ ...addErrors, username: "" });
                   }}
                 />
                 {addErrors.username && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.username}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">NIC <span className="text-red-500">*</span></label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   required
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.NIC ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={formData.NIC}
                   onChange={e => {
-                    setFormData({...formData, NIC: e.target.value});
-                    if (addErrors.NIC) setAddErrors({...addErrors, NIC: ""});
+                    setFormData({ ...formData, NIC: e.target.value });
+                    if (addErrors.NIC) setAddErrors({ ...addErrors, NIC: "" });
                   }}
                 />
                 {addErrors.NIC && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.NIC}</p>}
@@ -545,14 +557,14 @@ export default function StaffDashboard() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Password <span className="text-red-500">*</span></label>
                 <div className="relative">
-                  <input 
-                    type={showAddPassword ? "text" : "password"} 
+                  <input
+                    type={showAddPassword ? "text" : "password"}
                     required
                     className={`w-full pl-3 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.password ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                     value={formData.password}
                     onChange={e => {
-                      setFormData({...formData, password: e.target.value});
-                      if (addErrors.password) setAddErrors({...addErrors, password: ""});
+                      setFormData({ ...formData, password: e.target.value });
+                      if (addErrors.password) setAddErrors({ ...addErrors, password: "" });
                     }}
                   />
                   <button
@@ -567,13 +579,13 @@ export default function StaffDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${addErrors.email ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={formData.email}
                   onChange={e => {
-                    setFormData({...formData, email: e.target.value});
-                    if (addErrors.email) setAddErrors({...addErrors, email: ""});
+                    setFormData({ ...formData, email: e.target.value });
+                    if (addErrors.email) setAddErrors({ ...addErrors, email: "" });
                   }}
                 />
                 {addErrors.email && <p className="text-xs text-red-500 font-medium mt-1">{addErrors.email}</p>}
@@ -743,7 +755,7 @@ export default function StaffDashboard() {
               {selectedTrainee?.status === 'Processing' && (
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
                   <h3 className="text-sm font-semibold text-gray-900">Document Verification Review</h3>
-                  
+
                   {isAdmin ? (
                     <>
                       {/* Individual Document Flagging Options */}
@@ -757,8 +769,8 @@ export default function StaffDashboard() {
                               return (
                                 <div key={doc.id} className="flex flex-col space-y-1 bg-gray-50/50 p-3 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
                                   <label className="flex items-center space-x-2.5 cursor-pointer select-none">
-                                    <input 
-                                      type="checkbox" 
+                                    <input
+                                      type="checkbox"
                                       className="rounded text-blue-600 focus:ring-blue-500 border-gray-300 w-4 h-4 cursor-pointer"
                                       checked={isChecked}
                                       onChange={(e) => handleDocErrorChange(doc.id, e.target.checked, reasonVal)}
@@ -766,7 +778,7 @@ export default function StaffDashboard() {
                                     <span className="text-sm font-semibold text-gray-800">{doc.name} has issue</span>
                                   </label>
                                   {isChecked && (
-                                    <input 
+                                    <input
                                       type="text"
                                       placeholder="Specify error (e.g. Blurry scan, Expired, Missing page)..."
                                       className="mt-1.5 w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-shadow text-gray-850"
@@ -783,7 +795,7 @@ export default function StaffDashboard() {
 
                       <div className="space-y-1.5">
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Compiled Feedback Message:</label>
-                        <textarea 
+                        <textarea
                           placeholder="Enter rejection reason/feedback (required for rejection)..."
                           className="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-gray-900"
                           rows={3}
@@ -791,18 +803,18 @@ export default function StaffDashboard() {
                           onChange={(e) => setVerificationComment(e.target.value)}
                         />
                       </div>
-                      
+
                       <div className="flex justify-end gap-3 pt-2">
-                        <Button 
-                          variant="danger" 
-                          onClick={() => handleVerify("Rejected")} 
+                        <Button
+                          variant="danger"
+                          onClick={() => handleVerify("Rejected")}
                           disabled={isVerifying || !verificationComment.trim()}
                         >
                           Reject Trainee & Request Re-upload
                         </Button>
-                        <Button 
-                          variant="success" 
-                          onClick={() => handleVerify("Active")} 
+                        <Button
+                          variant="success"
+                          onClick={() => handleVerify("Active")}
                           disabled={isVerifying || Object.values(docErrors).some(val => val.hasError)}
                         >
                           Approve Trainee
@@ -836,8 +848,8 @@ export default function StaffDashboard() {
             <form onSubmit={submitEditTrainee} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Username (Read-only)</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
                   value={editingTrainee.username}
                   disabled
@@ -845,27 +857,27 @@ export default function StaffDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">NIC *</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   required
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${editErrors.NIC ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={editFormData.NIC}
                   onChange={e => {
-                    setEditFormData({...editFormData, NIC: e.target.value});
-                    if (editErrors.NIC) setEditErrors({...editErrors, NIC: ""});
+                    setEditFormData({ ...editFormData, NIC: e.target.value });
+                    if (editErrors.NIC) setEditErrors({ ...editErrors, NIC: "" });
                   }}
                 />
                 {editErrors.NIC && <p className="text-xs text-red-500 font-medium mt-1">{editErrors.NIC}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow ${editErrors.email ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-300'}`}
                   value={editFormData.email}
                   onChange={e => {
-                    setEditFormData({...editFormData, email: e.target.value});
-                    if (editErrors.email) setEditErrors({...editErrors, email: ""});
+                    setEditFormData({ ...editFormData, email: e.target.value });
+                    if (editErrors.email) setEditErrors({ ...editErrors, email: "" });
                   }}
                 />
                 {editErrors.email && <p className="text-xs text-red-500 font-medium mt-1">{editErrors.email}</p>}
@@ -875,7 +887,7 @@ export default function StaffDashboard() {
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow bg-white"
                   value={editFormData.status}
-                  onChange={e => setEditFormData({...editFormData, status: e.target.value})}
+                  onChange={e => setEditFormData({ ...editFormData, status: e.target.value })}
                 >
                   <option value="Pending">Pending</option>
                   <option value="Active">Active</option>
