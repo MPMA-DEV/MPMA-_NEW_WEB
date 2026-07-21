@@ -274,25 +274,59 @@ export default function TraineeDetails() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Personal Information */}
-        <Card className="shadow-sm border border-gray-200">
-          <CardHeader className="pb-4 border-b border-gray-100">
-            <div className="flex items-center space-x-3">
-              <User className="h-5 w-5 text-gray-500" />
-              <CardTitle size="md">Personal Information</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-5">
-              <DetailItem label="Full Name" value={personal?.fullName || loaderData?.name || loaderData?.TraineeUser?.nickname} icon={User} />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <DetailItem label="Name with Initials" value={personal?.Name || personal?.name || personal?.fullName || loaderData?.name || loaderData?.TraineeUser?.nickname} />
-                <DetailItem label="NIC Number" value={loaderData?.TraineeUser?.NIC} />
-              </div>
-              <DetailItem label="Address" value={personal?.address} icon={MapPin} />
-            </div>
-          </CardContent>
-        </Card>
+       {/* Personal Information */}
+{(() => {
+  // Pre-calculate complex fallback chains to keep JSX declarative & readable
+  const fullName = personal?.fullName ?? loaderData?.name ?? loaderData?.TraineeUser?.nickname;
+  const nameWithInitials = personal?.Name ?? personal?.name ?? fullName;
+
+  return (
+    <Card className="overflow-hidden border border-border/60 shadow-xs transition-all hover:shadow-md">
+      <CardHeader className="bg-muted/30 px-6 py-4 border-b border-border/40">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+            <User className="h-4 w-4" aria-hidden="true" />
+          </div>
+          <CardTitle size="md" className="font-semibold text-foreground tracking-tight">
+            Personal Information
+          </CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent className="p-6">
+        <div className="space-y-6">
+          {/* Full Name Highlight */}
+          <DetailItem 
+            label="Full Name" 
+            value={fullName || "N/A"} 
+            icon={User} 
+          />
+
+          {/* Grid Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 border-t border-border/30">
+            <DetailItem 
+              label="Name with Initials" 
+              value={nameWithInitials || "N/A"} 
+            />
+            <DetailItem 
+              label="NIC Number" 
+              value={loaderData?.TraineeUser?.NIC || "N/A"} 
+            />
+          </div>
+
+          {/* Address */}
+          <div className="pt-2 border-t border-border/30">
+            <DetailItem 
+              label="Address" 
+              value={personal?.address || "N/A"} 
+              icon={MapPin} 
+            />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+})()}
 
         {/* Contact Information */}
         <Card className="shadow-sm border border-gray-200">
