@@ -448,75 +448,77 @@ export default function TraineeDetails() {
     </CardContent>
   </Card>
 )}
-        {/* Documents Section */}
-<Card className="overflow-hidden border border-border/60 shadow-xs transition-all hover:shadow-md lg:col-span-2 flex flex-col h-full">
-  {/* Accordion Header Trigger */}
-  <button
-    type="button"
-    onClick={() => setIsDocumentsExpanded((prev) => !prev)}
-    aria-expanded={isDocumentsExpanded}
-    className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors rounded-t-xl"
-  >
-    <CardHeader className="bg-muted/30 px-6 py-4 border-b border-border/40 hover:bg-muted/50 transition-colors">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
-            <FolderOpen className="h-4 w-4" aria-hidden="true" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <CardTitle size="sm" className="font-semibold text-foreground tracking-tight">
-                Documents
-              </CardTitle>
-              {documents?.length > 0 && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                  {documents.length}
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {isDocumentsExpanded ? "Click to collapse" : "Click to view uploaded documents"}
-            </p>
-          </div>
-        </div>
+       {/* Documents Section */}
+        <Card className="overflow-hidden border border-border/60 shadow-xs transition-all hover:shadow-md lg:col-span-2 flex flex-col h-full">
+          <button
+            type="button"
+            onClick={() => setIsDocumentsExpanded((prev) => !prev)}
+            aria-expanded={isDocumentsExpanded}
+            className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors rounded-t-xl"
+          >
+            <CardHeader className="bg-muted/30 px-6 py-4 border-b border-border/40 hover:bg-muted/50 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                    <FolderOpen className="h-4 w-4" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <CardTitle size="sm" className="font-semibold text-foreground tracking-tight">
+                        Documents
+                      </CardTitle>
+                      {documents?.length > 0 && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                          {documents.length}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {isDocumentsExpanded ? "Click to collapse" : "Click to view uploaded documents"}
+                    </p>
+                  </div>
+                </div>
 
-        <ChevronDown
-          className={`h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-300 ${
-            isDocumentsExpanded ? "rotate-180" : ""
-          }`}
-          aria-hidden="true"
-        />
+                <ChevronDown
+                  className={`h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-300 ${
+                    isDocumentsExpanded ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </div>
+            </CardHeader>
+          </button>
+
+          <div
+            className={`grid transition-all duration-300 ease-in-out ${
+              isDocumentsExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <CardContent className="p-6">
+                {isLoadingDocuments ? (
+                  <div className="flex items-center justify-center py-10 gap-3 text-muted-foreground">
+                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                    <span className="text-sm font-medium">Loading documents...</span>
+                  </div>
+                ) : documents?.length > 0 ? (
+                  <DocumentViewer documents={documents} />
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-10 text-center border-2 border-dashed border-border/50 rounded-xl bg-muted/10">
+                    <div className="p-3 rounded-full bg-muted/30 text-muted-foreground mb-3">
+                      <FolderOpen className="h-6 w-6" aria-hidden="true" />
+                    </div>
+                    <p className="text-sm font-medium text-foreground">No documents available</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Uploaded files and attachments will appear here.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </div>
+          </div>
+        </Card>
       </div>
-    </CardHeader>
-  </button>
-
-  {/* Smooth CSS Grid Accordion Collapse */}
-  <div
-    className={`grid transition-all duration-300 ease-in-out ${
-      isDocumentsExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-    }`}
-  >
-    <div className="overflow-hidden">
-      <CardContent className="p-6">
-        {isLoadingDocuments ? (
-          <div className="flex items-center justify-center py-10 gap-3 text-muted-foreground">
-            <Loader2 className="h-5 w-5 animate-spin text-primary" />
-            <span className="text-sm font-medium">Loading documents...</span>
-          </div>
-        ) : documents?.length > 0 ? (
-          <DocumentViewer documents={documents} />
-        ) : (
-          <div className="flex flex-col items-center justify-center py-10 text-center border-2 border-dashed border-border/50 rounded-xl bg-muted/10">
-            <div className="p-3 rounded-full bg-muted/30 text-muted-foreground mb-3">
-              <FolderOpen className="h-6 w-6" aria-hidden="true" />
-            </div>
-            <p className="text-sm font-medium text-foreground">No documents available</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Uploaded files and attachments will appear here.
-            </p>
-          </div>
-        )}
-      </CardContent>
     </div>
-  </div>
-</Card>
+  );
+}
