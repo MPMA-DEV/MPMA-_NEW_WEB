@@ -325,41 +325,57 @@ export default function TraineeDetails() {
         </Card>
 
         {/* Training Information */}
-        <Card className="shadow-sm border border-gray-200 lg:col-span-2">
-          <CardHeader className="pb-4 border-b border-gray-100">
-            <div className="flex items-center space-x-3">
-              <Calendar className="h-5 w-5 text-gray-500" />
-              <CardTitle size="md">Training Information</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <DetailItem label="Institute Name" value={personal?.instituteName} />
-              <DetailItem label="Course" value={personal?.course} />
-              <DetailItem label="Training Period" value={personal?.period || personal?.training_period} />
-            </div>
-          </CardContent>
-        </Card>
+<Card className="shadow-sm border border-border/80 lg:col-span-2">
+  <CardHeader className="pb-4 border-b border-border/50">
+    <div className="flex items-center gap-3">
+      <Calendar className="h-5 w-5 text-muted-foreground shrink-0" aria-hidden="true" />
+      <CardTitle size="md">Training Information</CardTitle>
+    </div>
+  </CardHeader>
+  <CardContent className="pt-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        { label: "Institute Name", value: personal?.instituteName },
+        { label: "Course", value: personal?.course },
+        { label: "Training Period", value: personal?.period ?? personal?.training_period },
+      ].map(({ label, value }) => (
+        <DetailItem key={label} label={label} value={value || "N/A"} />
+      ))}
+    </div>
+  </CardContent>
+</Card>
 
-        {/* BOC Bank Details */}
-        {(personal?.bank_accno || personal?.bank_branch) && (
-          <Card className="shadow-sm border border-gray-200 lg:col-span-2 animate-fade-in">
-            <CardHeader className="pb-4 border-b border-gray-100">
-              <div className="flex items-center space-x-3">
-                <Landmark className="h-5 w-5 text-gray-500" />
-                <CardTitle size="md">BOC Bank Details</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <DetailItem label="Account Holder Name" value={personal?.bank_accname} />
-                <DetailItem label="Account Number" value={personal?.bank_accno} />
-                <DetailItem label="Branch Name" value={personal?.bank_branch} />
-                <DetailItem label="Branch Code" value={personal?.bank_bno ? String(personal.bank_bno) : undefined} />
-              </div>
-            </CardContent>
-          </Card>
-        )}
+       {/* BOC Bank Details */}
+{(personal?.bank_accno || personal?.bank_branch) && (
+  <Card className="overflow-hidden border border-border/60 shadow-xs transition-all hover:shadow-md lg:col-span-2 animate-fade-in">
+    <CardHeader className="bg-muted/30 px-6 py-4 border-b border-border/40">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+            <Landmark className="h-4 w-4" aria-hidden="true" />
+          </div>
+          <CardTitle size="md" className="font-semibold text-foreground tracking-tight">
+            BOC Bank Details
+          </CardTitle>
+        </div>
+        
+      </div>
+    </CardHeader>
+
+    <CardContent className="p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: "Account Holder Name", value: personal?.bank_accname },
+          { label: "Account Number", value: personal?.bank_accno },
+          { label: "Branch Name", value: personal?.bank_branch },
+          { label: "Branch Code", value: personal?.bank_bno != null ? String(personal.bank_bno) : null },
+        ].map(({ label, value }) => (
+          <DetailItem key={label} label={label} value={value || "N/A"} />
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+)}
         {/* Documents Section */}
         <Card className="shadow-sm border border-gray-200 rounded-xl bg-white lg:col-span-2 flex flex-col h-full">
           <button
