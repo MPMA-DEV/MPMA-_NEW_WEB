@@ -327,36 +327,74 @@ export default function TraineeDetails() {
     </Card>
   );
 })()}
+{/* Contact Information */}
+{(() => {
+  // Normalize email fallback chain upfront
+  const email = loaderData?.TraineeUser?.email ?? loaderData?.email ?? user?.email;
 
-        {/* Contact Information */}
-        <Card className="shadow-sm border border-gray-200">
-          <CardHeader className="pb-4 border-b border-gray-100">
-            <div className="flex items-center space-x-3">
-              <Phone className="h-5 w-5 text-gray-500" />
-              <CardTitle size="md">Contact Information</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <DetailItem label="Mobile Number" value={personal?.Mobile_No} icon={Smartphone} />
-                <DetailItem label="Residence Number" value={personal?.Resident_No} icon={Phone} />
-              </div>
-              <DetailItem label="Email Address" value={loaderData?.TraineeUser?.email || loaderData?.email || user?.email} icon={Mail} />
+  return (
+    <Card className="overflow-hidden border border-border/60 shadow-xs transition-all hover:shadow-md">
+      <CardHeader className="bg-muted/30 px-6 py-4 border-b border-border/40">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+            <Phone className="h-4 w-4" aria-hidden="true" />
+          </div>
+          <CardTitle size="md" className="font-semibold text-foreground tracking-tight">
+            Contact Information
+          </CardTitle>
+        </div>
+      </CardHeader>
 
-              <div className="pt-4 border-t border-gray-100">
-                <h4 className="text-sm font-semibold text-gray-900 mb-4">
-                  Emergency Contact
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                  <DetailItem label="Name" value={emergency?.ec_name} />
-                  <DetailItem label="Relationship" value={emergency?.ec_relationship} />
-                </div>
-                <DetailItem label="Telephone" value={emergency?.ec_telephone} icon={Phone} />
-              </div>
+      <CardContent className="p-6">
+        <div className="space-y-6">
+          {/* Primary Phone Numbers */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <DetailItem 
+              label="Mobile Number" 
+              value={personal?.Mobile_No || "N/A"} 
+              icon={Smartphone} 
+            />
+            <DetailItem 
+              label="Residence Number" 
+              value={personal?.Resident_No || "N/A"} 
+              icon={Phone} 
+            />
+          </div>
+
+          {/* Email Address */}
+          <div className="pt-2 border-t border-border/30">
+            <DetailItem 
+              label="Email Address" 
+              value={email || "N/A"} 
+              icon={Mail} 
+            />
+          </div>
+
+          {/* Emergency Contact Subsection */}
+          <div className="pt-5 border-t border-border/40 space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden="true" />
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Emergency Contact
+              </h4>
             </div>
-          </CardContent>
-        </Card>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <DetailItem label="Name" value={emergency?.ec_name || "N/A"} />
+              <DetailItem label="Relationship" value={emergency?.ec_relationship || "N/A"} />
+            </div>
+
+            <DetailItem 
+              label="Telephone" 
+              value={emergency?.ec_telephone || "N/A"} 
+              icon={Phone} 
+            />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+})()}
 
         {/* Training Information */}
 <Card className="shadow-sm border border-border/80 lg:col-span-2">
