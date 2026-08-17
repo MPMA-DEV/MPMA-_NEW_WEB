@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaAnchor, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { FaAnchor, FaBars, FaTimes, FaChevronDown, FaExternalLinkAlt } from 'react-icons/fa';
 import './GlassNavbar.css';
 
 const GlassNavbar = () => {
@@ -131,6 +131,16 @@ const GlassNavbar = () => {
           >
             Contact Us
           </Link>
+
+          <a
+            href="http://localhost:5173/login"
+            className="nav-item ojt-portal-btn"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            OJT Portal Login
+            <FaExternalLinkAlt className="ojt-btn-icon" />
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
@@ -162,6 +172,16 @@ const GlassNavbar = () => {
 
           <Link to="/news-events" className="mobile-nav-item">News & Events</Link>
           <Link to="/contact" className="mobile-nav-item">Contact Us</Link>
+          
+          <a
+            href="http://localhost:5173/login"
+            className="mobile-nav-item ojt-portal-btn-mobile"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            OJT Portal Login
+            <FaExternalLinkAlt className="ojt-btn-icon" />
+          </a>
         </div>
       )}
     </nav>
