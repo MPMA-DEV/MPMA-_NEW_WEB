@@ -68,8 +68,8 @@ const CategoryPage = () => {
   const handleCheckbox = (course) => {
     setSelected((prev) =>
       prev.some((item) => item.course === course.course)
-        ? prev.filter((sel) => sel.course !== course.course)
-        : [...prev, course]
+        ? []
+        : [course]
     );
   };
 
@@ -130,7 +130,7 @@ const CategoryPage = () => {
 
       {/* Courses Section */}
       <div className="hcc-page-content">
-        <p className="hcc-section-heading">Select Your Courses</p>
+        <p className="hcc-section-heading">Select Your Course</p>
 
         {loading && (
           <div className="loading-state">
@@ -235,7 +235,7 @@ const CategoryPage = () => {
         {!loading && selected.length > 0 && (
           <div className="hcc-summary">
             <div className="hcc-summary__header">
-              <h3>Your Selection ({selected.length})</h3>
+              <h3>Your Selection</h3>
               <p className="hcc-summary__total">
                 Total: <span>Rs. {selected.reduce((sum, c) => sum + (Number(c.fees) || 0), 0).toLocaleString()}</span>
               </p>
@@ -265,8 +265,8 @@ const CategoryPage = () => {
               disabled={selected.length === 0}
             >
               {selected.length === 0
-                ? "Select Courses to Continue"
-                : `Proceed with ${selected.length} Course${selected.length > 1 ? "s" : ""}`}
+                ? "Select a Course to Continue"
+                : "Proceed to Registration"}
             </button>
           </div>
         )}

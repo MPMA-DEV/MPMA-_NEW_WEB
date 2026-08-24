@@ -125,7 +125,7 @@ const EnrollmentPage = () => {
             <FaArrowLeft /> Back to Courses
           </button>
           <h1 className="ep-page-title">Course Enrollment</h1>
-          <p className="ep-page-subtitle">Fill in your details to register for the selected course(s)</p>
+          <p className="ep-page-subtitle">Fill in your details to register for the selected course</p>
         </div>
 
         <div className="ep-layout">
