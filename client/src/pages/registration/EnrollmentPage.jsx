@@ -4,7 +4,7 @@ import {
   FaBook, FaMoneyBillWave, FaUser, FaIdCard, FaBirthdayCake,
   FaVenusMars, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCheckCircle,
   FaChevronDown, FaArrowLeft, FaPaperPlane, FaClock, FaLanguage,
-  FaListAlt
+  FaListAlt, FaExclamationTriangle, FaTimes, FaShieldAlt
 } from "react-icons/fa";
 import "./EnrollmentPage.css";
 
@@ -35,6 +35,7 @@ const EnrollmentPage = () => {
   const [openInstallment, setOpenInstallment] = useState(null); // index of open card
   const [checked, setChecked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [form, setForm] = useState({
     full_name: "", nic: "", date_of_birth: "",
@@ -81,11 +82,18 @@ const EnrollmentPage = () => {
     setErrors((p) => { const c = { ...p }; if (err) c[name] = err; else delete c[name]; return c; });
   };
 
-  const handleSubmit = async (e) => {
+  // Step 1: validate then open the confirmation modal
+  const handleSubmit = (e) => {
     e.preventDefault();
     const n = validate();
     setErrors(n);
     if (Object.keys(n).length) return;
+    setShowConfirm(true);
+  };
+
+  // Step 2: user confirmed â€” actually submit
+  const handleConfirmedSubmit = async () => {
+    setShowConfirm(false);
     setSubmitting(true);
     try {
       const response = await fetch(process.env.REACT_APP_REGISTER_USER_API, {
@@ -113,6 +121,12 @@ const EnrollmentPage = () => {
     return Number(course.installment1) > 0 || Number(course.installment2) > 0;
   };
 
+  // Helper: format gender display
+  const displayGender = form.gender || "Not specified";
+  const displayDOB = form.date_of_birth
+    ? new Date(form.date_of_birth).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })
+    : "Not specified";
+
   return (
     <div className="ep-page">
       <div className="ep-blob ep-blob--1"></div>
@@ -129,7 +143,7 @@ const EnrollmentPage = () => {
         </div>
 
         <div className="ep-layout">
-          {/* LEFT — Course Preview Sidebar */}
+          {/* LEFT â€” Course Preview Sidebar */}
           <aside className="ep-sidebar">
             <div className="ep-summary-card">
               <div className="ep-summary-card__header">
@@ -163,18 +177,21 @@ const EnrollmentPage = () => {
                       )}
                     </div>
 
-                    {/* Description */}
-                    {course.description && (
-                      <p className="ep-cp__desc">{course.description}</p>
-                    )}
-
                     {/* Fee row */}
                     <div className="ep-cp__fee-row">
                       <span className="ep-cp__fee-label">Course Fee</span>
                       <span className="ep-cp__fee-value">Rs. {Number(course.fees || 0).toLocaleString()}</span>
                     </div>
 
-                    {/* Installment section — only if course has installment plan */}
+                    {/* Course Description â€” below fee */}
+                    {course.description && (
+                      <div className="ep-cp__desc-block">
+                        <span className="ep-cp__desc-label">Course Description</span>
+                        <p className="ep-cp__desc-text">{course.description}</p>
+                      </div>
+                    )}
+
+                    {/* Installment section â€” only if course has installment plan */}
                     {hasInstallmentPlan(course) && (
                       <div className="ep-cp__installment">
                         <button
@@ -224,10 +241,11 @@ const EnrollmentPage = () => {
             </div>
           </aside>
 
-          {/* RIGHT — Form */}
+          {/* RIGHT â€” Form */}
           <main className="ep-form-panel">
             <div className="ep-form-card">
               <h2 className="ep-form-card__title">Personal Information</h2>
+
               <form className="ep-form" onSubmit={handleSubmit} noValidate>
                 <div className="ep-form-grid">
                   {/* Full Name */}
@@ -302,7 +320,7 @@ const EnrollmentPage = () => {
                       <span className={`ep-checkbox ${checked ? "ep-checkbox--checked" : ""}`}>
                         {checked && <FaCheckCircle />}
                       </span>
-                      I agree to the <a href="/terms" target="_blank" className="ep-terms-link">Terms &amp; Conditions</a> *
+                      I agree to the Mahapola Port Maritime Academy's terms and conditions. *
                     </label>
                     {errors.agreeTerms && <span className="ep-error">{errors.agreeTerms}</span>}
                   </div>
@@ -322,6 +340,93 @@ const EnrollmentPage = () => {
           </main>
         </div>
       </div>
+
+      {/* â”€â”€ CONFIRMATION MODAL â”€â”€ */}
+      {showConfirm && (
+        <div className="ep-modal-overlay" onClick={() => setShowConfirm(false)}>
+          <div className="ep-modal" onClick={(e) => e.stopPropagation()}>
+
+            {/* Modal Header */}
+            <div className="ep-modal__header">
+              <div className="ep-modal__header-icon">
+                <FaShieldAlt />
+              </div>
+              <div>
+                <h2 className="ep-modal__title">Confirm Your Enrollment</h2>
+                <p className="ep-modal__subtitle">Please review your details carefully before submitting</p>
+              </div>
+              <button className="ep-modal__close" onClick={() => setShowConfirm(false)} title="Close">
+                <FaTimes />
+              </button>
+            </div>
+
+            {/* Warning Banner */}
+            <div className="ep-modal__warning">
+              <FaExclamationTriangle className="ep-modal__warning-icon" />
+              <p>This information will be used for your <strong>registration, certification, and all course-related processes</strong>. Ensure everything is accurate.</p>
+            </div>
+
+            {/* Data Review Grid */}
+            <div className="ep-modal__body">
+              <div className="ep-modal__section-title">Personal Information</div>
+              <div className="ep-modal__grid">
+                <div className="ep-modal__field">
+                  <span className="ep-modal__label"><FaUser /> Full Name</span>
+                  <span className="ep-modal__value">{form.full_name}</span>
+                </div>
+                <div className="ep-modal__field">
+                  <span className="ep-modal__label"><FaIdCard /> NIC / Passport</span>
+                  <span className="ep-modal__value">{form.nic}</span>
+                </div>
+                <div className="ep-modal__field">
+                  <span className="ep-modal__label"><FaBirthdayCake /> Date of Birth</span>
+                  <span className="ep-modal__value">{displayDOB}</span>
+                </div>
+                <div className="ep-modal__field">
+                  <span className="ep-modal__label"><FaVenusMars /> Gender</span>
+                  <span className="ep-modal__value">{displayGender}</span>
+                </div>
+                <div className="ep-modal__field">
+                  <span className="ep-modal__label"><FaEnvelope /> Email</span>
+                  <span className="ep-modal__value">{form.email}</span>
+                </div>
+                <div className="ep-modal__field">
+                  <span className="ep-modal__label"><FaPhone /> Mobile</span>
+                  <span className="ep-modal__value">{form.mobile_number}</span>
+                </div>
+                <div className="ep-modal__field ep-modal__field--full">
+                  <span className="ep-modal__label"><FaMapMarkerAlt /> Address</span>
+                  <span className="ep-modal__value">{form.address}</span>
+                </div>
+              </div>
+
+              <div className="ep-modal__section-title" style={{ marginTop: "20px" }}>Selected Course</div>
+              {selected.map((course, idx) => (
+                <div key={idx} className="ep-modal__course-row">
+                  <div className="ep-modal__course-info">
+                    <FaBook className="ep-modal__course-icon" />
+                    <div>
+                      <p className="ep-modal__course-name">{course.course}</p>
+                      {course.duration && <p className="ep-modal__course-meta"><FaClock style={{marginRight:4}}/>{course.duration}</p>}
+                    </div>
+                  </div>
+                  <span className="ep-modal__course-fee">Rs. {Number(course.fees || 0).toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer Actions */}
+            <div className="ep-modal__footer">
+              <button className="ep-btn ep-btn--secondary" onClick={() => setShowConfirm(false)}>
+                <FaArrowLeft /> Edit Details
+              </button>
+              <button className="ep-btn ep-btn--confirm" onClick={handleConfirmedSubmit}>
+                <FaCheckCircle /> Confirm &amp; Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

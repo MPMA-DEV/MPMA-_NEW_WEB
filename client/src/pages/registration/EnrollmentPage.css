@@ -221,6 +221,31 @@
   overflow: hidden;
 }
 
+/* Description block — below fee row */
+.ep-cp__desc-block {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ep-cp__desc-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+}
+
+.ep-cp__desc-text {
+  margin: 0;
+  font-size: 12.5px;
+  color: #334155;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
 .ep-cp__fee-row {
   display: flex;
   justify-content: space-between;
@@ -336,10 +361,49 @@
   font-size: 20px;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 28px;
+  margin: 0 0 20px;
   padding-bottom: 18px;
   border-bottom: 2px solid #f1f5f9;
   letter-spacing: -0.3px;
+}
+
+/* =============================================
+   COURSE DESCRIPTION BANNER (inside form)
+   ============================================= */
+
+.ep-course-desc-banner {
+  background: #f0f9ff;
+  border: 1.5px solid #bae6fd;
+  border-left: 4px solid #0ea5e9;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+}
+
+.ep-course-desc-banner__label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #0369a1;
+  margin-bottom: 7px;
+}
+
+.ep-course-desc-banner__icon {
+  font-size: 12px;
+  color: #0ea5e9;
+  flex-shrink: 0;
+}
+
+.ep-course-desc-banner__text {
+  margin: 0;
+  font-size: 13.5px;
+  color: #0c4a6e;
+  line-height: 1.65;
+  font-weight: 500;
 }
 
 /* =============================================
@@ -541,3 +605,268 @@
   .ep-btn { justify-content: center; }
   .ep-page { padding: 70px 0 40px; }
 }
+
+/* =============================================
+   CONFIRMATION MODAL
+   ============================================= */
+
+.ep-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 20, 45, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: ep-overlay-in 0.2s ease;
+}
+
+@keyframes ep-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ep-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+  animation: ep-modal-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes ep-modal-in {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Modal Header */
+.ep-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  position: relative;
+}
+
+.ep-modal__header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.ep-modal__title {
+  margin: 0 0 3px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.ep-modal__subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.ep-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.ep-modal__close:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* Warning Banner */
+.ep-modal__warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 24px 0;
+  padding: 13px 16px;
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: 12px;
+  margin-top: 18px;
+}
+
+.ep-modal__warning-icon {
+  color: #d97706;
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ep-modal__warning p {
+  margin: 0;
+  font-size: 13px;
+  color: #92400e;
+  line-height: 1.55;
+}
+
+.ep-modal__warning strong {
+  color: #78350f;
+}
+
+/* Modal Body */
+.ep-modal__body {
+  padding: 20px 24px;
+  flex: 1;
+}
+
+.ep-modal__section-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+/* Data Grid */
+.ep-modal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ep-modal__field {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ep-modal__field--full {
+  grid-column: 1 / -1;
+}
+
+.ep-modal__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ep-modal__value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Course Row */
+.ep-modal__course-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.ep-modal__course-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ep-modal__course-icon {
+  font-size: 16px;
+  color: #1d4ed8;
+  flex-shrink: 0;
+}
+
+.ep-modal__course-name {
+  margin: 0 0 3px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ep-modal__course-meta {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+}
+
+.ep-modal__course-fee {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1e3a5f;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Modal Footer */
+.ep-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 24px 22px;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* Confirm button — green */
+.ep-btn--confirm {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(22,163,74,0.30);
+}
+.ep-btn--confirm:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(22,163,74,0.38);
+}
+
+/* Modal responsive */
+@media (max-width: 600px) {
+  .ep-modal { border-radius: 16px; }
+  .ep-modal__grid { grid-template-columns: 1fr; }
+  .ep-modal__field--full { grid-column: 1; }
+  .ep-modal__footer { flex-direction: column-reverse; }
+  .ep-modal__footer .ep-btn { justify-content: center; }
+}
+

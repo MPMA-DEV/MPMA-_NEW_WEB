@@ -55,18 +55,17 @@ const Home = () => {
               </Link>
             </motion.div>
             <motion.div
-              className="enroll-image"
+              className="enroll-characters-wrapper"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              {/* <img src="https://i.imgur.com/PDXtxlh.png" alt="Maritime Career" />
-              <img src="https://i.imgur.com/8ruwNMP.png" alt="Maritime Training" />
-              <img src="https://i.imgur.com/HW0kh7d.png" alt="Maritime Professional" /> */}
-              <img src= {PDXtxlh}alt="Maritime Career" />
-              <img src={ruwNMP} alt="Maritime Training" />
-              <img src={HW0kh7d} alt="Maritime Professional" />
+              <div className="enroll-characters">
+                <img src={PDXtxlh} alt="Maritime Deck Officer" className="char-img char-left" />
+                <img src={ruwNMP} alt="Maritime Chief Engineer" className="char-img char-center" />
+                <img src={HW0kh7d} alt="Port Operations Specialist" className="char-img char-right" />
+              </div>
             </motion.div>
           </div>
         </div>

@@ -63,14 +63,9 @@ const CategoryPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selected, setSelected] = useState([]);
 
-  const handleCheckbox = (course) => {
-    setSelected((prev) =>
-      prev.some((item) => item.course === course.course)
-        ? []
-        : [course]
-    );
+  const handleSelectAndNavigate = (course) => {
+    navigate("/course/enroll", { state: [course] });
   };
 
   useEffect(() => {
@@ -156,7 +151,7 @@ const CategoryPage = () => {
         {!loading && !error && courses.length > 0 && (
           <div className="hcc-list">
             {courses.map((course) => {
-              const isSelected = selected.some((sel) => sel.course === course.course);
+              const isSelected = false;
               return (
                 <div
                   key={course.course}
@@ -197,32 +192,24 @@ const CategoryPage = () => {
                         </div>
                       </div>
 
-                      {course.duration && (
-                        <>
-                          <div className="hcc-card__meta-divider"></div>
-                          <div className="hcc-card__meta-item">
-                            <FaClock className="hcc-meta-icon" />
-                            <div>
-                              <span className="hcc-meta-label">Duration</span>
-                              <span className="hcc-meta-value">{course.duration}</span>
-                            </div>
-                          </div>
-                        </>
-                      )}
+                        <div className="hcc-card__meta-divider"></div>
+                      <div className="hcc-card__meta-item">
+                        <FaClock className="hcc-meta-icon" />
+                        <div>
+                          <span className="hcc-meta-label">Duration</span>
+                          <span className="hcc-meta-value">{course.duration || "—"}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
                   {/* Right: Select Button */}
                   <div className="hcc-card__action">
                     <button
-                      className={`hcc-select-btn ${isSelected ? "hcc-select-btn--selected" : ""}`}
-                      onClick={() => handleCheckbox(course)}
+                      className="hcc-select-btn"
+                      onClick={() => handleSelectAndNavigate(course)}
                     >
-                      {isSelected ? (
-                        <><FaCheckCircle /> Selected</>
-                      ) : (
-                        "Select Course"
-                      )}
+                      <FaCheckCircle /> Enroll Now
                     </button>
                   </div>
                 </div>
@@ -231,44 +218,9 @@ const CategoryPage = () => {
           </div>
         )}
 
-        {/* Selection Summary */}
-        {!loading && selected.length > 0 && (
-          <div className="hcc-summary">
-            <div className="hcc-summary__header">
-              <h3>Your Selection</h3>
-              <p className="hcc-summary__total">
-                Total: <span>Rs. {selected.reduce((sum, c) => sum + (Number(c.fees) || 0), 0).toLocaleString()}</span>
-              </p>
-            </div>
-            <div className="hcc-summary__list">
-              {selected.map((course) => (
-                <div key={course.course} className="hcc-summary__item">
-                  <span className="hcc-summary__name">{course.course}</span>
-                  <span className="hcc-summary__fee">Rs. {Number(course.fees || 0).toLocaleString()}</span>
-                  <button
-                    className="hcc-summary__remove"
-                    onClick={() => handleCheckbox(course)}
-                    title="Remove"
-                  >✕</button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Proceed Button */}
-        {!loading && (
-          <div className="hcc-proceed">
-            <button
-              className={`hcc-proceed-btn ${selected.length === 0 ? "hcc-proceed-btn--disabled" : ""}`}
-              onClick={() => navigate("/course/enroll", { state: selected })}
-              disabled={selected.length === 0}
-            >
-              {selected.length === 0
-                ? "Select a Course to Continue"
-                : "Proceed to Registration"}
-            </button>
-          </div>
+        {/* Hint text */}
+        {!loading && courses.length > 0 && (
+          <p className="hcc-hint-text">Click <strong>Enroll Now</strong> on any course to proceed to registration.</p>
         )}
       </div>
     </div>
