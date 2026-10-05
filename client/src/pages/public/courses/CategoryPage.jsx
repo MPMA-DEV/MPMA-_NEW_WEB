@@ -76,7 +76,16 @@ const CategoryPage = () => {
         const streamName = slugToStream[categorySlug] || categorySlug;
         const normalizedCategory = normalizeStream(streamName);
 
-        const res = await fetch(process.env.REACT_APP_COURSE_API, { method: "GET" });
+        const res = await fetch(process.env.REACT_APP_COURSE_API, {
+          method: "GET",
+          headers: {
+            "x-api-key": process.env.REACT_APP_ERP_API_KEY,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) {
+          throw new Error(`Course request failed with status ${res.status}`);
+        }
         const response = await res.json();
         const allCourses = response.data || [];
 

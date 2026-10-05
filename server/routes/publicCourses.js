@@ -1,27 +1,96 @@
 const express = require("express");
 const axios = require("axios");
+const db = require("../db");
 const router = express.Router();
 
 // GET all courses
 router.get("/", async (req, res) => {
+  const headers = {
+    "x-api-key": process.env.X_API_KEY,
+    "Content-Type": process.env.CONTENT_TYPE || "application/json",
+  };
+
+  const mapLocalCourseRow = (row) => ({
+    id: row.id,
+    course: row.courseName,
+    courseId: row.courseId,
+    stream: row.stream,
+    medium: row.medium,
+    location: row.location,
+    assessmentCriteria: row.assessmentCriteria,
+    resources: row.resources,
+    fees: row.fees,
+    registrationFee: row.registrationFee,
+    installment1: row.installment1,
+    installment2: row.installment2,
+    additionalInstallments: row.additionalInstallments,
+    description: row.description,
+    duration: row.duration,
+    status: row.status,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    no_of_participants: row.no_of_participants,
+  });
+
   try {
     const response = await axios.get(
       process.env.COURSE,
       {
-        headers: {
-          "x-api-key": process.env.X_API_KEY,
-          "Content-Type": process.env.CONTENT_TYPE,
-        },
+        headers,
+        timeout: 5000,
       }
     );
 
     res.json(response.data);
   } catch (error) {
-    console.error("Fetch courses error:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch data",
-    });
+    console.error("Fetch courses error from ERP endpoint:", error.message);
+
+    try {
+      const [rows] = await db.query(
+        `
+          SELECT
+            id,
+            courseId,
+            stream,
+            courseName,
+            medium,
+            location,
+            assessmentCriteria,
+            resources,
+            fees,
+            registrationFee,
+            installment1,
+            installment2,
+            additionalInstallments,
+            description,
+            duration,
+            status,
+            created_at,
+            updated_at,
+            no_of_participants
+          FROM courses
+          WHERE status = 'Active'
+          ORDER BY created_at DESC
+        `
+      );
+
+      const fallbackCourses = rows.map(mapLocalCourseRow);
+      console.warn(
+        `Serving ${fallbackCourses.length} courses from local DB fallback because ERP endpoint is unavailable.`
+      );
+
+      return res.json({
+        success: true,
+        source: "local-db-fallback",
+        data: fallbackCourses,
+      });
+    } catch (dbError) {
+      console.error("Local DB fallback for courses failed:", dbError.message);
+      return res.status(503).json({
+        success: false,
+        message: "Failed to fetch courses from both ERP endpoint and local DB fallback.",
+      });
+    }
   }
 });
 
@@ -32,9 +101,9 @@ router.post("/save", async (req, res) => {
       process.env.REGISTER,
       req.body,
       {
-       headers: {
+        headers: {
           "x-api-key": process.env.X_API_KEY,
-          "Content-Type": process.env.CONTENT_TYPE,
+          "Content-Type": process.env.CONTENT_TYPE || "application/json",
         },
       }
     );

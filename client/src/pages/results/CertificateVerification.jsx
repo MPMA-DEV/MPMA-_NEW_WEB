@@ -22,8 +22,15 @@ const CertificateVerification = () => {
     try {
       // Encode the ID to handle special characters like slashes (/)
       const encodedId = encodeURIComponent(certNumber);
-      // Call the proxy backend route using a query parameter
-      const response = await axios.get(`http://localhost:5000/api/courses/verify?id=${encodedId}`);
+      const verifyApi =
+        process.env.REACT_APP_VERIFY_API ||
+        'https://mpmaerp.slpa.lk/api/portal/verify';
+      const response = await axios.get(`${verifyApi}?id=${encodedId}`, {
+        headers: {
+          'x-api-key': process.env.REACT_APP_ERP_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (response.data) {
         // Map the API response to our component state

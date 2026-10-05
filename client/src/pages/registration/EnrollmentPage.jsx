@@ -98,7 +98,10 @@ const EnrollmentPage = () => {
     try {
       const response = await fetch(process.env.REACT_APP_REGISTER_USER_API, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "x-api-key": process.env.REACT_APP_ERP_API_KEY,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(form),
       });
       const data = await response.json();
