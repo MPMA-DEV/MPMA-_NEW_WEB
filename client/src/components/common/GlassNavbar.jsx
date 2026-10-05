@@ -133,7 +133,7 @@ const GlassNavbar = () => {
           </Link>
 
           <a
-            href="http://localhost:5173/login"
+            href="http://10.70.4.34:5173/login"
             className="nav-item ojt-portal-btn"
             target="_blank"
             rel="noopener noreferrer"
@@ -174,7 +174,7 @@ const GlassNavbar = () => {
           <Link to="/contact" className="mobile-nav-item">Contact Us</Link>
           
           <a
-            href="http://localhost:5173/login"
+            href="http://10.70.4.34:5173/login"
             className="mobile-nav-item ojt-portal-btn-mobile"
             target="_blank"
             rel="noopener noreferrer"
