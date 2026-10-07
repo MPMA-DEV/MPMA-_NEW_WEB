@@ -166,10 +166,10 @@ const EnrollmentPage = () => {
 
                     {/* Course meta */}
                     <div className="ep-cp__meta">
-                      {course.duration && (
+                      {(course.duration_description || course.duration) && (
                         <div className="ep-cp__meta-item">
                           <FaClock className="ep-cp__meta-icon" />
-                          <span>{course.duration}</span>
+                          <span>{course.duration_description || course.duration}</span>
                         </div>
                       )}
                       {course.medium && (
@@ -410,7 +410,7 @@ const EnrollmentPage = () => {
                     <FaBook className="ep-modal__course-icon" />
                     <div>
                       <p className="ep-modal__course-name">{course.course}</p>
-                      {course.duration && <p className="ep-modal__course-meta"><FaClock style={{marginRight:4}}/>{course.duration}</p>}
+                      {(course.duration_description || course.duration) && <p className="ep-modal__course-meta"><FaClock style={{marginRight:4}}/>{course.duration_description || course.duration}</p>}
                     </div>
                   </div>
                   <span className="ep-modal__course-fee">Rs. {Number(course.fees || 0).toLocaleString()}</span>

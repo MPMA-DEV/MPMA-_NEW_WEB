@@ -206,7 +206,7 @@ const CategoryPage = () => {
                         <FaClock className="hcc-meta-icon" />
                         <div>
                           <span className="hcc-meta-label">Duration</span>
-                          <span className="hcc-meta-value">{course.duration || "—"}</span>
+                          <span className="hcc-meta-value">{course.duration_description || course.duration || "—"}</span>
                         </div>
                       </div>
                     </div>

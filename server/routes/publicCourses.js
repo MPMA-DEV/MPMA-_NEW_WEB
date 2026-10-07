@@ -33,64 +33,45 @@ router.get("/", async (req, res) => {
   });
 
   try {
-    const response = await axios.get(
-      process.env.COURSE,
-      {
-        headers,
-        timeout: 5000,
-      }
+    const [rows] = await db.query(
+      `
+        SELECT
+          id,
+          courseId,
+          stream,
+          courseName as course,
+          medium,
+          location,
+          assessmentCriteria,
+          resources,
+          fees,
+          registrationFee,
+          installment1,
+          installment2,
+          additionalInstallments,
+          description,
+          duration,
+          status,
+          created_at,
+          updated_at,
+          no_of_participants
+        FROM courses
+        WHERE status = 'Active'
+        ORDER BY created_at DESC
+      `
     );
 
-    res.json(response.data);
+    res.json({
+      success: true,
+      data: rows,
+      source: "local-db"
+    });
   } catch (error) {
-    console.error("Fetch courses error from ERP endpoint:", error.message);
-
-    try {
-      const [rows] = await db.query(
-        `
-          SELECT
-            id,
-            courseId,
-            stream,
-            courseName,
-            medium,
-            location,
-            assessmentCriteria,
-            resources,
-            fees,
-            registrationFee,
-            installment1,
-            installment2,
-            additionalInstallments,
-            description,
-            duration,
-            status,
-            created_at,
-            updated_at,
-            no_of_participants
-          FROM courses
-          WHERE status = 'Active'
-          ORDER BY created_at DESC
-        `
-      );
-
-      const fallbackCourses = rows.map(mapLocalCourseRow);
-      console.warn(
-        `Serving ${fallbackCourses.length} courses from local DB fallback because ERP endpoint is unavailable.`
-      );
-
-      return res.json({
-        success: true,
-        source: "local-db-fallback",
-        data: fallbackCourses,
-      });
-    } catch (dbError) {
-      console.error("Local DB fallback for courses failed:", dbError.message);
-      return res.status(503).json({
-        success: false,
-        message: "Failed to fetch courses from both ERP endpoint and local DB fallback.",
-      });
-    }
+    console.error("Fetch courses error from local DB:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch courses from local DB.",
+    });
   }
 });
 
@@ -152,7 +133,7 @@ router.get("/verify", async (req, res) => {
   } catch (error) {
     const status = error.response?.status || 500;
     const errorData = error.response?.data;
-    
+
     console.error(`   ❌ [PORTAL PROXY] Error from ERP Server:`);
     console.error(`      - Status: ${status}`);
     console.error(`      - Message: ${error.message}`);
